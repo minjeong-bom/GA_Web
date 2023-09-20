@@ -1,0 +1,103 @@
+<template>
+  <div class="sevice-comment-page">
+    <!-- STEP 1 -->
+    <div class="modal-step-1">
+      <div class="content-wrap">
+        <section>
+          <h1>
+            굿애프터눈을 사용하면서<br>
+            얼마나 만족하셨나요?
+          </h1>
+          <div class="list-wrap">
+            <q-radio v-model="serviceScore" val="5" label="매우 만족"/>
+            <q-radio v-model="serviceScore" val="4" label="만족"/>
+            <q-radio v-model="serviceScore" val="3" label="보통"/>
+            <q-radio v-model="serviceScore" val="2" label="불만족"/>
+            <q-radio v-model="serviceScore" val="1" label="매우 불만족"/>
+          </div>
+        </section>
+      </div>
+      <button class="btn-main" @click="next()">다음</button>
+    </div>
+  </div>
+</template>
+
+<script>
+
+export default {
+  data() {
+    return {
+      serviceScore: "",
+      comment: "",
+      commentTpye: {
+        option1: false,
+        option2: false,
+        option3: false,
+        option4: false,
+        option5: false,
+        option6: false,
+      }
+    }
+  },
+  methods : {
+    next() {
+      this.$router.push('/service-comment/step2');
+    }
+  }
+}
+
+</script>
+
+<style scoped>
+.content-wrap {
+  display: grid;
+  padding: 30px 24px;
+}
+
+h1 {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%; /* 36px */
+
+  margin-block-start: 16px;
+  margin-block-end: 10px;
+}
+
+.description {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.btn-main {
+
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+  gap: 8px;
+
+  width: calc(100% - 40px);
+  height: 52px;
+  padding: 10px 24px;
+  border: none;
+
+  color: #fff;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+
+  border-radius: 20px;
+  background-color: #FD384E;
+}
+
+.list-wrap {
+  display: flex;
+  flex-direction: column;
+}
+</style>

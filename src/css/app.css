@@ -1,0 +1,15 @@
+/* app global css */
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+* { font-family: 'Spoqa Han Sans Neo', 'sans-serif'; }
+
+button {
+  color: black;
+}
+
+.iphone-x-ui-top {
+  padding-top: calc(env(safe-area-inset-top) + 20px);
+}
+
+.iphone-x-ui-bottom {
+  padding-bottom: env(safe-area-inset-bottom) !important;
+}

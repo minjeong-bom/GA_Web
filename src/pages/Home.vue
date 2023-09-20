@@ -125,7 +125,7 @@ export default defineComponent({
       this.homeArticleTab = tab;
     },
     linkToServiceComment() {
-      this.$router.push('/feedback');
+      this.$router.push('/service-comment/step1');
     },
   }
 })

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <q-layout>
+    <q-layout class="iphone-x-ui-top">
       <!-- 컨텐츠 내용 -->
       <q-page-container class="contant-wrap">
-        <router-view />
+        <router-view class="iphone-x-ui-bottom iphone-x-ui-m-b" />
       </q-page-container>
 
       <!-- 하단바 -->

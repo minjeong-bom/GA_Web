@@ -9,6 +9,7 @@ export default {
   methods : {
     navigateBack() {
       this.$router.go(-1);
+      this.$emit('');
     },
     emitCall() {
       this.$emit(`buttonEvent`);

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <top-bar :title="''">
+    </top-bar>
+
     <div class="article-wrap">
       <!-- 글정보 -->
       <div class="flex article-info">
@@ -73,7 +76,12 @@
 </template>
 
 <script>
+import TopBarSub from "components/common/TopBarSub.vue";
+
 export default {
+  components: {
+    'top-bar': TopBarSub
+  },
   data() {
     return {
       articleList: {

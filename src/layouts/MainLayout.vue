@@ -3,7 +3,7 @@
     <q-layout>
       <q-page-container class="content-container">
         <router-view />
-        <footer-view />
+        <footer-view class="iphone-x-ui-m-b"/>
       </q-page-container>
 
       <!-- 하단바 -->

@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer iphone-x-ui-bottom">
     <div class="footer-menu-wrap">
       <div class="footer-menu">
         <span>회사 소개</span>

@@ -11,7 +11,7 @@
     <section>
       <h2>많이 찾고 있는 키워드</h2>
       <div class="tag-list">
-        <lable v-for="item in keywords" @click="search = item">{{ item }}</lable>
+        <span v-for="item in keywords" @click="search = item">{{ item }}</span>
       </div>
     </section>
     <section>
@@ -146,7 +146,7 @@ h2 {
   padding: 0 5px;
 }
 
-.tag-list lable {
+.tag-list span {
   display: inline-block;
   padding: 5px 10px;
   margin-right: 10px;

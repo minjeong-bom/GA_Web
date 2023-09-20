@@ -1,5 +1,6 @@
 <template>
   <div class="sevice-comment-page">
+    <TopBarSub :title="'dd'"></TopBarSub>
     <!-- STEP 1 -->
     <div class="modal-step-1">
       <div class="content-wrap">
@@ -23,8 +24,12 @@
 </template>
 
 <script>
+import TopBarSub from "components/common/TopBarSub.vue";
 
 export default {
+  components: {
+    TopBarSub
+  },
   data() {
     return {
       serviceScore: "",
@@ -39,7 +44,7 @@ export default {
       }
     }
   },
-  methods : {
+  methods: {
     next() {
       this.$router.push('/service-comment/step2');
     }

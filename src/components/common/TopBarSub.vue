@@ -1,6 +1,25 @@
+<template>
+<div>
+  <div class="top-bar">
+    <div class="tap-bar-inner">
+      <div class="top-bar-back-title-wrap">
+        <button v-if="back" @click="navigateBack()">
+          <i class="fa-solid fa-angle-left"></i>
+        </button>
+        <p>{{ title }}</p>
+      </div>
+      <button class="control-button" @click="emitCall">
+        {{ buttonText }}
+      </button>
+    </div>
+  </div>
+</div>
+</template>
+
 <script>
 export default {
   props: {
+    back: true,
     title: String,
     buttonText: String,
     buttonEvent: String,
@@ -17,24 +36,6 @@ export default {
   }
 }
 </script>
-
-<template>
-<div>
-  <div class="top-bar">
-    <div class="tap-bar-inner">
-      <div class="top-bar-back-title-wrap">
-        <button @click="navigateBack()">
-          <i class="fa-solid fa-angle-left"></i>
-        </button>
-        <p>{{ title }}</p>
-      </div>
-      <button class="control-button" @click="emitCall">
-        {{ buttonText }}
-      </button>
-    </div>
-  </div>
-</div>
-</template>
 
 <style scoped>
 .top-bar {

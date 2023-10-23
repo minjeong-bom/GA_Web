@@ -22,3 +22,22 @@ body {
 .iphone-x-ui-m-b {
   margin-bottom: calc(env(safe-area-inset-bottom) + 74px) !important;
 }
+
+.btn-outline-primary {
+  padding: 0px;
+  background-color: transparent;
+  color: #FD384E;
+  font-size: 14px;
+  border: 0;
+}
+
+.btn-outline-primary {
+
+}
+
+.btn-skip {
+  padding: 10px;
+  border-radius: 9px;
+  background: #F1F1F1;
+  font-weight: bold;
+}

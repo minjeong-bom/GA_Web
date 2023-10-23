@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top-bar :title="''">
+    <top-bar :title="''" :back="true">
     </top-bar>
 
     <div class="article-wrap">

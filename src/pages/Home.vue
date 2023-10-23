@@ -71,7 +71,7 @@ export default defineComponent({
           writer: "원준",
           badgeTitle: "취업_전문가",
           createdAt: "1시간전",
-          description: "저의 고민은 경력 부족입니다. 젊은 지원자들과 어떻게 경쟁할 수 있을까요?",
+          description: "젊은 지원자들과 어떻게 경쟁할 수 있을까요?",
           writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
           articleThumb: "https://images.unsplash.com/photo-1694901555616-d7b2b33e6406?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4016&q=80",
           motivation: "999",
@@ -83,7 +83,7 @@ export default defineComponent({
           writer: "원준",
           badgeTitle: "취업_전문가",
           createdAt: "1시간전",
-          description: "제 두 번째 고민은 기술 업데이트입니다. 빠르게 변화하는 시장에서 어떻게 뒤떨어지지 않고 기술을 습득할 수 있을까요?",
+          description: "제 두 번째 고민은 기술 업데이트입니다.",
           writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
           articleThumb: "https://plus.unsplash.com/premium_photo-1663840297123-29164230cc9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=5070&q=80",
           motivation: "999",
@@ -95,7 +95,7 @@ export default defineComponent({
           writer: "원준",
           badgeTitle: "취업_전문가",
           createdAt: "1시간전",
-          description: "제 두 번째 고민은 기술 업데이트입니다. 빠르게 변화하는 시장에서 어떻게 뒤떨어지지 않고 기술을 습득할 수 있을까요?",
+          description: "제 두 번째 고민은 기술 업데이트입니다.",
           writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
           articleThumb: "https://images.unsplash.com/photo-1682685797741-f0213d24418c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=5070&q=80",
           motivation: "999",
@@ -107,7 +107,7 @@ export default defineComponent({
           writer: "원준",
           badgeTitle: "취업_전문가",
           createdAt: "1시간전",
-          description: "저의 고민은 경력 부족입니다. 젊은 지원자들과 어떻게 경쟁할 수 있을까요?",
+          description: "저의 고민은 경력 부족입니다.",
           writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
           articleThumb: "https://images.unsplash.com/photo-1694901555616-d7b2b33e6406?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4016&q=80",
           motivation: "999",
@@ -117,9 +117,24 @@ export default defineComponent({
     }
   },
   created() {
-
+    this.checkOnboard();
+    this.checkLogin();
   },
   methods: {
+    checkOnboard() {
+      if (this.userId) {
+        return
+      } else {
+        this.$router.push('/login');
+      }
+    },
+    checkLogin() {
+      if (this.onboardShow) {
+        // this.$router.push('/onboard');
+      } else {
+        return;
+      }
+    },
     setTabUI(tab) {
       console.log('tab')
       this.homeArticleTab = tab;
@@ -127,6 +142,14 @@ export default defineComponent({
     linkToServiceComment() {
       this.$router.push('/service-comment/step1');
     },
+  },
+  computed: {
+    userId() {
+      return localStorage.getItem('user_id');
+    },
+    onboardShow() {
+      return localStorage.getItem('onboard_show')
+    }
   }
 })
 </script>

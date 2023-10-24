@@ -51,7 +51,7 @@ import topBarMain from "components/common/TopBarMain.vue";
 
 const router = useRouter();
 
-import ArticleCard from "components/ArticleCard.vue";
+import ArticleCard from "components/card/ArticleCard.vue";
 import TopBarMain from "components/common/TopBarMain.vue";
 
 export default defineComponent({
@@ -168,7 +168,7 @@ export default defineComponent({
 }
 
 .tab-item {
-  font-size: 21px;
+  font-size: 1.31rem;
   color: rgba(0, 0, 0, 0.5);
   font-weight: bold;
 
@@ -214,7 +214,7 @@ export default defineComponent({
 
 .feed-back-section p {
   text-align: center;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
 
   margin-block-start: 15px;
@@ -239,6 +239,6 @@ export default defineComponent({
   color: #fff;
   padding: 10px 24px;
   border: none;
-  font-size: 14px;
+  font-size: 0.875px;
 }
 </style>

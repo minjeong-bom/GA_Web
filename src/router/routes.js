@@ -37,6 +37,7 @@ const routes = [
     component: () => import('layouts/SimpleLayout.vue'),
     children: [
       { path: '/myp3000', component: () => import('pages/MYP/MYP3000.vue') },
+      { path: '/myp3100', component: () => import('pages/MYP/MYP3100.vue') },
     ]
   },
 

@@ -154,7 +154,7 @@ export default {
 .article-controller button {
   border: none;
   background-color: transparent;
-  font-size: 24px;
+  font-size: 1.5px;
 }
 
 .article-thumb-wrap {
@@ -226,6 +226,4 @@ export default {
 .article-bottom-area {
   margin-top: 9px;
 }
-
-
 </style>

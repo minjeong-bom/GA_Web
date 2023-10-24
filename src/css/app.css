@@ -1,3 +1,5 @@
+html { font-size:16px; }
+
 /* app global css */
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 * { font-family: 'Spoqa Han Sans Neo', 'sans-serif'; }

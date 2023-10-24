@@ -44,7 +44,7 @@
 
 <script>
 import TopBarSub from "components/common/TopBarSub.vue";
-import ArticleCard from "components/ArticleCard.vue";
+import ArticleCard from "components/card/ArticleCard.vue";
 
 export default {
   components: {

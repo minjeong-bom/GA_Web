@@ -30,7 +30,8 @@ module.exports = configure(function (/* ctx */) {
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: [
       'app.css',
-      'common.css'
+      'common.css',
+      'typo.css',
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras

@@ -10,14 +10,8 @@
     <!-- 아티클 카드 -->
     <section>
       <!-- 탭 -->
-      <div class="tab">
-        <div class="tab-item" :class="{ 'tab-focus' : homeArticleTab === 'All' }" @click="setTabUI('All')">전체</div>
-        <div class="tab-item" :class="{ 'tab-focus' : homeArticleTab === 'Story' }" @click="setTabUI('Story')">스토리</div>
-        <div class="tab-item" :class="{ 'tab-focus' : homeArticleTab === 'Skill' }" @click="setTabUI('Skill')">취업스킬
-        </div>
-        <div class="tab-item" :class="{ 'tab-focus' : homeArticleTab === 'Pick' }" @click="setTabUI('Pick')">지애 픽</div>
-      </div>
-
+      <tab :tabs="tabList" @changeTab="changeTab"></tab>
+      <!-- 테스트 -->
       <div v-for="item in articleList">
         <article-card
           :title="item.title"
@@ -53,72 +47,43 @@ const router = useRouter();
 
 import ArticleCard from "components/card/ArticleCard.vue";
 import TopBarMain from "components/common/TopBarMain.vue";
+import Tab from "components/tab/Tab.vue";
 
 export default defineComponent({
   name: 'IndexPage',
   components: {
     'article-card': ArticleCard,
-    'top-bar-main': topBarMain
+    'top-bar-main': topBarMain,
+    'tab': Tab,
   },
   data() {
     return {
-      homeArticleTab: "All",
-      articleList: [
+      tabList: [
         {
-          id: "articleId",
-          title: "중장년 취업 고민 #1: 경력 미달",
-          articleType: "스토리",
-          writer: "원준",
-          badgeTitle: "취업_전문가",
-          createdAt: "1시간전",
-          description: "젊은 지원자들과 어떻게 경쟁할 수 있을까요?",
-          writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
-          articleThumb: "https://images.unsplash.com/photo-1694901555616-d7b2b33e6406?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4016&q=80",
-          motivation: "999",
-          viewCount: "999",
+          id: 1,
+          title: '전체'
         },
         {
-          title: "중장년 취업 고민 #2: 기술 업데이트",
-          articleType: "스토리",
-          writer: "원준",
-          badgeTitle: "취업_전문가",
-          createdAt: "1시간전",
-          description: "제 두 번째 고민은 기술 업데이트입니다.",
-          writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
-          articleThumb: "https://plus.unsplash.com/premium_photo-1663840297123-29164230cc9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=5070&q=80",
-          motivation: "999",
-          viewCount: "999",
+          id: 2,
+          title: '스토리'
         },
         {
-          title: "중장년 취업 고민 #2: 기술 업데이트",
-          articleType: "스토리",
-          writer: "원준",
-          badgeTitle: "취업_전문가",
-          createdAt: "1시간전",
-          description: "제 두 번째 고민은 기술 업데이트입니다.",
-          writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
-          articleThumb: "https://images.unsplash.com/photo-1682685797741-f0213d24418c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=5070&q=80",
-          motivation: "999",
-          viewCount: "999",
+          id: 3,
+          title: '취업스킬'
         },
         {
-          title: "중장년 취업 고민 #1: 경력 미달",
-          articleType: "스토리",
-          writer: "원준",
-          badgeTitle: "취업_전문가",
-          createdAt: "1시간전",
-          description: "저의 고민은 경력 부족입니다.",
-          writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
-          articleThumb: "https://images.unsplash.com/photo-1694901555616-d7b2b33e6406?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4016&q=80",
-          motivation: "999",
-          viewCount: "999",
+          id: 4,
+          title: '지애픽'
         },
-      ]
+      ],
+      tabFocused: 0,
+      articleList: [],
     }
   },
   created() {
     this.checkOnboard();
     this.checkLogin();
+    this.changeTab(1);
   },
   methods: {
     checkOnboard() {
@@ -135,9 +100,113 @@ export default defineComponent({
         return;
       }
     },
-    setTabUI(tab) {
-      console.log('tab')
-      this.homeArticleTab = tab;
+    changeTab(tabId) {
+      this.activeTab = tabId;
+      console.log('home.vue', this.activeTab);
+      if (this.activeTab === 1) {
+        this.articleList = [
+          {
+            id: "articleId",
+            title: "일과 취미의 균형 유지",
+            description: "균형 삶, 일과 취미",
+            articleType: "스토리",
+            writer: "민정",
+            badgeTitle: "취업_전문가",
+            createdAt: "1시간전",
+            writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
+            articleThumb: "https://images.unsplash.com/photo-1694901555616-d7b2b33e6406?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4016&q=80",
+            motivation: "999",
+            viewCount: "999",
+          },
+          {
+            id: "articleId",
+            title: "취미와 일의 조화 찾기",
+            description: "조화로운 삶, 일과 취미",
+            articleType: "지애픽",
+            writer: "민정",
+            badgeTitle: "취업_전문가",
+            createdAt: "1시간전",
+            writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
+            articleThumb: "https://images.unsplash.com/photo-1694901555616-d7b2b33e6406?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4016&q=80",
+            motivation: "999",
+            viewCount: "999",
+          },
+          {
+            id: "articleId",
+            title: "취미와 일의 조합 미숙점",
+            description: "미숙점, 취미와 일",
+            articleType: "취업스킬",
+            writer: "민정",
+            badgeTitle: "취업_전문가",
+            createdAt: "1시간전",
+            writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
+            articleThumb: "https://images.unsplash.com/photo-1694901555616-d7b2b33e6406?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4016&q=80",
+            motivation: "999",
+            viewCount: "999",
+          },
+        ]
+      } else if (this.activeTab === 2) {
+        this.articleList = [
+          {
+            id: "articleId",
+            title: "일과 취미의 균형 유지",
+            description: "균형 삶, 일과 취미",
+            articleType: "스토리",
+            writer: "민정",
+            badgeTitle: "취업_전문가",
+            createdAt: "1시간전",
+            writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
+            articleThumb: "https://images.unsplash.com/photo-1694901555616-d7b2b33e6406?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4016&q=80",
+            motivation: "999",
+            viewCount: "999",
+          },
+        ]
+      } else if (this.activeTab === 3) {
+        this.articleList = [
+          {
+            id: "articleId",
+            title: "Notion 잘 활용하는 방법",
+            description: "아직도 못 쓰는 사람이 있나요?",
+            articleType: "취업스킬",
+            writer: "민정",
+            badgeTitle: "취업_전문가",
+            createdAt: "3일전",
+            writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
+            articleThumb: "https://images.unsplash.com/photo-1694901555616-d7b2b33e6406?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4016&q=80",
+            motivation: "999",
+            viewCount: "999",
+          },
+        ]
+      } else if (this.activeTab === 4) {
+        this.articleList = [
+          {
+            id: "articleId",
+            title: "2024년 부터 변경되는 중장년 지원 정책 5",
+            description: "내년 부터는 취업하기 더 어려워질 수 있어요. 내년 부터는 취업하기 더 어려워질 수 있어요.",
+            articleType: "지애픽",
+            writer: "지애",
+            badgeTitle: "취업_전문가",
+            createdAt: "1시간전",
+            writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
+            articleThumb: "",
+            motivation: "999",
+            viewCount: "999",
+          },
+          {
+            id: "articleId",
+            title: "2024년 부터 변경되는 중장년 지원 정책 5",
+            description: "내년 부터는 취업하기 더 어려워질 수 있어요. 내년 부터는 취업하기 더 어려워질 수 있어요.",
+            articleType: "지애픽",
+            writer: "지애",
+            badgeTitle: "취업_전문가",
+            createdAt: "1시간전",
+            writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
+            articleThumb: "",
+            motivation: "999",
+            viewCount: "999",
+          },
+        ]
+      }
     },
     linkToServiceComment() {
       this.$router.push('/service-comment/step1');

@@ -8,6 +8,11 @@ const routes = [
   },
 
   {
+    path: '/testing',
+    component: () => import('pages/Testing/componants.vue'),
+  },
+
+  {
     path: '/',
     component: () => import('layouts/SubLayout.vue'),
     children: [
@@ -50,7 +55,7 @@ const routes = [
       { path: '/joi0140', component: () => import('pages/JOI/JOI0140.vue') },
       { path: '/joi0150', component: () => import('pages/JOI/JOI0150.vue') },
       { path: '/joi0160', component: () => import('pages/JOI/JOI0160.vue') },
-      { path: '/login', component: () => import('pages/login/Login.vue') },
+      { path: '/login', component: () => import('pages/JOI/Login.vue') },
     ]
   },
   // Always leave this as last one,

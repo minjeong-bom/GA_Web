@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card-wrap">
+    <div class="card-wrap" :class="{ 'white-card' : articleThumb === '' }">
       <!-- 글정보 -->
       <div class="flex article-info">
         <!-- 사진, 작성자, 글 구분, 뱃지, 업데이트 시간 -->
@@ -36,8 +36,8 @@
           <img :src="articleThumb">
         </div>
         <div class="copy">
-          <h2>{{ title }}</h2>
-          <p>{{ description }}</p>
+          <h2 class="headline-1 article-headline">{{ title }}</h2>
+          <p class="nomal-text-1"><b>{{ description }}</b></p>
         </div>
       </div>
       <!-- 반응들 -->
@@ -69,7 +69,7 @@ export default {
     motivation: String,
     viewCount: String,
   },
-  methods : {
+  methods: {
     linkToArticle() {
       this.$router.push('article');
       // $route.query.name
@@ -82,6 +82,15 @@ export default {
 .card-wrap {
   margin-bottom: 20px;
 }
+
+.card-wrap .nomal-text-1 b {
+  color: #fff;
+}
+
+.white-card .nomal-text-1 b {
+  color: #000;
+}
+
 .user-thumbnail-wrap {
   margin-right: 4px;
   width: 42px;
@@ -90,6 +99,7 @@ export default {
   overflow: hidden;
   border: 1px solid #dadada;
 }
+
 .user-thumbnail {
   display: flex;
   width: 100%;
@@ -104,6 +114,7 @@ export default {
   font-style: normal;
   font-weight: 700;
 }
+
 .writer-2 {
   color: #FD384E;
 }
@@ -147,8 +158,7 @@ export default {
 }
 
 .article-controller {
-  //width: 24px;
-  color: #CAC5CD;
+//width: 24px; color: #CAC5CD;
 }
 
 .article-controller button {
@@ -172,25 +182,16 @@ export default {
   padding: 16px;
 }
 
+.white-card .article-thumb-wrap h2,
+.white-card .article-thumb-wrap p {
+  color: #000;
+}
+
 .article-thumb-wrap h2,
 .article-thumb-wrap p {
   margin-block-start: 0;
   margin-block-end: 10px;
   color: #fff;
-}
-
-.article-thumb-wrap h2 {
-  font-size: 1.6rem;
-  font-style: normal;
-  font-weight: bold;
-  line-height: normal;
-}
-
-.article-thumb-wrap p {
-  font-size: 1.2rem;
-  font-style: normal;
-  font-weight: bold;
-  line-height: normal;
 }
 
 .motivation-wrap {
@@ -207,6 +208,10 @@ export default {
 .motivation-wrap span {
   font-weight: 500;
   margin-left: 4px;
+}
+
+.white-card .article-img-wrap {
+  background: white;
 }
 
 .article-img-wrap {

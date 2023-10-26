@@ -38,6 +38,7 @@ const routes = [
     children: [
       { path: '/myp3000', component: () => import('pages/MYP/MYP3000.vue') },
       { path: '/myp3100', component: () => import('pages/MYP/MYP3100.vue') },
+      { path: '/myp3110', component: () => import('pages/MYP/MYP3110.vue') },
     ]
   },
 

@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     addAsk () {
-      window.alert('문의등록!');
+      this.$router.push('/myp3110');
     },
     askDetail(askid) {
       this.$router.push({path: '/myp3100', query: { askid: askid }});

@@ -23,6 +23,9 @@
       <section>
         <span class="lable-text">본문</span>
         <QuillEditor theme="snow" :toolbar="toolbar" contentType="html" v-model:content="content"/>
+        <p>
+          {{ content }}
+        </p>
       </section>
     </div>
   </div>

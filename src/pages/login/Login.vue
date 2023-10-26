@@ -4,14 +4,14 @@
     <section class="login-form">
       <div>
         <!-- 아이디 -->
-        <p class="lable">아이디</p>
+        <p class="input-lable">아이디</p>
         <q-input color="black" outlined v-model="userId" :input-style="{ fontSize: '20px', }"/>
         <span v-show="idError !== null" class="error-msg">
           <i class="fa-solid fa-circle-exclamation"></i>
           {{ idError }}
         </span>
         <!-- 비밀번호 -->
-        <p class="lable">비밀번호</p>
+        <p class="input-lable">비밀번호</p>
         <q-input v-model="userPW" outlined :type="userPW ? 'password' : 'text'" :input-style="{ fontSize: '20px', }">
           <template v-slot:append>
             <q-icon
@@ -83,23 +83,6 @@ export default {
   height: 100%;
   gap: 36px;
   padding: 0 24px;
-}
-
-.error-msg {
-  color: #FD384E;
-  line-height: 2;
-  font-size: 16px;
-  margin-block-end: 0;
-  font-weight: bold;
-}
-
-.lable {
-  margin-block-start: 0;
-  margin-block-end: 0;
-  margin-bottom: 16px;
-  margin-top: 20px;
-  font-size: 20px;
-  font-weight: bold;
 }
 
 .button-group {

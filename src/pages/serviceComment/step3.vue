@@ -14,7 +14,7 @@
             <q-checkbox v-model="commentTpye.option3" label="검색 및 탐색 과정"/>
             <q-checkbox v-model="commentTpye.option4" label="커뮤니티 운영"/>
             <q-checkbox v-model="commentTpye.option5" label="서비스 제안"/>
-            <q-checkbox v-model="commentTpye.option5" label="기타 의견"/>
+            <q-checkbox v-model="commentTpye.option6" label="기타 의견"/>
           </div>
         </section>
       </div>

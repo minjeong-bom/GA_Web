@@ -1,6 +1,5 @@
 <template>
   <q-page class="home">
-    <top-bar-main></top-bar-main>
     <!-- 이벤트 베너 -->
     <section class="event-card-list">
       <div class="event-card">
@@ -33,27 +32,24 @@
     <section class="feed-back-section">
       <img class="sun-animation" src="../assets/graphic/sun-animation.gif">
       <p>G@에 알려주고 싶은 이야기가 있나요?</p>
-      <button class="btn-main" @click="linkToServiceComment()">네, 있어요</button>
+      <button class="btn-primary-small" @click="linkToServiceComment()">네, 있어요</button>
     </section>
   </q-page>
 </template>
 
 <script>
 import {defineComponent} from 'vue'
-import { useRouter } from "vue-router";
-import topBarMain from "components/common/TopBarMain.vue";
+import {useRouter} from "vue-router";
 
 const router = useRouter();
 
 import ArticleCard from "components/card/ArticleCard.vue";
-import TopBarMain from "components/common/TopBarMain.vue";
 import Tab from "components/tab/Tab.vue";
 
 export default defineComponent({
   name: 'IndexPage',
   components: {
     'article-card': ArticleCard,
-    'top-bar-main': topBarMain,
     'tab': Tab,
   },
   data() {
@@ -293,21 +289,5 @@ export default defineComponent({
 .feed-back-section .sun-animation {
   width: 56px;
   height: 56px;
-}
-
-.btn-main {
-  display: flex;
-  height: 40px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  border-radius: 100px;
-  background-color: #FD384E;
-  color: #fff;
-  padding: 10px 24px;
-  border: none;
-  font-size: 0.875px;
 }
 </style>

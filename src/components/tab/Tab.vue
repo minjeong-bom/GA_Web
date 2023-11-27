@@ -1,11 +1,10 @@
 <template>
   <div>
-    <!-- 탭 -->
     <div class="tab">
+      <!-- 탭 -->
       <div class="tab-item" v-for="tab in tabs" :key="tab.id" @click="selectTab(tab.id)" :class="{ 'tab-focus' : tab.id === activeTab }">
         {{ tab.title }}
       </div>
-
     </div>
   </div>
 </template>
@@ -43,7 +42,7 @@ export default {
 }
 
 .tab-item {
-  font-size: 1.31rem;
+  font-size: 21px;
   color: rgba(0, 0, 0, 0.5);
   font-weight: bold;
 

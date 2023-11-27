@@ -1,11 +1,9 @@
 <template>
   <q-page class="home">
     <!-- 이벤트 베너 -->
-    <section class="event-card-list">
-      <div class="event-card">
-      </div>
-    </section>
-
+    <event-card :event-list="eventList"></event-card>
+    <!-- 공지사항 베너 -->
+    <notice-card :notice-card="noticeList"></notice-card>
     <!-- 아티클 카드 -->
     <section>
       <!-- 탭 -->
@@ -38,18 +36,23 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { useRouter } from "vue-router";
+import {defineComponent} from 'vue'
+import {useRouter} from "vue-router";
+
 const router = useRouter();
 
 import ArticleCard from "components/card/ArticleCard.vue";
 import Tab from "components/tab/Tab.vue";
+import EventCard from "components/card/EventCard.vue";
+import NoticeCard from "components/card/NoticeCard.vue";
 
 export default defineComponent({
   name: 'IndexPage',
   components: {
     'article-card': ArticleCard,
     'tab': Tab,
+    'event-card': EventCard,
+    'notice-card': NoticeCard,
   },
   data() {
     return {
@@ -82,12 +85,42 @@ export default defineComponent({
           description: '하위분류',
         }
       ],
+      eventList: [
+        {
+          title: '첫 번째 이벤트 1️⃣',
+          id: 'testing',
+        },
+        {
+          title: '두 번째 이벤트 🙌',
+          id: 'testing',
+        },
+        {
+          title: '세 번째 이벤트 🧡',
+          id: 'testing',
+        },
+      ],
+      noticeList: [
+        {
+          title: "나의 경험을 가치로 만드세요 1",
+          description: '일터의 노하우 공유하고, 인정받는 경험!',
+          id: 'testing',
+        },
+        {
+          title: "나의 경험을 가치로 만드세요 2",
+          description: '일터의 노하우 공유하고, 인정받는 경험!',
+          id: 'testing',
+        },
+        {
+          title: "나의 경험을 가치로 만드세요 3",
+          description: '일터의 노하우 공유하고, 인정받는 경험!',
+          id: 'testing',
+        },
+      ]
     }
   },
   created() {
     this.checkOnboard();
     this.checkLogin();
-
     this.changeTab(1);
   },
   methods: {
@@ -95,7 +128,7 @@ export default defineComponent({
       if (this.userId) {
         return
       } else {
-        this.$router.push('/login');
+        // this.$router.push('/login');
       }
     },
     checkLogin() {

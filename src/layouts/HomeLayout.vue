@@ -1,5 +1,5 @@
 <script>
-import TopBarMain from "components/common/HomeTopBar.vue";
+import TopBarMain from "components/app-bar/HomeTopBar.vue";
 
 export default {
   name: 'home-layout',

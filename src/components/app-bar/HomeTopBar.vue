@@ -1,7 +1,7 @@
 <template>
   <div class="main-top-bar-wrap">
-    <img src="../../assets/brand/ga-logo.svg">
-    <button></button>
+    <img class="home-top-bar-logo" src="../../assets/brand/ga-logo.svg">
+    <q-btn flat round color="black" style="font-size: 1rem" icon="menu" />
   </div>
 </template>
 <style>
@@ -11,5 +11,11 @@
   padding: 0.5rem 0.5625rem 0.5rem 1rem;
   justify-content: space-between;
   align-items: center;
+}
+
+.home-top-bar-logo {
+  width: 3.875rem;
+  height: 2rem;
+  flex-shrink: 0;
 }
 </style>

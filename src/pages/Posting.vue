@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import TopBarSub from "components/common/TopBarSub.vue";
+import TopBarSub from "components/app-bar/TopBarSub.vue";
 
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';

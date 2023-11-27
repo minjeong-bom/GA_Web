@@ -1,3 +1,8 @@
+.l-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .error-msg {
   color: #FD384E;
   line-height: 2;
@@ -11,4 +16,10 @@
   margin-block-end: 0;
   font-size: 20px;
   font-weight: bold;
+}
+
+:root {
+  --grays-gray-2: #AEAEB2;
+  --fills-quartternary: rgba(116, 116, 128, 0.08);
+  --grays-gray-7: #FCFCFF;
 }

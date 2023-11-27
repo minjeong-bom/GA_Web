@@ -1,5 +1,5 @@
 <script>
-import TopBarSub from "components/common/TopBarSub.vue";
+import TopBarSub from "components/app-bar/TopBarSub.vue";
 
 export default {
   name: "MYP3100",

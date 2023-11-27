@@ -1,4 +1,5 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 html {
   font-size: 16px;
@@ -101,13 +102,18 @@ h1, h2, h3, h4, h5, h6, p {
   line-height: normal;
 }
 
-.caption-3 {
-  color: #48464C;
-  text-align: right;
+.card-headline-1 {
+  color: #000;
+
+  font-family: Pretendard;
   font-size: 0.875rem;
   font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  font-weight: 700;
+  line-height: 1.25rem; /* 142.857% */
+}
+
+.card-headline-1 .high-light {
+  color: #FD384E;
 }
 
 .lable-1 {

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import TopBarSub from "components/common/TopBarSub.vue";
+import TopBarSub from "components/app-bar/TopBarSub.vue";
 import AskCard from "components/card/AskCard.vue";
 export default {
   data() {

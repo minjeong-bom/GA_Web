@@ -1,8 +1,5 @@
 <template>
   <div>
-    <top-bar :title="''" :back="true">
-    </top-bar>
-
     <div class="article-wrap">
       <!-- 글정보 -->
       <div class="flex article-info">

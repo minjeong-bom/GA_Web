@@ -1,11 +1,5 @@
 <template>
   <div>
-    <top-bar
-      :title="'새글 작성'"
-      :buttonStyle="'text'"
-      :buttonText="'등록'"
-      @buttonEvent="save">
-    </top-bar>
     <div class="content-wrap">
       <section v-show="errorText.title || errorText.content">
         <p class="error-msg" v-show="errorText.title"><i class="fa-solid fa-check"></i> 제목을 입력해 주세요</p>
@@ -27,13 +21,12 @@
           {{ content }}
         </p>
       </section>
+      <q-btn flat @click="save">저장하기</q-btn>
     </div>
   </div>
 </template>
 
 <script>
-import TopBarSub from "components/app-bar/TopBarSub.vue";
-
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import "quill/dist/quill.core.css";
@@ -42,7 +35,6 @@ import "quill/dist/quill.bubble.css";
 export default {
   components: {
     QuillEditor,
-    'top-bar': TopBarSub,
   },
   data() {
     return {
@@ -67,6 +59,19 @@ export default {
       if (this.content === "") {
         this.errorText.content = true;
       }
+
+      this.$api.post('/api/crud/create', {
+        "data_prefix" : "bc",
+        "data_status" : "on",
+        "bc_title"     : this.title,
+        "bc_content"     : this.content,
+        "bc_writer_name"     : '민정_개발자',
+      },
+        {
+          headers: {
+            'SPRINT-API-KEY': 'sprinttest',
+          }
+        })
     },
     clearTitleFilde() {
       this.title = '';

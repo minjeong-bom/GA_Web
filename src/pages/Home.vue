@@ -7,7 +7,7 @@
       <notice-card :notice-card="noticeList"></notice-card>
       <!-- Article Cards -->
       <div>
-        <!-- Article Ca -->
+        <!-- Article Card -->
         <tab :tabs="tabList" @changeTab="changeTab"></tab>
         <!-- 테스트 -->
         <div v-for="item in articleList">
@@ -42,6 +42,7 @@
 <script>
 import {defineComponent} from 'vue'
 import {useRouter} from "vue-router";
+
 const router = useRouter();
 import ArticleCard from "components/card/ArticleCard.vue";
 import Tab from "components/tab/Tab.vue";
@@ -125,6 +126,9 @@ export default defineComponent({
     this.checkLogin();
     this.changeTab(1);
   },
+  mounted() {
+    this.getArticleList();
+  },
   methods: {
     checkOnboard() {
       if (this.userId) {
@@ -150,6 +154,17 @@ export default defineComponent({
     linkToServiceComment() {
       this.$router.push('/service-comment/step1');
     },
+    getArticleList() {
+      this.$api.get('/api/crud/lists/1?order=bc_count', {
+        params: {
+          scopes: 'bc_key',
+          prefix: 'bc',
+        },
+        headers: {
+          'SPRINT-API-KEY': 'sprinttest',
+        }
+      })
+    }
   },
   computed: {
     userId() {

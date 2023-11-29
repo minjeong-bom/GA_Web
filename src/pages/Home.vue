@@ -1,31 +1,35 @@
 <template>
   <q-page class="home">
-    <!-- 이벤트 베너 -->
-    <event-card :event-list="eventList"></event-card>
-    <!-- 공지사항 베너 -->
-    <notice-card :notice-card="noticeList"></notice-card>
-    <!-- 아티클 카드 -->
     <section>
-      <!-- 탭 -->
-      <tab :tabs="tabList" @changeTab="changeTab"></tab>
-      <!-- 테스트 -->
-      <div v-for="item in articleList">
-        <article-card
-          :title="item.title"
-          :article-thumb="item.articleThumb"
-          :article-type="item.articleType"
-          :writer="item.writer"
-          :badge-title="item.badgeTitle"
-          :created-at="item.createdAt"
-          :description="item.description"
-          :writer-thumb="item.writerThumb"
-          :motivation="item.motivation"
-          :view-count="item.viewCount"
-        >
-        </article-card>
+      <!-- Event Cards -->
+      <event-card :event-list="eventList"></event-card>
+      <!-- Notice Cards -->
+      <notice-card :notice-card="noticeList"></notice-card>
+      <!-- Article Cards -->
+      <div>
+        <!-- Article Ca -->
+        <tab :tabs="tabList" @changeTab="changeTab"></tab>
+        <!-- 테스트 -->
+        <div v-for="item in articleList">
+          <article-card
+            :title="item.title"
+            :article-thumb="item.articleThumb"
+            :article-type="item.articleType"
+            :writer="item.writer"
+            :badge-title="item.badgeTitle"
+            :created-at="item.createdAt"
+            :description="item.description"
+            :writer-thumb="item.writerThumb"
+            :motivation="item.motivation"
+            :view-count="item.viewCount"
+          >
+          </article-card>
+        </div>
       </div>
-      <button class="btn-learn-more">더 보기</button>
     </section>
+
+    <!-- 아티클 더보기 -->
+    <button class="btn-learn-more">더 보기</button>
     <!-- 피드백 -->
     <section class="feed-back-section">
       <img class="sun-animation" src="../assets/graphic/sun-animation.gif">
@@ -38,9 +42,7 @@
 <script>
 import {defineComponent} from 'vue'
 import {useRouter} from "vue-router";
-
 const router = useRouter();
-
 import ArticleCard from "components/card/ArticleCard.vue";
 import Tab from "components/tab/Tab.vue";
 import EventCard from "components/card/EventCard.vue";
@@ -162,8 +164,12 @@ export default defineComponent({
 
 <style scoped>
 .home {
-  padding: 20px;
+  //padding: 20px;
   background: linear-gradient(180deg, #FFF 14.1%, #F4F4F4 73.82%);
+}
+
+.home section {
+  padding: 20px;
 }
 
 .tab {

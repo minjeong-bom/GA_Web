@@ -12,16 +12,17 @@
         <!-- 테스트 -->
         <div v-for="item in articleList">
           <article-card
-            :title="item.title"
+            :title="item.bc_title"
             :article-thumb="item.articleThumb"
-            :article-type="item.articleType"
-            :writer="item.writer"
+            :article-type="item.bc_foreign_key"
+            :article-type2="item.bc_foreign_key2"
+            :writer="item.bc_writer_name"
             :badge-title="item.badgeTitle"
-            :created-at="item.createdAt"
-            :description="item.description"
+            :created-at="item.bc_regdate"
             :writer-thumb="item.writerThumb"
             :motivation="item.motivation"
-            :view-count="item.viewCount"
+            :view-count="item.bc_count"
+            @click="goToArticle(item.bc_key)"
           >
           </article-card>
         </div>
@@ -77,17 +78,7 @@ export default defineComponent({
           title: '지애픽'
         },
       ],
-      articleList: [
-        {
-          title: 'Mockup Text',
-          articleThumb: '',
-          articleType: '추천글',
-          writer: '관리자',
-          badgeTitle: 'OO전문가',
-          createdAt: '1시간 전',
-          description: '하위분류',
-        }
-      ],
+      articleList: [],
       eventList: [
         {
           title: '첫 번째 이벤트 1️⃣',
@@ -130,6 +121,9 @@ export default defineComponent({
     this.getArticleList();
   },
   methods: {
+	  goToArticle(articleId) {
+		  this.$router.push({ path: '/article', query: { key: articleId } });
+	  },
     checkOnboard() {
       if (this.userId) {
         return
@@ -154,16 +148,23 @@ export default defineComponent({
     linkToServiceComment() {
       this.$router.push('/service-comment/step1');
     },
-    getArticleList() {
-      this.$api.get('/api/crud/lists/1?order=bc_count', {
-        params: {
-          scopes: 'bc_key',
-          prefix: 'bc',
-        },
-        headers: {
-          'SPRINT-API-KEY': 'sprinttest',
+    async getArticleList() {
+	    const res = await this.$api.post('/api/crud/lists/',
+	      {
+		      "alias": "bc",
+		      "prefix": "bc",
+		      "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key",
+		      "limit" : 100
+	      },
+        {
+          headers: {
+            'SPRINT-API-KEY': 'sprinttest',
+          },
         }
-      })
+      )
+
+	    this.articleList = res.data.response.lists;
+			console.log(this.articleList)
     }
   },
   computed: {

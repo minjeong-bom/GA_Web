@@ -1,236 +1,105 @@
 <template>
-  <div>
-    <div class="content-wrap">
-      <section v-show="errorText.title || errorText.content">
-        <p class="error-msg" v-show="errorText.title"><i class="fa-solid fa-check"></i> 제목을 입력해 주세요</p>
-        <p class="error-msg" v-show="errorText.content"><i class="fa-solid fa-check"></i> 본문을 입력해 주세요</p>
-      </section>
-      <section>
-        <span class="lable-text">제목</span>
-        <div class="title-input-wrap">
-          <input class="title-input" v-model="title" placeholder="제목">
-          <div class="clear-button-wrap" v-show="title" @click="clearTitleFilde">
-            <i class="fa-solid fa-circle-xmark"></i>
-          </div>
-        </div>
-      </section>
-      <section>
-        <span class="lable-text">본문</span>
-        <QuillEditor theme="snow" :toolbar="toolbar" contentType="html" v-model:content="content"/>
-        <p>
-          {{ content }}
-        </p>
-      </section>
-      <q-btn flat @click="save">저장하기</q-btn>
-    </div>
-  </div>
+	<div class="posting-view">
+		<TextButtonTopBar :button-name="'등록'" :title-text="'새글 작성'" @action="save"></TextButtonTopBar>
+		<div class="editor-surface">
+			<!-- 카테고리 -->
+			<q-select
+				v-model="category1"
+				:options="options"
+				input-style="font-family: Pretendard;	font-size: 1rem;	font-style: normal;	font-weight: 600;	line-height: normal;	letter-spacing: -0.01875rem;"/>
+			<!-- 제목 -->
+			<q-input
+				v-model="title"
+				placeholder="제목 (최대 40자)"
+				maxlength="40"
+				input-style="	font-family: Pretendard;	font-size: 1rem;	font-style: normal;	font-weight: 600;	line-height: normal;	letter-spacing: -0.01875rem;"></q-input>
+			<!-- 내용 -->
+			<div style="min-height: 18.25rem;">
+				<q-input
+					v-model="content"
+					placeholder="내용을 입력하세요."
+					autogrow
+					input-style="	font-family: Pretendard;	font-size: 1rem;	font-style: normal;	font-weight: 600;	line-height: normal;	letter-spacing: -0.01875rem;"
+				/>
+			</div>
+
+			<!-- 태그 입력 -->
+			<q-input
+				v-model="tags"
+				borderless
+				placeholder="태그 입력"
+				maxlength="40"
+				input-style="	font-family: Pretendard;	font-size: 1rem;	font-style: normal;	font-weight: 600;	line-height: normal;	letter-spacing: -0.01875rem;"></q-input>
+		</div>
+	</div>
 </template>
 
 <script>
-import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.bubble.css";
+import {ref} from 'vue';
+import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
+import CKEditor from '@ckeditor/ckeditor5-vue';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export default {
-  components: {
-    QuillEditor,
-  },
-  data() {
-    return {
-      content: '',
-      title: '',
-      file: '',
-      errorText: {
-        title: false,
-        content: false,
-      }
-    }
-  },
-  mounted() {
+	components: {
+		TextButtonTopBar,
+	},
+	data() {
+		return {
+			category1: '스토리',
+			options: ['스토리', '취업스킬'],
+			content: '',
+			title: '',
+			file: '',
+			tags: '',
+			errorText: {
+				title: false,
+				content: false,
+			},
+			dense: ref(false),
+			categoryList: [],
+		}
+	},
+	methods: {
+		save() {
 
-  },
-  methods: {
-    save() {
-      // 벨리데이션 체크
-      if (this.title === '') {
-        this.errorText.title = true;
+      let data = "";
+			if (this.category1 === "스토리") {
+        data = {
+          data_prefix: 'bc',
+          data_title: this.title,
+          data_foreign_key: 'DPORHCPV', // 카테고리 (스토리)
+          data_foreign_key2: 'SNXKQEZS', // 테이블
+          data_content: this.content,
+        }
+			} else {
+        data = {
+          data_prefix: 'bc',
+          data_title: this.title,
+          data_foreign_key: 'KWUOXKGM', // 카테고리 (취업스킬)
+          data_foreign_key2: 'SNXKQEZS', // 테이블
+          data_content: this.content,
+        }
       }
-      if (this.content === "") {
-        this.errorText.content = true;
-      }
-
-      this.$api.post('/api/crud/create', {
-        "data_prefix" : "bc",
-        "data_status" : "on",
-        "bc_title"     : this.title,
-        "bc_content"     : this.content,
-        "bc_writer_name"     : '민정_개발자',
-      },
-        {
-          headers: {
-            'SPRINT-API-KEY': 'sprinttest',
-          }
-        })
-    },
-    clearTitleFilde() {
-      this.title = '';
-    }
-  },
-  computed: {
-    toolbar() {
-      return [
-        ['bold', 'underline', 'blockquote', {'header': 1}, {'header': 2}, {'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}, {'align': []}, 'image'],        // toggled buttons
-      ];
-    },
-  },
+			console.log(data)
+		},
+	},
 }
 </script>
 
 <style scoped>
-.editor-area {
-  padding: 0 24px;
+.posting-view {
+	background: #F4F4F4;
 }
 
-.error-msg {
-  color: #FD384E;
-  line-height: 1.2;
-  margin-block-end: 0;
+.editor-surface {
+	display: flex;
+	height: 28.4375rem;
+	padding: 0rem 1rem;
+	flex-direction: column;
+	gap: 0.3125rem;
+	background: #fff;
+	margin-top: 10px;
 }
 
-.title-input {
-  padding: 12px;
-  border-radius: 12px;
-  border: 0px solid;
-  background: #E6E5E8;
-  font-size: 16px;
-  border: 1px solid #fff;
-  font-weight: bold;
-
-  transition: all 0.3s;
-}
-
-.title-input:focus {
-  border-radius: 0;
-  background: transparent;
-  border-bottom: 1px solid #00b8d4;
-  outline: none;
-}
-
-.content-html h1 {
-  margin-block-start: 0;
-  margin-block-end: 0;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: red;
-}
-
-lable {
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-}
-
-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.content-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 30px 24px;
-}
-</style>
-
-<style>
-.ql-container {
-  border: 1px solid #fff !important;
-  border-radius: 12px !important;
-  height: 500px !important;
-  background: #E6E5E8;
-}
-
-.ios-keyboard .ql-toolbar.ql-snow {
-  z-index: 2;
-  position: sticky;
-  top: calc(env(safe-area-inset-top) + 61px);
-  background-color: red !important;
-  border: 0;
-}
-
-.ql-toolbar.ql-snow {
-  z-index: 2;
-  position: sticky;
-  top: calc(env(safe-area-inset-top) + 61px);
-  background-color: #fff !important;
-  border: 0;
-}
-
-.ql-container h1 {
-  font-weight: bold;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  line-height: 2;
-  font-size: 1.4rem;
-}
-
-.ql-container h2 {
-  font-weight: bold;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  line-height: 2;
-  font-size: 1.2rem;
-  color: #00b8d4;
-}
-
-.ql-container ol {
-  padding-left: 0;
-  font-size: 1.2rem;
-}
-
-.ql-container ul {
-  font-size: 1.2rem;
-}
-
-.ql-container p {
-  line-height: 2;
-  font-size: 1.2rem;
-}
-
-.lable-text {
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-}
-
-.focus-title {
-  background: #fff;
-  color: black;
-}
-
-.title-input-wrap {
-  position: relative;
-}
-
-.title-input {
-  width: 100%;
-}
-
-.clear-button-wrap {
-  position: absolute;
-  right: 0;
-  top: 0;
-  display: flex;
-  width: 54px;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 20px;
-  opacity: 0.3;
-}
 </style>

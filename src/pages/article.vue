@@ -1,302 +1,310 @@
 <template>
-  <div>
-    <div class="article-wrap">
-      <!-- 글정보 -->
-      <div class="flex article-info">
-        <!-- 사진, 작성자, 글 구분, 뱃지, 업데이트 시간 -->
-        <div class="article-info-inner-wrap">
-          <div class="user-thumbnail-wrap">
-            <img class="user-thumbnail" :src="articleList.writerThumb">
-          </div>
-          <div>
-            <!-- 사용자 이름, 글 타입 -->
-            <span class="writer writer-1">{{ articleList.writer }}님이 </span>
-            <span class="writer writer-2">{{ articleList.articleType }}</span>
-            <span class="writer writer-1">을 올렸어요</span><br>
-            <!-- 사용자 뱃지 -->
-            <span class="badge">
-            <i class="fa-solid fa-user-check"></i>
-            {{ articleList.badgeTitle }}
-          </span>
-            <span class="part"> | </span>
-            <!-- 작성일 -->
-            <span class="created-at">{{ articleList.createdAt }}</span>
-          </div>
-        </div>
-        <!-- 더보기 버튼 -->
-        <div class="article-controller">
-          <button>
-            <i class="fa-solid fa-ellipsis-vertical"></i>
-          </button>
-        </div>
-      </div>
-      <!-- 제목 -->
-      <div class="title-wrap">
-        <h1>{{ articleList.title }}</h1>
-        <p>{{ articleList.description }}</p>
-        <p>{{ articleList.createdAtTime }}</p>
-      </div>
-      <!-- 썸네일 -->
-      <div class="article-thumbnail-wrap">
-        <img class="article-thumbnail" :src="articleList.articleThumb">
-      </div>
-      <div class="article-thumb-caption-wrap">
-        <p class="article-thumb-caption">{{ articleList.articleCaption }}</p>
-      </div>
-      <!-- 본문 -->
-      <p class="article-content">
-        {{ articleList.article }}
-      </p>
-      <!-- Tag -->
-      <div class="tag-wrap">
-        <span class="tag" v-for="item in articleList.tags"># {{ item }}</span>
-      </div>
-    </div>
+	<div class="article-layout">
+		<!-- user profile -->
+		<div class="user-profile-wrap">
+			<article-id style="width: 100%" :article-type="articleType" :article-type2="articleType2" :view-count="viewCount"
+			            :writer="writer"/>
+		</div>
+		<div class="headline-wrap">
+			<!-- headline -->
+			<h1 class="article-card-headline">가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자최대 42자</h1>
+			<!-- created at -->
+			<p class="article-created-at-text">2023년 8월 12일 00시 00분</p>
+		</div>
 
-    <!-- 북마크 & 공유하기 -->
-    <section class="control-box">
-      <button><i class="fa-regular fa-bookmark"></i>북마크</button>
-      <button><i class="fa-solid fa-share-nodes"></i>공유하기</button>
-    </section>
-
-    <!-- 반응 영역 -->
-    <section class="motivation-wrap">
-      <div class="total-count">
-        <span class="lable">공감</span>
-        <span class="value">{{ articleList.motivation }}</span>
-        <span class="lable">∙</span>
-        <span class="lable">댓글</span>
-        <span class="value">{{ articleList.commentTotal }}</span>
-      </div>
-    </section>
-  </div>
+		<!-- control area -->
+		<div class="article-overview-wrap">
+			<!-- likes & comment -->
+			<div class="article-overview">
+				<span class="lable">공감</span>
+				<span class="value">10</span>
+				<span>∙</span>
+				<span class="lable">댓글</span>
+				<span class="value">10</span>
+			</div>
+			<div>
+				<section>
+					<q-btn flat round icon="text_fields" style="opacity: 0.3"/>
+					<q-btn flat round icon="bookmark" style="opacity: 0.3"/>
+					<q-btn flat round icon="share" style="opacity: 0.3"/>
+				</section>
+			</div>
+		</div>
+		<!-- 본문 -->
+		<section class="article-content">
+			<skeleton-line :lines="4"></skeleton-line>
+			<p>
+				...
+			</p>
+		</section>
+		<!-- article controller -->
+		<section class="article-end-control-wrap">
+			<q-btn flat icon="text_fields" style="opacity: 0.3"/>
+			<q-btn flat icon="bookmark" style="opacity: 0.3"/>
+			<q-btn flat icon="share" style="opacity: 0.3"/>
+		</section>
+		<div class="end-line">
+			<div></div>
+		</div>
+		<div class="article-likes">
+			<div class="article-overview">
+				<span class="lable">공감</span>
+				<span class="value">10</span>
+				<span>∙</span>
+				<span class="lable">댓글</span>
+				<span class="value">10</span>
+			</div>
+			<div class="likes-list-area">
+				<!-- Add Like -->
+				<q-btn size="14px" flat round style="background: #FD384E">
+					<q-icon name="add" color="white"/>
+				</q-btn>
+				<!-- Like List -->
+				<section class="liker-slide">
+					<q-avatar size="40px">
+						<img src="https://cdn.quasar.dev/img/avatar.png">
+						<img class="imoji" src="../assets/brand/imoji-smile.png">
+					</q-avatar>
+					<q-avatar size="40px">
+						<img src="https://cdn.quasar.dev/img/avatar.png">
+						<img class="imoji" src="../assets/brand/imoji-smile.png">
+					</q-avatar>
+					<q-avatar size="40px">
+						<img src="https://cdn.quasar.dev/img/avatar.png">
+						<img class="imoji" src="../assets/brand/imoji-smile.png">
+					</q-avatar>
+					<q-avatar size="40px">
+						<img src="https://cdn.quasar.dev/img/avatar.png">
+						<img class="imoji" src="../assets/brand/imoji-smile.png">
+					</q-avatar>
+					<q-avatar size="40px">
+						<img src="https://cdn.quasar.dev/img/avatar.png">
+						<img class="imoji" src="../assets/brand/imoji-smile.png">
+					</q-avatar>
+					<q-avatar size="40px">
+						<img src="https://cdn.quasar.dev/img/avatar.png">
+						<img class="imoji" src="../assets/brand/imoji-smile.png">
+					</q-avatar>
+				</section>
+				<!-- PageNation -->
+				<q-btn flat round>
+					<q-icon name="navigate_next" style="opacity: 0.4;"/>
+				</q-btn>
+			</div>
+		</div>
+		<!-- comment input -->
+		<div class="comment-input-area">
+			<!-- profile image -->
+			<q-avatar size="56px">
+				<img src="https://cdn.quasar.dev/img/avatar.png">
+			</q-avatar>
+			<!-- text input -->
+			<q-input rounded outlined v-model="addComment" :placeholder="commentInputPlaceholder" style="width: 100%;">
+				<template v-slot:append @click="sendComment">
+					<q-icon size="24px" name="arrow_circle_up"/>
+				</template>
+			</q-input>
+		</div>
+		<!-- comment list -->
+		<div class="comment">
+			<comment-id :writer="''" :user-position="''" :created-at="''" />
+			<section class="comment-text">성별은 관계가 없게죠? 경기도는 지역을 어떻게 구분하나요? 가나다라마바사아자차카타파하가나다라마바사아자차카타파하</section>
+		</div>
+	</div>
 </template>
 
 <script>
-import TopBarSub from "components/app-bar/TopBarSub.vue";
+import ArticleId from "components/card/ArticleId.vue";
+import CommentId from "components/comment/commentId.vue";
+import SkeletonLine from "components/loading/SkeletonLine.vue";
 
 export default {
-  components: {
-    'top-bar': TopBarSub
-  },
-  data() {
-    return {
-      articleList: {
-        id: "articleId",
-        title: "중장년 취업 고민 #1: 경력 미달",
-        articleType: "스토리",
-        writer: "원준",
-        badgeTitle: "취업_전문가",
-        createdAt: "1시간전",
-        description: "저의 고민은 경력 부족입니다. 젊은 지원자들과 어떻게 경쟁할 수 있을까요?",
-        writerThumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3276&q=80",
-        articleThumb: "https://images.unsplash.com/photo-1694901555616-d7b2b33e6406?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4016&q=80",
-        motivation: "999",
-        viewCount: "999",
+	components: {SkeletonLine, CommentId, ArticleId},
+	data() {
+		return {
+			article: [],
+			comments: [],
+			addComment: "",
+		}
+	},
+	mounted() {
+		this.getArticle();
+	},
+	methods: {
+		sendComment(){
 
-        articleCaption: "2022 한국리틀 야구단 올스타전",
-        createdAtTime: "2023년 08월 01일 10:15:30",
-        article: "안녕하세요. \n" +
-          "함께 할 수 있는 분들을 찾고자 글 올려요.\n" +
-          "설립 취지를 말씀드릴게요.\n" +
-          "1980년대 야구에 대한 관심이 높아지면서\n" +
-          "지역별 어린이 야구단이 생겼어요. \n" +
-          "\n" +
-          "함께 할 수 있는 분들을 찾고자 글 올려요.\n" +
-          "설립 취지를 말씀드릴게요.1980년대 야구에 대한 관심이 높아지면서 지역별 어린이 야구단이 생겼어요. 함께 할 수 있는 분들을 찾고자 글 올려요.\n" +
-          "설립 취지를 말씀드릴게요.1980년대 야구에 대한 관심이 높아지면서 지역별 어린이 야구단이 생겼어요.  ",
-        tags: [
-          "태그1", "태그2", "태그3"
-        ],
-        commentTotal: "12",
-      },
-    }
-  },
-  methods : {
-  }
+		},
+		async getArticle() {
+			const articleId = this.$route.query.key;
+
+			const config = {
+				url: '/api/crud/single/' + articleId,
+				data: {
+					'alias': 'bc',
+					'prefix': 'bc'
+				}
+			}
+			const res = this.$api.post(config.url, config.data, {
+				headers: {
+					'SPRINT-API-KEY': 'sprinttest',
+				}
+			})
+
+			console.log(res)
+		}
+	},
+	computed: {
+		commentInputPlaceholder() {
+			if (this.comments === []) {
+				return "첫 댓글을 남겨보세요"
+			} else {
+				return "댓글을 남겨보세요"
+			}
+		}
+	}
 }
 </script>
 
 <style scoped>
-.article-wrap {
-  padding: 20px;
-}
-.user-thumbnail-wrap {
-  margin-right: 4px;
-  width: 42px;
-  height: 42px;
-  border-radius: 100px;
-  overflow: hidden;
-  border: 1px solid #dadada;
-}
-.user-thumbnail {
-  display: flex;
-  width: 100%;
-  height: auto;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
+.headline-wrap {
+	display: flex;
+	padding: 1rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.375rem;
 }
 
-.writer {
-  font-size: 1.02rem;
-  font-style: normal;
-  font-weight: 700;
-}
-.writer-2 {
-  color: #FD384E;
-}
-
-.badge {
-  color: #938F96;
-  font-size: 0.9rem;
-  font-style: normal;
-  font-weight: 700;
+.article-created-at-text {
+	color: #999;
+	font-family: Pretendard;
+	font-size: 0.75rem;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 1.25rem; /* 166.667% */
 }
 
-.badge i {
-  color: #9747FF;
-  margin-right: 4px;
+.user-profile-wrap {
+	display: flex;
+	padding: 1rem 1rem 0rem 1rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.625rem;
 }
 
-.part {
-  color: #938F96;
-  font-size: 0.9rem;
-  font-style: normal;
-  font-weight: 700;
-
-  opacity: 0.5;
+.article-overview-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.created-at {
-  color: #938F96;
-  font-size: 0.9rem;
-  font-style: normal;
-  font-weight: 700;
+.article-overview-wrap > div {
+	padding: 0.6875rem 1rem;
 }
 
-.article-info {
-  display: flex;
-  justify-content: space-between;
-  //margin-bottom: 10px;
+.article-overview {
+	display: flex;
+	align-items: center;
+	gap: 0.1875rem;
 }
 
-.article-info-inner-wrap {
-  display: flex;
+.article-overview .value {
+	color: var(--ga-red);
+	font-family: Spoqa Han Sans Neo, "sans-serif";
+	font-size: 0.75rem;
+	font-style: normal;
+	font-weight: 500;
 }
 
-.article-controller {
-  //width: 24px;
-  color: #CAC5CD;
-}
-
-.article-controller button {
-  border: none;
-  background-color: transparent;
-  font-size: 24px;
-}
-
-.article-thumbnail-wrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-
-  max-width: 100%;
-  max-height: 500px;
-  height: auto;
-  overflow: hidden;
-}
-
-.article-thumbnail-wrap img {
-  width: 100%;
-}
-
-.article-thumb-caption {
-  text-align: center;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 25px;
-  color: #00000099;
-}
-
-.article-thumb-caption-wrap {
-  padding: 6px 24px;
-  display: flex;
-  justify-content: center;
-}
-
-h1 {
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 28px; /* 116.667% */
-  margin-block-end: 6px;
-}
-
-p {
-  display: block;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-}
-
-.title-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding-top: 16px;
-  padding-bottom: 10px;
+.article-overview .lable {
+	color: #999;
+	font-family: Spoqa Han Sans Neo, "sans-serif";
+	font-size: 0.75rem;
+	font-style: normal;
+	font-weight: 500;
 }
 
 .article-content {
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 25px; /* 156.25% */
+	display: flex;
+	padding: 0rem 1rem 1.25rem 1rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.625rem;
 }
 
-.tag-wrap {
-  display: inline-flex;
-  gap: 4px;
+.gray-button {
+	color: var(--grays-gray) !important;
 }
 
-.tag {
-  color: #9747FF;
-  font-size: 14px;
+.article-end-control-wrap {
+	display: flex;
+	width: 24.5625rem;
+	padding: 0rem 0rem 0.625rem 1rem;
+	align-items: center;
+	gap: 1.125rem;
 }
 
-.control-box {
-  display: flex;
-  margin-top: 20px;
+.article-likes {
+	display: flex;
+	width: 24.5625rem;
+	padding: 0.625rem 1.5rem 1.25rem 1rem;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 0.625rem;
 }
 
-.control-box button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 50%;
-  height: 44px;
-
-  border: none;
-  border-radius: 0;
-  gap: 4px;
+.likes-list-area {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
 }
 
-.motivation-wrap {
-  padding: 20px;
+.imoji {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 24px !important;
+	height: 24px !important;
 }
 
-.total-count {
-  display: flex;
-  gap: 4px;
+.liker-slide {
+	display: flex;
+	align-items: center;
+	gap: 5px;
 }
 
-.value {
-  color: #FD384E;
+.comment-input-area {
+	display: flex;
+	padding: 10px 16px;
+	align-items: center;
+	gap: 10px;
+}
+
+.comment-input {
+	display: flex;
+	padding: 8px 12px;
+	align-items: center;
+	gap: 16px;
+	flex: 1 0 0;
+}
+
+.comment {
+	display: flex;
+	padding: 10px 16px 0px 16px;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.comment-text {
+	border-radius: 20px;
+	background: var(--fills-quartternary);
+	padding: 16px;
+
+	color: #000;
+	font-family: Pretendard;
+	font-size: 1.0625rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1.4375rem; /* 135.294% */
 }
 </style>

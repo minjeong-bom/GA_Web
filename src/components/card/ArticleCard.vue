@@ -2,35 +2,11 @@
   <div>
     <div class="card">
       <!-- Card Id -->
-      <div class="card-id-wrap">
-        <!-- User Profile Image -->
-        <div class="profile-wrap"></div>
-        <!-- Creater & Created Time -->
-        <div class="l-column" style="width: 100%">
-          <!-- 00님이 000을 올렸어요 (하위메뉴) -->
-          <div class="created-user-and-lable">
-            <div class="created-user-info-wrap card-headline-1">
-              <span>원준님이</span><span><span class="high-light">추천글</span>을 올렸어요</span>
-              <div class="cartegory2-lable">
-                <span>하위메뉴</span>
-              </div>
-            </div>
-          </div>
-          <!-- Badge + User Role Caption | Created Time -->
-          <div class="user-badge-created-time-wrap">
-            <img class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>
-            <span class="card-caption-1">OO 전문가</span>
-            <span class="card-caption-2">|</span>
-            <span class="card-caption-1">3분전 작성</span>
-          </div>
-        </div>
-        <!-- More Button -->
-        <q-btn flat round icon="more_vert" />
-      </div>
+      <article-id :article-type="articleType" :article-type2="articleType2" :view-count="viewCount" :writer="writer"/>
       <!-- Thumbnail & Title -->
       <div class="article-card-thumbnail">
         <div class="article-card-headline-wrap">
-          <h4 class="article-card-headline">가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사최대 40자</h4>
+          <h4 class="article-card-headline">{{ titleText42 }}</h4>
         </div>
       </div>
       <!-- Likes & Comment -->
@@ -41,7 +17,7 @@
         </section>
         <section>
           <span>조회</span>
-          <span>999</span>
+          <span>{{ viewCount }}</span>
         </section>
       </div>
     </div>
@@ -49,10 +25,14 @@
 </template>
 
 <script>
+import ArticleId from "components/card/ArticleId.vue";
+
 export default {
+  components: {ArticleId},
   props: {
     title: String,
     articleType: String,
+    articleType2: String,
     writer: String,
     badgeTitle: String,
     createdAt: String,
@@ -67,63 +47,22 @@ export default {
       this.$router.push('article');
       // $route.query.name
     },
-  }
+  },
+	computed: {
+		titleText42 () {
+			if (this.title.length > 42) {
+				return this.title.substring(0, 42);
+			} else {
+				return this.title;
+			}
+		}
+	}
 }
 </script>
 
 <style scoped>
 .card {
   padding-bottom: 0.38rem;
-}
-
-.card-id-wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.1875rem;
-  margin-bottom: 0.5rem;
-}
-
-.profile-wrap {
-  width: 3rem;
-  height: 3rem;
-  flex-shrink: 0;
-  background-image: url("../../assets/graphic/user-profile-thumb-sample.jpeg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  border-radius: 30px;
-}
-
-.created-user-and-lable {
-  gap: 0.625rem;
-}
-
-.created-user-info-wrap>span {
-  margin-right: 0.1875rem;
-}
-
-.cartegory2-lable {
-  display: inline-block;
-  padding: 0.0625rem 0.25rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
-
-  border-radius: 0.25rem;
-  border: 0.33px solid var(--fills-quartternary);
-  background: var(--grays-gray-7);
-}
-
-.cartegory2-lable span {
-  color: var(--grays-gray-2);
-  font-size: 0.75rem;
-}
-
-.user-badge-created-time-wrap {
-  display: inline-flex;
-  padding: 0.125rem 0rem;
-  align-items: center;
-  gap: 0.1875rem;
 }
 
 .article-card-thumbnail {
@@ -173,5 +112,4 @@ export default {
 .like-read-wrap section * {
   color: #999999;
 }
-
 </style>

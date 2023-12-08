@@ -2,7 +2,7 @@
 export default {
   name: "commentId",
   props: {
-    writer: String,
+    writerName: String,
 	  userPosition: String,
 	  createdAt: String,
   }
@@ -18,7 +18,7 @@ export default {
       <!-- 00님이 -->
       <div class="created-user-and-lable">
         <div class="created-user-info-wrap card-headline-1">
-          <span>{{ writer? writer : "익명" }}님</span>
+          <span>{{ writerName? writerName : "익명" }}님</span>
         </div>
       </div>
       <!-- Badge + User Role Caption | Created Time -->

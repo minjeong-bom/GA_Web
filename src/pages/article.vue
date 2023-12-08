@@ -2,8 +2,8 @@
 	<div class="article-layout">
 		<!-- user profile -->
 		<div class="user-profile-wrap">
-			<article-id style="width: 100%" :article-type="articleType" :article-type2="articleType2" :view-count="viewCount"
-			            :writer="writer"/>
+			<article-id style="width: 100%" :article-type="article.articleType" :article-type2="article.articleType2" :view-count="article.viewCount"
+			            :writerName="article.createrName"/>
 		</div>
 		<div class="headline-wrap">
 			<!-- headline -->
@@ -43,9 +43,11 @@
 			<q-btn flat icon="bookmark" style="opacity: 0.3"/>
 			<q-btn flat icon="share" style="opacity: 0.3"/>
 		</section>
+    <!-- end line -->
 		<div class="end-line">
 			<div></div>
 		</div>
+    <!-- control area -->
 		<div class="article-likes">
 			<div class="article-overview">
 				<span class="lable">공감</span>
@@ -99,15 +101,11 @@
 				<img src="https://cdn.quasar.dev/img/avatar.png">
 			</q-avatar>
 			<!-- text input -->
-			<q-input rounded outlined v-model="addComment" :placeholder="commentInputPlaceholder" style="width: 100%;">
-				<template v-slot:append @click="sendComment">
-					<q-icon size="24px" name="arrow_circle_up"/>
-				</template>
-			</q-input>
+			<q-input rounded outlined v-model="addComment" :placeholder="commentInputPlaceholder" style="width: 100%;"></q-input>
 		</div>
 		<!-- comment list -->
 		<div class="comment">
-			<comment-id :writer="''" :user-position="''" :created-at="''" />
+			<comment-id :writer="'민정'" :user-position="'디자이너'" :created-at="'2023-00-00 10:00'" />
 			<section class="comment-text">성별은 관계가 없게죠? 경기도는 지역을 어떻게 구분하나요? 가나다라마바사아자차카타파하가나다라마바사아자차카타파하</section>
 		</div>
 	</div>
@@ -122,40 +120,23 @@ export default {
 	components: {SkeletonLine, CommentId, ArticleId},
 	data() {
 		return {
-			article: [],
+			article: {
+				articleType: '',
+				articleType2: '',
+				viewCount: '',
+				createrName: '',
+			},
 			comments: [],
-			addComment: "",
+			addComment: '',
 		}
 	},
 	mounted() {
-		this.getArticle();
 	},
 	methods: {
-		sendComment(){
-
-		},
-		async getArticle() {
-			const articleId = this.$route.query.key;
-
-			const config = {
-				url: '/api/crud/single/' + articleId,
-				data: {
-					'alias': 'bc',
-					'prefix': 'bc'
-				}
-			}
-			const res = this.$api.post(config.url, config.data, {
-				headers: {
-					'SPRINT-API-KEY': 'sprinttest',
-				}
-			})
-
-			console.log(res)
-		}
 	},
 	computed: {
 		commentInputPlaceholder() {
-			if (this.comments === []) {
+			if (this.comments.length === 0) {
 				return "첫 댓글을 남겨보세요"
 			} else {
 				return "댓글을 남겨보세요"
@@ -217,7 +198,7 @@ export default {
 
 .article-overview .lable {
 	color: #999;
-	font-family: Spoqa Han Sans Neo, "sans-serif";
+	font-family: Pretendard;
 	font-size: 0.75rem;
 	font-style: normal;
 	font-weight: 500;
@@ -237,7 +218,6 @@ export default {
 
 .article-end-control-wrap {
 	display: flex;
-	width: 24.5625rem;
 	padding: 0rem 0rem 0.625rem 1rem;
 	align-items: center;
 	gap: 1.125rem;
@@ -245,7 +225,6 @@ export default {
 
 .article-likes {
 	display: flex;
-	width: 24.5625rem;
 	padding: 0.625rem 1.5rem 1.25rem 1rem;
 	flex-direction: column;
 	justify-content: center;

@@ -1,9 +1,7 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
-html {
-  font-size: 100%;
-}
+html {}
 
 * {
   font-family: Pretendard;

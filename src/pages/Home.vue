@@ -14,8 +14,8 @@
           <article-card
             :title="item.bc_title"
             :article-thumb="item.articleThumb"
-            :article-type="item.bc_foreign_key"
-            :article-type2="item.bc_foreign_key2"
+            :article-type="item.category_name"
+            :article-type2="item.category_name"
             :writer="item.bc_writer_name"
             :badge-title="item.badgeTitle"
             :created-at="item.bc_regdate"
@@ -118,7 +118,7 @@ export default defineComponent({
     this.changeTab(1);
   },
   mounted() {
-    this.getArticleList();
+    this.getArticleList('all');
   },
   methods: {
 	  goToArticle(articleId) {
@@ -145,34 +145,87 @@ export default defineComponent({
 
       }
     },
-    linkToServiceComment() {
-      this.$router.push('/service-comment/step1');
-    },
-    async getArticleList() {
-	    const res = await this.$api.post('/api/crud/lists/',
-	      {
-		      "alias": "bc",
-		      "prefix": "bc",
-		      "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key",
-		      "limit" : 100
-	      },
-        {
-          headers: {
-            'SPRINT-API-KEY': 'sprinttest',
+    async getArticleList(category) {
+      const commonConfig = {
+        url: '/api/crud/lists/',
+        data: {
+          "alias": "bc",
+          "prefix": "bc",
+          "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key",
+          "columns_opts": {
+            "bc_foreign_key2": "SNXKQEZS"
           },
+          "limit": 5
+        },
+        etc: {
+          headers : {
+            'SPRINT-API-KEY' : 'sprinttest',
+          }
         }
-      )
+      };
+      let config = { ...commonConfig };
 
-	    this.articleList = res.data.response.lists;
-			console.log(this.articleList)
+      // 카테고리 별 'bc_foreign_key' 설정
+      if (category === 'story') {
+        config.data.columns_opts.bc_foreign_key = "DPORHCPV"; // 스토리
+      } else if (category === 'skills') {
+        config.data.columns_opts.bc_foreign_key = "KWUOXKGM"; // 스킬
+      } else if (category === 'gapick') {
+        config.data.columns_opts.bc_foreign_key = "CEZTXGLJ"; // 스킬
+      }
+
+      // API 호출
+	    const res = await this.$api.post(config.url, config.data, config.etc);
+      let response = res.data.response.lists;
+
+      // 카테고리 이름 삽입
+      const categoryInfo = {
+        DPORHCPV: "스토리",
+        KWUOXKGM: "취업 스킬",
+        CEZTXGLJ: "지애픽"
+      };
+      response.forEach(item => {
+        item.category_name = categoryInfo[item.bc_foreign_key] || null;
+      });
+
+      // 작성자명 가공 함수 호출
+      this.replaceWriterNames(response);
+    },
+    async replaceWriterNames(array) {
+      for (let item of array) {
+        const res = await this.$api.post(
+            `/api/crud/single/${item.bc_writer_name}`,
+            {
+              prefix: "mem",
+              alias: "mem",
+              scopes: "mem_title,mem_job"
+            },
+            {
+              headers: {
+                'SPRINT-API-KEY' : 'sprinttest',
+              }
+            }
+        )
+        if (res.data.status === 'success') {
+          console.log(res.data.response.view.mem_title)
+          item.bc_writer_name = res.data.response.view.mem_title;
+          if (res.data.response.view.mem_job) {
+            item.badgeTitle = res.data.response.view.mem_job
+          } else {
+            item.badgeTitle = "일반 회원" // job 정보가 등록되지 않은 회원은 일반 회원으로 표시
+          }
+        }
+      }
+      console.log('array', ...array)
+      this.articleList = array;
     }
   },
   computed: {
     userId() {
       return localStorage.getItem('user_id');
     },
-    onboardShow() {
-      return localStorage.getItem('onboard_show')
+    onboard() {
+      return localStorage.getItem('isOnboard');
     }
   }
 })

@@ -20,7 +20,7 @@
 export default {
 	methods: {
 		goNext() {
-			this.$router.push('/');
+			this.$router.push('/login');
 		}
 	}
 }

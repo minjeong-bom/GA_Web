@@ -37,6 +37,21 @@ const routes = [
     ]
   },
   {
+    path: '/joi',
+    component: () => import('layouts/FullPageLayout.vue'),
+    children: [
+      { path: '/joi0000', component: () => import('pages/JOI/JOI_0000.vue') },
+      { path: '/joi5000', component: () => import('pages/JOI/JOI_5000.vue') },
+      { path: '/joi0100', component: () => import('pages/JOI/JOI_0100.vue') }, // 아이디, 비번 설정
+      { path: '/joi0110', component: () => import('pages/JOI/JOI_0110.vue') }, // 이메일 설정
+      { path: '/joi0140', component: () => import('pages/JOI/JOI_0140.vue') }, // 약관 동의
+      { path: '/joi0150', component: () => import('pages/JOI/JOI_0150.vue') }, // 가입 완료
+      { path: '/joi0160', component: () => import('pages/JOI/JOI_0160.vue') }, // 가입 완료
+      { path: '/joi0170', component: () => import('pages/JOI/JOI_0170.vue') }, // 가입 완료
+      { path: '/joi0180', component: () => import('pages/JOI/JOI_0180.vue') }, // 가입 완료
+    ]
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
   },

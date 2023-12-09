@@ -19,8 +19,12 @@
 <script>
 export default {
 	methods: {
+		navigateTo(path) {
+			this.$router.push(path);
+		},
 		goNext() {
-			this.$router.push('/login');
+			localStorage.setItem('isOnboard', true);
+			this.navigateTo('/login');
 		}
 	}
 }

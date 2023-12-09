@@ -1,6 +1,6 @@
 <script>
 import TitleTopBar from "components/app-bar/TitleTopBar.vue";
-import { ref } from 'vue'
+import {ref} from 'vue'
 import nickNameList from 'assets/data/nickname-list.json'
 
 export default {
@@ -29,6 +29,30 @@ export default {
 		},
 		getRandomItem(array) {
 			return array[Math.floor(Math.random() * array.length)];
+		},
+		async setUserInfo() {
+			const storageUserKey = localStorage.getItem('userKey');
+			try {
+				const config = {
+					url: '/api/crud/create',
+					body: {
+						data_key: storageUserKey,
+						data_prefix: 'mem',
+						data_title: this.userName,
+						data_category: this.userInteresting,
+					},
+					etc: {
+						headers: {
+							'SPRINT-API-KEY': 'sprintcombom'
+						}
+					}
+				}
+				await this.$api.post(config.url, config.body, config.etc);
+				this.navigateTo('/joi0170');
+
+			} catch (e) {
+				console.error(e);
+			}
 		}
 	},
 	computed: {
@@ -82,10 +106,17 @@ export default {
 		<div class="skip-button-wrap flex-center">
 			<q-btn @click="navigateTo('/')" flat>
 				<span>건너뛰기</span>
-				<q-icon name="navigate_next"></q-icon>
+				<q-icon name="navigate_next"/>
 			</q-btn>
 		</div>
-		<q-btn @click="navigateTo('/joi0170')" flat square size="lg" class="full-width bottom-button-fixed" :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'">
+		<q-btn
+			@click="setUserInfo()"
+			flat
+			square
+			:disable="!ready"
+			size="lg"
+			class="full-width bottom-button-fixed"
+			:style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'">
 			<span style="color: #fff">다음</span>
 		</q-btn>
 	</div>

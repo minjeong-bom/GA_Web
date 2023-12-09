@@ -10,17 +10,18 @@ export default {
 		}
 	},
 	methods: {
+		saveUserEmail() {
+			localStorage.setItem('draft_email', this.userEmail);
+			this.navigateTo('/joi0140');
+		},
 		navigateTo(path) {
 			this.$router.push(path);
 		}
 	},
 	computed: {
-		ready() {
-			if(this.userEmail) {
-				return true;
-			} else {
-				return false;
-			}
+		emailStringCheck() {
+			const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+			return regex.test(this.userEmail);
 		}
 	}
 }
@@ -32,10 +33,10 @@ export default {
 		<section class="inner-layout l-column">
 			<!-- 이메일 입력 -->
 			<div class="id-input-wrap">
-				<q-input outlined v-model="userEmail" type="email" label="이메일" placeholder="이메일을 입력하세요" hint="영문 또는 숫자 조합 4~14자. 특수 문자는 안돼요"></q-input>
+				<q-input outlined v-model="userEmail" type="email" label="이메일" placeholder="이메일을 입력하세요"/>
 			</div>
 		</section>
-		<q-btn @click="navigateTo('/joi0140')" flat square size="lg" class="full-width bottom-button-fixed" :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'">
+		<q-btn @click="saveUserEmail()" flat square size="lg" :disable="!emailStringCheck" class="full-width bottom-button-fixed" :style="emailStringCheck? 'background: var(--ga-red);' : 'background: #C1C1C1;'">
 			<span style="color: #fff">다음</span>
 		</q-btn>
 	</div>

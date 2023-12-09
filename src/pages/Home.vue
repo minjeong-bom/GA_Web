@@ -193,28 +193,31 @@ export default defineComponent({
     },
     async replaceWriterNames(array) {
       for (let item of array) {
-        const res = await this.$api.post(
-            `/api/crud/single/${item.bc_writer_name}`,
-            {
-              prefix: "mem",
-              alias: "mem",
-              scopes: "mem_title,mem_job"
-            },
-            {
-              headers: {
-                'SPRINT-API-KEY' : 'sprinttest',
-              }
-            }
-        )
-        if (res.data.status === 'success') {
-          console.log(res.data.response.view.mem_title)
-          item.bc_writer_name = res.data.response.view.mem_title;
-          if (res.data.response.view.mem_job) {
-            item.badgeTitle = res.data.response.view.mem_job
-          } else {
-            item.badgeTitle = "일반 회원" // job 정보가 등록되지 않은 회원은 일반 회원으로 표시
-          }
-        }
+				try {
+					const res = await this.$api.post(
+						`/api/crud/single/${item.bc_writer_name}`,
+						{
+							prefix: "mem",
+							alias: "mem",
+							scopes: "mem_title,mem_job"
+						},
+						{
+							headers: {
+								'SPRINT-API-KEY' : 'sprinttest',
+							}
+						}
+					)
+					if (res.data.status === 'success') {
+						item.bc_writer_name = res.data.response.view.mem_title;
+						if (res.data.response.view.mem_job) {
+							item.badgeTitle = res.data.response.view.mem_job
+						} else {
+							item.badgeTitle = "일반 회원" // job 정보가 등록되지 않은 회원은 일반 회원으로 표시
+						}
+					}
+				} catch (e) {
+					item.badgeTitle = "비공개 회원" // 삭제된 회원
+				}
       }
       console.log('array', ...array)
       this.articleList = array;

@@ -1,18 +1,24 @@
 <template>
 	<div class="article-layout">
-		<!-- user profile -->
+		<text-button-top-bar :title-text="this.categoryName"></text-button-top-bar>
 		<div class="user-profile-wrap">
-			<article-id style="width: 100%" :article-type="article.articleType" :article-type2="article.articleType2" :view-count="article.viewCount"
-			            :writerName="article.createrName"/>
+			<!-- creater info -->
+			<article-id style="width: 100%"
+			            :user-profile="''"
+			            :article-type="article.articleType"
+			            :view-count="article.viewCount"
+			            :writerName="article.createrName"
+			            :job-title="article.createrJob"
+			            :created-at="''"
+			            :control-ui="false"/>
 		</div>
 		<div class="headline-wrap">
 			<!-- headline -->
-			<h1 class="article-card-headline">가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자최대 42자</h1>
+			<h1 class="article-card-headline">{{ article.title }}</h1>
 			<!-- created at -->
-			<p class="article-created-at-text">2023년 8월 12일 00시 00분</p>
+			<p class="article-created-at-text">{{ article.createdAt }}</p>
 		</div>
 
-		<!-- control area -->
 		<div class="article-overview-wrap">
 			<!-- likes & comment -->
 			<div class="article-overview">
@@ -20,9 +26,10 @@
 				<span class="value">10</span>
 				<span>∙</span>
 				<span class="lable">댓글</span>
-				<span class="value">10</span>
+				<span class="value">{{ comments.length }}</span>
 			</div>
 			<div>
+				<!-- 상단 컨트롤 -->
 				<section>
 					<q-btn flat round icon="text_fields" style="opacity: 0.3"/>
 					<q-btn flat round icon="bookmark" style="opacity: 0.3"/>
@@ -31,11 +38,10 @@
 			</div>
 		</div>
 		<!-- 본문 -->
-		<section class="article-content">
+		<section v-if="isLoading" class="article-content">
 			<skeleton-line :lines="4"></skeleton-line>
-			<p>
-				...
-			</p>
+		</section>
+		<section v-else class="article-content" style="min-height: 200px" v-html="article.content">
 		</section>
 		<!-- article controller -->
 		<section class="article-end-control-wrap">
@@ -54,7 +60,7 @@
 				<span class="value">10</span>
 				<span>∙</span>
 				<span class="lable">댓글</span>
-				<span class="value">10</span>
+				<span class="value">{{ comments.length }}</span>
 			</div>
 			<div class="likes-list-area">
 				<!-- Add Like -->
@@ -94,20 +100,28 @@
 				</q-btn>
 			</div>
 		</div>
-		<!-- comment input -->
+		<!-- create comments -->
 		<div class="comment-input-area">
 			<!-- profile image -->
-			<q-avatar size="56px">
+			<q-avatar size="40px">
 				<img src="https://cdn.quasar.dev/img/avatar.png">
 			</q-avatar>
-			<!-- text input -->
-			<q-input rounded outlined v-model="addComment" :placeholder="commentInputPlaceholder" style="width: 100%;"></q-input>
+			<!-- comment input -->
+			<q-input dense rounded outlined v-model="addComment" :placeholder="commentInputPlaceholder" style="width: 100%;">
+				<template v-slot:append>
+					<q-btn flat round @click="createComment" style="right: -10px">
+						<img src="src/assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
+					</q-btn>
+				</template>
+			</q-input>
 		</div>
 		<!-- comment list -->
-		<div class="comment">
-			<comment-id :writer="'민정'" :user-position="'디자이너'" :created-at="'2023-00-00 10:00'" />
-			<section class="comment-text">성별은 관계가 없게죠? 경기도는 지역을 어떻게 구분하나요? 가나다라마바사아자차카타파하가나다라마바사아자차카타파하</section>
-		</div>
+		<section class="l-column comment-list">
+			<div class="comment" v-for="item in comments">
+				<comment-id :writer="item.user_title" :user-position="item.user_data.job" :created-at="item.comment_regdate" />
+				<section class="comment-text">{{ item.comment_content }}</section>
+			</div>
+		</section>
 	</div>
 </template>
 
@@ -115,32 +129,158 @@
 import ArticleId from "components/card/ArticleId.vue";
 import CommentId from "components/comment/commentId.vue";
 import SkeletonLine from "components/loading/SkeletonLine.vue";
+import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
 
 export default {
-	components: {SkeletonLine, CommentId, ArticleId},
+	components: {TextButtonTopBar, SkeletonLine, CommentId, ArticleId},
 	data() {
 		return {
+			isLoading: true,
 			article: {
 				articleType: '',
 				articleType2: '',
 				viewCount: '',
+				createrKey: '',
 				createrName: '',
+				title: '',
+				content: '',
+				createdAt: '',
+				createrJob: '',
 			},
 			comments: [],
 			addComment: '',
 		}
 	},
 	mounted() {
+		this.getArticleContent();
+		this.getCommentList()
 	},
 	methods: {
+		async getArticleContent() {
+			try {
+				const config = {
+					url: '/api/crud/single/' + this.articleKey,
+					body: {
+						"prefix": "bc",
+						"alias": "bc",
+						"scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content"
+					},
+					etc: {
+						headers: {
+							'SPRINT-API-KEY': 'sprintcombom'
+						}
+					}
+				}
+				const res = await this.$api.post(config.url, config.body, config.etc);
+				this.isLoading = false;
+				const content = res.data.response.view;
+
+				this.article.articleType = content.bc_foreign_key;
+				this.article.articleType2 = content.bc_foreign_key2;
+
+				this.article.title = content.bc_title;
+				this.article.viewCount = content.bc_count;
+				this.article.content = content.bc_content.replace(/(?:\r\n|\r|\n)/g, '<br/>')
+				this.article.createrKey = content.bc_writer_name;
+				this.article.createdAt = content.bc_regdate;
+				this.getCreaterInfo();
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		async getCreaterInfo() {
+			try {
+				const config = {
+					url: '/api/crud/single/' + this.article.createrKey,
+					body: {
+						"prefix": "mem",
+						"alias": "mem",
+						"scopes": "mem_title,mem_job"
+					},
+					etc: {
+						headers: {
+							'SPRINT-API-KEY': 'sprintcombom'
+						}
+					}
+				}
+				const res = await this.$api.post(config.url, config.body, config.etc);
+				const response = res.data.response.view;
+				this.article.createrName = response.mem_title;
+				this.article.createrJob = response.mem_job;
+
+				const categoryInfo = {
+					DPORHCPV: "스토리",
+					KWUOXKGM: "취업 스킬",
+					CEZTXGLJ: "지애픽"
+				};
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		async createComment() {
+			try {
+				const config = {
+					url: '/api/crud/setcomment',
+					body: {
+						data_key : this.articleKey,
+						comment_content: this.addComment,
+						comment_user_key: this.storageUserKey,
+					},
+					etc: {
+						headers: {
+							'SPRINT-API-KEY': 'sprintcombom'
+						}
+					}
+				}
+				const res = await this.$api.post(config.url, config.body, config.etc);
+				if (res.status) {
+					this.addComment = '';
+					this.getCommentList();
+				}
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		async getCommentList() {
+			try {
+				const config = {
+					url: '/api/logs/commentlists?foreign_key=' + this.articleKey,
+					etc: {
+						headers: {
+							'SPRINT-API-KEY': 'sprintcombom'
+						}
+					}
+				}
+				const res = await this.$api.get(config.url, config.etc);
+				this.comments = res.data.response.lists;
+				console.log(this.comments)
+			} catch (e) {
+				console.error(e);
+			}
+		}
 	},
 	computed: {
+		categoryName() {
+			if (this.article.articleType === 'KWUOXKGM') {
+				return '취업스킬'
+			} else if (this.article.articleType === 'DPORHCPV') {
+				return '스토리'
+			} else if (this.article.articleType === 'CEZTXGLJ') {
+				return '지애픽'
+			}
+		},
 		commentInputPlaceholder() {
 			if (this.comments.length === 0) {
 				return "첫 댓글을 남겨보세요"
 			} else {
 				return "댓글을 남겨보세요"
 			}
+		},
+		storageUserKey() {
+			return localStorage.getItem('userKey');
+		},
+		articleKey() {
+			return this.$route.query.key
 		}
 	}
 }
@@ -275,15 +415,21 @@ export default {
 }
 
 .comment-text {
+	width: 100%;
 	border-radius: 20px;
 	background: var(--fills-quartternary);
 	padding: 16px;
 
 	color: #000;
 	font-family: Pretendard;
-	font-size: 1.0625rem;
+	font-size: 17px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: 1.4375rem; /* 135.294% */
+}
+
+.comment-list {
+	gap: 10px;
+	margin-bottom: 52px;
 }
 </style>

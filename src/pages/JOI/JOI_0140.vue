@@ -12,8 +12,74 @@ export default {
 		}
 	},
 	methods: {
-		checkId() {
+		async joinus() {
+			const draftId = localStorage.getItem('draft_id');
+			const draftPw = localStorage.getItem('draft_pw');
+			const draftEmail = localStorage.getItem('draft_email');
 
+			// 회원 추가
+			try {
+				const config = {
+					url: '/api/crud/create',
+					body: {
+						data_prefix: 'mem',
+						data_foreign_key: 'DGAKKIFW', // 일반회원
+						data_status: 'authorized',
+						data_id: draftId,
+						data_pw: draftPw,
+						data_email: draftEmail,
+						data_phone: '010-5695-9919',
+						data_title: draftId,
+					},
+					etc: {
+						headers: {
+							'SPRINT-API-KEY': 'sprintcombom'
+						}
+					},
+				}
+				const res = await this.$api.post(config.url, config.body, config.etc);
+				localStorage.setItem('userKey', res.data.response.result.data_key);
+
+				this.login();
+
+				this.navigateTo('/joi0150');
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		async login() {
+			try {
+				const draftId = localStorage.getItem('draft_id');
+				const draftPw = localStorage.getItem('draft_pw');
+
+				const config = {
+					url: '/api/users/login',
+					headers: {
+						'SPRINT-API-KEY': 'sprintcombom'
+					}
+				};
+
+				const formData = new FormData();
+				formData.append('id', draftId);
+				formData.append('pw', draftPw);
+
+				const res = await this.$api.post(
+					config.url,
+					formData,
+					{headers: config.headers}
+				);
+
+				localStorage.setItem('userKey', res.data.response.key);
+				localStorage.setItem('userName', res.data.response.name);
+				localStorage.setItem('userId', res.data.response.id);
+
+				localStorage.removeItem('draft_id');
+				localStorage.removeItem('draft_pw');
+				localStorage.removeItem('draft_email');
+			} catch (error) {
+				this.loginFailMassage = '아이디/비밀번호를 다시 확인해주세요'
+				console.error(error);
+			}
 		},
 		updateAllChecked() {
 			// 모든 체크박스가 선택되었는지 확인
@@ -45,7 +111,7 @@ export default {
 		<title-top-bar :title-text="'약관 동의'"></title-top-bar>
 		<section class="inner-layout l-column" style="gap: 6px">
 			<div class="all-check-box-wrap" :class="check1 && check2 ? 'all-checked checked' : ''">
-				<q-checkbox v-model="allChecked" label="약관에 모두 동의" />
+				<q-checkbox v-model="allChecked" label="약관에 모두 동의"/>
 			</div>
 			<div>
 				<div class="check-box-wrap flex-sb" :class="check1? 'checked' : ''">
@@ -62,7 +128,8 @@ export default {
 				</div>
 			</div>
 		</section>
-		<q-btn @click="navigateTo('/joi0150')" flat square size="lg" class="full-width bottom-button-fixed" :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'">
+		<q-btn @click="joinus" :disable="!ready" flat square size="lg" class="full-width bottom-button-fixed"
+		       :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'">
 			<span style="color: #fff">다음</span>
 		</q-btn>
 	</div>
@@ -101,7 +168,7 @@ export default {
 	border: 1px solid var(--ga-red);
 }
 
-.checked *{
+.checked * {
 	color: var(--ga-red);
 }
 </style>

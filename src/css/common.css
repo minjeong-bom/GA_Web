@@ -6,9 +6,11 @@
     --grays-gray-7: #FCFCFF;
     --ga-red: #FD384E;
     --labels-secondary: rgba(60, 60, 67, 0.60);
+    --k-5: #F2F2F2;
     --k-85: #262626;
     --k-90: #1A1A1A;
     --k-45: #8C8C8C;
+    --only-g-red-red-10: #FFEBEE;
 }
 
 .l-column {
@@ -20,6 +22,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.flex-end {
+    display: flex;
+    align-items: end;
+}
+
+.flex-sb {
+    display: flex;
+    justify-content: space-between;
 }
 
 .error-msg {
@@ -153,6 +165,7 @@
 
 .onboard .center-img {
     width: 100%;
+    margin-top: 36px;
     border-radius: 17px;
     animation: moveAnimation 4s linear infinite;
 }

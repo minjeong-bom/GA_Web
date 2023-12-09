@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <!-- Card Id -->
-      <article-id :article-type="articleType" :article-type2="articleType2" :view-count="viewCount" :writer="writer"/>
+      <article-id :job-title="badgeTitle" :article-type="articleType" :article-type2="articleType2" :view-count="viewCount" :writer="writer" :created-at="createdAt"/>
       <!-- Thumbnail & Title -->
       <div class="article-card-thumbnail">
         <div class="article-card-headline-wrap">

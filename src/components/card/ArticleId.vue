@@ -5,7 +5,33 @@ export default {
     articleType: String,
     articleType2: String,
     viewCount: String,
-    writer: String
+    writer: String,
+    jobTitle: String,
+    createdAt: String,
+  },
+  computed: {
+    timeAgo() {
+      const dateString = this.createdAt;
+
+      const now = new Date();
+      const past = new Date(dateString);
+      const diff = now - past;
+
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+
+      if (seconds < 60) {
+        return `${seconds}초 전`;
+      } else if (minutes < 60) {
+        return `${minutes}분 전`;
+      } else if (hours < 24) {
+        return `${hours}시간 전`;
+      } else {
+        return `${days}일 전`;
+      }
+    }
   }
 }
 </script>
@@ -19,7 +45,7 @@ export default {
       <!-- 00님이 000을 올렸어요 (하위메뉴) -->
       <div class="created-user-and-lable">
         <div class="created-user-info-wrap card-headline-1">
-          <span>{{ writer? writer : "익명" }}님이</span><span><span class="high-light">{{ articleType }}</span>을 올렸어요</span>
+          <span>{{ writer? writer : "익명" }}님이</span><span><span class="high-light">{{ articleType }}</span>{{ articleType === '스토리'? '를' : '을' }} 올렸어요</span>
           <div class="cartegory2-lable">
             <span>{{ articleType2 }}</span>
           </div>
@@ -28,9 +54,9 @@ export default {
       <!-- Badge + User Role Caption | Created Time -->
       <div class="user-badge-created-time-wrap">
         <img class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>
-        <span class="card-caption-1">OO 전문가</span>
+        <span class="card-caption-1">{{ jobTitle }}</span>
         <span class="card-caption-2">|</span>
-        <span class="card-caption-1">{{ viewCount }}</span>
+        <span class="card-caption-1">{{ timeAgo }}</span>
       </div>
     </div>
     <!-- More Button -->

@@ -29,33 +29,7 @@ export default {
 	      <span class="card-caption-1">{{ createdAt? createdAt : "0000.00.00 10:00" }}</span>
       </div>
     </div>
-<!--	  <q-btn flat round icon="more_vert" style="opacity: 0.5"/>-->
-	  <q-btn-dropdown
-		  to="/start/pick-quasar-flavour"
-		  color="teal"
-		  icon="more_vert"
-		  round
-	  >
-		  <q-list>
-			  <q-item clickable v-close-popup>
-				  <q-item-section>
-					  <q-item-label>Photos</q-item-label>
-				  </q-item-section>
-			  </q-item>
-
-			  <q-item clickable v-close-popup>
-				  <q-item-section>
-					  <q-item-label>Videos</q-item-label>
-				  </q-item-section>
-			  </q-item>
-
-			  <q-item clickable v-close-popup>
-				  <q-item-section>
-					  <q-item-label>Articles</q-item-label>
-				  </q-item-section>
-			  </q-item>
-		  </q-list>
-	  </q-btn-dropdown>
+	  <q-btn flat round icon="more_vert" style="opacity: 0.5"/>
   </div>
 </template>
 

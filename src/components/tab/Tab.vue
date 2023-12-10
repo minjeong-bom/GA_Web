@@ -25,7 +25,6 @@ export default {
   },
   methods: {
     selectTab(tabId) {
-      console.log('tab.vue',tabId);
       this.activeTab = tabId;
       this.$emit('changeTab', tabId);
     }

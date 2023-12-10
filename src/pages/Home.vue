@@ -2,9 +2,9 @@
   <q-page class="home">
     <section>
       <!-- Event Cards -->
-      <event-card :event-list="eventList"></event-card>
+      <event-card></event-card>
       <!-- Notice Cards -->
-      <notice-card :notice-card="noticeList"></notice-card>
+      <notice-card></notice-card>
       <!-- Article Cards -->
       <div>
         <!-- Article Card -->
@@ -79,37 +79,6 @@ export default defineComponent({
         },
       ],
       articleList: [],
-      eventList: [
-        {
-          title: '첫 번째 이벤트 1️⃣',
-          id: 'testing',
-        },
-        {
-          title: '두 번째 이벤트 🙌',
-          id: 'testing',
-        },
-        {
-          title: '세 번째 이벤트 🧡',
-          id: 'testing',
-        },
-      ],
-      noticeList: [
-        {
-          title: "나의 경험을 가치로 만드세요 1",
-          description: '일터의 노하우 공유하고, 인정받는 경험!',
-          id: 'testing',
-        },
-        {
-          title: "나의 경험을 가치로 만드세요 2",
-          description: '일터의 노하우 공유하고, 인정받는 경험!',
-          id: 'testing',
-        },
-        {
-          title: "나의 경험을 가치로 만드세요 3",
-          description: '일터의 노하우 공유하고, 인정받는 경험!',
-          id: 'testing',
-        },
-      ]
     }
   },
   created() {
@@ -139,10 +108,15 @@ export default defineComponent({
       }
     },
     changeTab(tabId) {
-      if (tabId === 1) {
-
+	    this.articleList = [];
+	    if (tabId === 1) {
+				this.getArticleList('');
       } else if (tabId === 2) {
-
+	      this.getArticleList('story');
+      } else if (tabId === 3) {
+	      this.getArticleList('skills');
+      } else {
+	      this.getArticleList('gapick');
       }
     },
     async getArticleList(category) {
@@ -219,7 +193,6 @@ export default defineComponent({
 					item.badgeTitle = "비공개 회원" // 삭제된 회원
 				}
       }
-      console.log('array', ...array)
       this.articleList = array;
     }
   },

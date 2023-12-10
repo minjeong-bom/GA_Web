@@ -32,7 +32,7 @@
 				<!-- 상단 컨트롤 -->
 				<section>
 					<q-btn flat round icon="text_fields" style="opacity: 0.3"/>
-					<q-btn flat round icon="bookmark" style="opacity: 0.3"/>
+					<q-btn flat round icon="bookmark" @click="addBookmark()" style="opacity: 0.3"/>
 					<q-btn flat round icon="share" style="opacity: 0.3"/>
 				</section>
 			</div>
@@ -41,8 +41,7 @@
 		<section v-if="isLoading" class="article-content">
 			<skeleton-line :lines="4"></skeleton-line>
 		</section>
-		<section v-else class="article-content" style="min-height: 200px" v-html="article.content">
-		</section>
+		<section v-else class="article-content" style="min-height: 200px" v-html="article.content"></section>
 		<!-- article controller -->
 		<section class="article-end-control-wrap">
 			<q-btn flat icon="text_fields" style="opacity: 0.3"/>
@@ -64,38 +63,27 @@
 			</div>
 			<div class="likes-list-area">
 				<!-- Add Like -->
-				<q-btn size="14px" flat round style="background: #FD384E">
-					<q-icon name="add" color="white"/>
-				</q-btn>
+        <div class="add-likes-wrap">
+          <q-btn size="14px" flat round style="background: #FD384E" @click="showLikeButtons = !showLikeButtons">
+            <q-icon name="add" color="white"/>
+          </q-btn>
+	        <div v-show="showLikeButtons" class="likes-button-group">
+		        <img class="like-button" src="src/assets/graphic/face-like.png" @click="createLike('like')"/>
+		        <img class="like-button" src="src/assets/graphic/face-sad.png" @click="createLike('sad')"/>
+		        <img class="like-button" src="src/assets/graphic/face-gido.png" @click="createLike('gido')"/>
+		        <img class="like-button" src="src/assets/graphic/face-angry.png" @click="createLike('angry')"/>
+		        <img class="like-button" src="src/assets/graphic/face-good.png" @click="createLike('good')"/>
+	        </div>
+        </div>
 				<!-- Like List -->
 				<section class="liker-slide">
-					<q-avatar size="40px">
-						<img src="https://cdn.quasar.dev/img/avatar.png">
-						<img class="imoji" src="../assets/brand/imoji-smile.png">
-					</q-avatar>
-					<q-avatar size="40px">
-						<img src="https://cdn.quasar.dev/img/avatar.png">
-						<img class="imoji" src="../assets/brand/imoji-smile.png">
-					</q-avatar>
-					<q-avatar size="40px">
-						<img src="https://cdn.quasar.dev/img/avatar.png">
-						<img class="imoji" src="../assets/brand/imoji-smile.png">
-					</q-avatar>
-					<q-avatar size="40px">
-						<img src="https://cdn.quasar.dev/img/avatar.png">
-						<img class="imoji" src="../assets/brand/imoji-smile.png">
-					</q-avatar>
-					<q-avatar size="40px">
-						<img src="https://cdn.quasar.dev/img/avatar.png">
-						<img class="imoji" src="../assets/brand/imoji-smile.png">
-					</q-avatar>
-					<q-avatar size="40px">
-						<img src="https://cdn.quasar.dev/img/avatar.png">
-						<img class="imoji" src="../assets/brand/imoji-smile.png">
+					<q-avatar v-for="item in likes" size="40px">
+						<div class="user-profile-wrap"></div>
+						<img class="imoji" :src="`src/assets/graphic/face-${item.empathy_log_title}.png`">
 					</q-avatar>
 				</section>
 				<!-- PageNation -->
-				<q-btn flat round>
+				<q-btn flat round @click="openLikeList()">
 					<q-icon name="navigate_next" style="opacity: 0.4;"/>
 				</q-btn>
 			</div>
@@ -148,12 +136,15 @@ export default {
 				createrJob: '',
 			},
 			comments: [],
+			likes: [],
 			addComment: '',
+			showLikeButtons: false,
 		}
 	},
 	mounted() {
 		this.getArticleContent();
 		this.getCommentList()
+		this.getLikeList();
 	},
 	methods: {
 		async getArticleContent() {
@@ -253,11 +244,65 @@ export default {
 				}
 				const res = await this.$api.get(config.url, config.etc);
 				this.comments = res.data.response.lists;
-				console.log(this.comments)
 			} catch (e) {
 				console.error(e);
 			}
-		}
+		},
+		async getLikeList() {
+			try {
+				const config = {
+					url: '/api/crud/lists/',
+					body: {
+						"alias": "empathy",
+						"prefix": "empathy",
+						"scopes": "empathy_log_title,empathy_log_mem_key,empathy_log_data_key",
+						"columns_opts" : this.articleKey
+					},
+					etc: {
+						headers: {
+							'SPRINT-API-KEY': 'sprintcombom'
+						}
+					}
+				}
+				const res = await this.$api.post(config.url, config.body, config.etc);
+				this.likes = res.data.response.lists;
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		async createLike(likeType) {
+			let config
+			if (this.myLike) {
+				return
+			}
+			try {
+				config = {
+					url: '/api/crud/create',
+					body: {
+						data_prefix : 'empathy',
+						data_log_title: likeType,
+						data_log_data_key : this.articleKey,
+						data_log_mem_key: this.storageUserKey,
+					},
+					etc: {
+						headers: {
+							'SPRINT-API-KEY': 'sprintcombom'
+						}
+					}
+				}
+				const res = await this.$api.post(config.url, config.body, config.etc);
+				if (res.status) {
+					this.showLikeButtons = false
+				}
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		async addBookmark() {
+		},
+		openLikeList() {
+			this.$router.push({ path: '/hom0111', query: { key: this.articleKey } });
+		},
 	},
 	computed: {
 		categoryName() {
@@ -280,7 +325,19 @@ export default {
 			return localStorage.getItem('userKey');
 		},
 		articleKey() {
-			return this.$route.query.key
+			return this.$route.query.key;
+		},
+		myLikeType() {
+			const item = this.likes.find(item => item.empathy_log_mem_key === this.storageUserKey);
+// 찾은 객체의 empathy_log_title 반환
+			if (item) {
+				return item.empathy_log_title;
+			} else {
+				return false;
+			}
+		},
+		myLike() {
+			const item = this.likes.find(item => item.empathy_log_mem_key === this.storageUserKey);
 		}
 	}
 }
@@ -431,5 +488,37 @@ export default {
 .comment-list {
 	gap: 10px;
 	margin-bottom: 52px;
+}
+
+.add-likes-wrap {
+    position: relative;
+}
+
+.likes-button-group {
+	z-index: 10;
+	position: absolute;
+	top: -4rem;
+
+	display: flex;
+	height: 3.5rem;
+	padding: 0rem 0.625rem;
+	justify-content: center;
+	align-items: center;
+	gap: 0.625rem;
+
+	border-radius: 1.875rem;
+	background: var(--bg-primary, #FFF);
+	box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.like-button {
+	width: 42px;
+	/* 기본 스타일 */
+	transition: transform 1s ease-in-out;
+}
+
+.like-button:hover {
+	/* 마우스 오버 시 크기 증가 */
+	transform: scale(1.1); /* 10% 크기 증가 */
 }
 </style>

@@ -1,5 +1,5 @@
 import Posting from "pages/Posting.vue";
-import Article from "pages/article.vue";
+import Article from "pages/Article.vue";
 import Login from "pages/JOI/Login.vue";
 
 const routes = [
@@ -8,6 +8,13 @@ const routes = [
     component: () => import('layouts/HomeLayout.vue'),
     children: [
       { path: '/', component: () => import('pages/Home.vue') },
+    ]
+  },
+  {
+    path: '/hom',
+    component: () => import('layouts/FullPageLayout.vue'),
+    children: [
+      { path: '/hom0111', component: () => import('pages/HOM/HOM_0111.vue') },
     ]
   },
   {
@@ -34,6 +41,22 @@ const routes = [
       { path: '/onb0002', component: () => import('pages/ONB/ONB_0002.vue') },
       { path: '/onb0003', component: () => import('pages/ONB/ONB_0003.vue') },
       { path: '/onb0004', component: () => import('pages/ONB/ONB_0004.vue') },
+    ]
+  },
+  {
+    path: '/not',
+    component: () => import('layouts/FullPageLayout.vue'),
+    children: [
+      { path: '/not0000', component: () => import('pages/NOT/NOT_0000.vue') },
+      { path: '/not0100', component: () => import('pages/NOT/NOT_0100.vue') },
+    ]
+  },
+  {
+    path: '/eve',
+    component: () => import('layouts/FullPageLayout.vue'),
+    children: [
+      { path: '/eve0000', component: () => import('pages/EVE/EVE_0000.vue') },
+      { path: '/eve0100', component: () => import('pages/EVE/EVE_0100.vue') },
     ]
   },
   {

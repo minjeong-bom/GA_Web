@@ -1,14 +1,66 @@
 <script>
 import { ref, watch } from 'vue'
 export default {
-  props: {
-    noticeCard: Array,
-  },
+	data() {
+		return {
+			noticeCard: [],
+		}
+	},
   setup () {
     return {
       slide: ref(0)
     }
-  }
+  },
+	mounted() {
+		this.getNoticeList();
+	},
+	methods: {
+		async getNoticeList() {
+			try {
+				const config = {
+					url: '/api/crud/lists/',
+					body: {
+						"alias": "bc",
+						"prefix": "bc",
+						"scopes": "bc_title,bc_key,bc_content",
+						"columns_opts": {
+							"bc_foreign_key2": "AOGLJYFD" // 공지사항
+						},
+						"limit": 3
+					},
+					etc: {
+						headers: {
+							'SPRINT-API-KEY': 'sprinttest',
+						}
+					}
+				}
+
+				const response = await this.$api.post(config.url, config.body, config.etc);
+				let res = response.data.response.lists;
+
+				this.noticeCard = res;
+				// 설명 텍스트 가공하는 함수 호출
+				this.addDescription(res);
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		addDescription(array) {
+			const dataArray = array;
+
+			// DOMParser 인스턴스 생성
+			const parser = new DOMParser();
+
+			// 각 객체에 대해 bc_content의 innerText를 추출하여 description 키에 추가
+			dataArray.forEach(item => {
+				const doc = parser.parseFromString(item.bc_content, 'text/html');
+				item.description = doc.body.textContent || "";
+			});
+		},
+		goToDetailView(id) {
+			this.$router.push({ path: '/eve0100', query: { key: id } });
+		}
+	},
 }
 </script>
 
@@ -22,10 +74,10 @@ export default {
       class="rounded-borders"
       style="margin-bottom: 10px"
     >
-      <q-carousel-slide v-for="(item, index) in noticeCard" :name="index" class="notice-card-item column no-wrap flex-center">
-        <div class="notice-card-title">{{ item.title }}</div>
+      <q-carousel-slide v-for="(item, index) in noticeCard" :name="index" class="notice-card-item column no-wrap flex-center" @click="goToDetailView(item.bc_key)">
+        <div class="notice-card-title">{{ item.bc_title }}</div>
         <div class="notice-card-caption">{{ item.description }}</div>
-        <div class="page-nation">
+        <div class="page-nation" v-if="noticeCard.length > 1">
           <button v-for="(item, buttonIndex) in noticeCard"
                   :class="{'focused': index === buttonIndex, 'page-nation-button': true}"
                   @click="slide = buttonIndex"

@@ -92,11 +92,6 @@ export default {
   margin-right: 0.1875rem;
 }
 
-.cartegory2-lable span {
-  color: var(--grays-gray-2);
-  font-size: 0.75rem;
-}
-
 .user-badge-created-time-wrap {
   display: inline-flex;
   padding: 0.125rem 0rem;

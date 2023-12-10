@@ -216,3 +216,19 @@
     display: flex;
     overflow: auto;
 }
+
+.cartegory2-lable span {
+    color: var(--grays-gray-2);
+    font-size: 0.75rem;
+}
+
+.category-text-wrap {
+    border-radius: 0.25rem;
+    border: 0.33px solid rgba(116, 116, 128, 0.08);
+    background: var(--grays-gray-7, #FCFCFF);
+
+    display: inline-block;
+    padding: 0.0625rem 0.25rem;
+
+    color: var(--grays-gray-2);
+}

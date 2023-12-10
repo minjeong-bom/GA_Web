@@ -118,8 +118,8 @@ h1, h2, h3, h4, h5, h6, p {
   line-height: 1.25rem; /* 142.857% */
 }
 
-.card-headline-1 .high-light {
-  color: #FD384E;
+.high-light {
+  color: #FD384E !important;
 }
 
 .card-caption-1,

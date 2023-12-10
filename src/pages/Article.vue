@@ -143,7 +143,7 @@ export default {
 	},
 	mounted() {
 		this.getArticleContent();
-		this.getCommentList()
+		this.getCommentList();
 		this.getLikeList();
 	},
 	methods: {
@@ -307,18 +307,18 @@ export default {
 	computed: {
 		categoryName() {
 			if (this.article.articleType === 'KWUOXKGM') {
-				return '취업스킬'
+				return '취업스킬';
 			} else if (this.article.articleType === 'DPORHCPV') {
-				return '스토리'
+				return '스토리';
 			} else if (this.article.articleType === 'CEZTXGLJ') {
-				return '지애픽'
+				return '지애픽';
 			}
 		},
 		commentInputPlaceholder() {
 			if (this.comments.length === 0) {
-				return "첫 댓글을 남겨보세요"
+				return "첫 댓글을 남겨보세요";
 			} else {
-				return "댓글을 남겨보세요"
+				return "댓글을 남겨보세요";
 			}
 		},
 		storageUserKey() {

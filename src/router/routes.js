@@ -15,6 +15,7 @@ const routes = [
     component: () => import('layouts/FullPageLayout.vue'),
     children: [
       { path: '/hom0111', component: () => import('pages/HOM/HOM_0111.vue') },
+      { path: '/menu', component: () => import('pages/Menu.vue') },
     ]
   },
   {

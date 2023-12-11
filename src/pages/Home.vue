@@ -37,6 +37,7 @@
       <p>G@에 알려주고 싶은 이야기가 있나요?</p>
       <button class="btn-primary-small" @click="linkToServiceComment()">네, 있어요</button>
     </section>
+    <BottomAppBar></BottomAppBar>
   </q-page>
 </template>
 
@@ -49,10 +50,12 @@ import ArticleCard from "components/card/ArticleCard.vue";
 import Tab from "components/tab/Tab.vue";
 import EventCard from "components/card/EventCard.vue";
 import NoticeCard from "components/card/NoticeCard.vue";
+import BottomAppBar from "components/app-bar/BottomAppBar.vue";
 
 export default defineComponent({
   name: 'IndexPage',
   components: {
+    BottomAppBar,
     'article-card': ArticleCard,
     'tab': Tab,
     'event-card': EventCard,

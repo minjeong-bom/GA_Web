@@ -49,6 +49,8 @@ export default {
   padding-bottom: 2px;
   border-bottom: 2px solid #fff;
   transition: all 0.5s;
+
+  cursor: pointer;
 }
 
 .tab-focus {

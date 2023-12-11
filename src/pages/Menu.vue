@@ -10,6 +10,7 @@ export default {
 					lable: '서비스 소개',
 					iconClass: 'fa-book',
 					subLable: '',
+          path: '/ser0000'
 				},
 				{
 					color: '',
@@ -40,12 +41,14 @@ export default {
 					lable: "공지사항",
 					iconClass: 'fa-thumbtack',
 					subLable: '',
+          path: 'not0000',
 				},
 				{
 					color: '',
 					lable: "이벤트",
 					iconClass: 'fa-gift',
 					subLable: '',
+          path: 'eve0000',
 				},
 				{
 					color: '',
@@ -102,7 +105,9 @@ export default {
 			}
 			// 작성자명 가공 함수 호출
 		},
-
+    closeMenu() {
+      this.$router.push('/');
+    }
 	},
 }
 </script>
@@ -116,7 +121,7 @@ export default {
 			<h1 class="headline-1">전체</h1>
 		</div>
 		<section>
-			<q-btn v-for="item in menuList" flat class="full-width">
+			<q-btn v-for="item in menuList" flat class="full-width" @click="this.$router.push(item.path)">
 				<div class="menu-item">
 					<div class="icon-lable-wrap">
 						<div class="icon-frame flex-center">

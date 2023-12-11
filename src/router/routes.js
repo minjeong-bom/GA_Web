@@ -19,6 +19,13 @@ const routes = [
     ]
   },
   {
+    path: '/ser',
+    component: () => import('layouts/FullPageLayout.vue'),
+    children: [
+      { path: '/ser0000', component: () => import('pages/SER/SER_0000.vue') },
+    ]
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login

@@ -182,3 +182,20 @@ h1, h2, h3, h4, h5, h6, p {
   line-height: 1.125rem; /* 128.571% */
   letter-spacing: -0.025rem;
 }
+
+.nomal-text-3 {
+  font-family: Pretendard;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%; /* 1.625rem */
+  letter-spacing: -0.0125rem;
+}
+
+.nomal-text-4 {
+  color: var(--k-45);
+  font-size: 1.1875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
+}

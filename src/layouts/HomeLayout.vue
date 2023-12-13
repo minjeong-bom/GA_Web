@@ -1,9 +1,13 @@
 <script>
 import TopBarMain from "components/app-bar/HomeTopBar.vue";
+import BottomAppBar from "components/app-bar/BottomAppBar.vue";
 
 export default {
   name: 'home-layout',
-  components: { TopBarMain },
+  components: {
+		TopBarMain,
+	  BottomAppBar,
+  },
 }
 </script>
 
@@ -13,12 +17,16 @@ export default {
       <q-page-container>
         <!-- 상단바 -->
         <top-bar-main></top-bar-main>
-        <router-view />
+        <router-view class="bottom-margin" />
+	      <!-- 하단바 -->
+	      <bottom-app-bar></bottom-app-bar>
       </q-page-container>
     </q-layout>
   </div>
 </template>
 
 <style>
-
+.bottom-margin {
+	margin-bottom: 10rem;
+}
 </style>

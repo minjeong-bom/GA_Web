@@ -35,7 +35,7 @@ export default {
       </div>
       <p class="lable" :class="{ 'focused-status' : inHome }" @click="navigateTo('/')">홈</p>
     </q-btn>
-    <q-btn flat class="bottom-app-bar-item" @click="navigateTo('/')">
+    <q-btn flat class="bottom-app-bar-item" @click="navigateTo('/search')">
       <div class="icon-wrap" :class="{ 'focused-status' : inSearch }">
         <q-icon name="search" />
       </div>
@@ -57,7 +57,7 @@ export default {
       <div class="icon-wrap" :class="{ 'focused-status' : inMy }">
         <q-icon name="emoji_emotions" />
       </div>
-      <p class="lable" :class="{ 'focused-status' : inMy }">마이</p>
+      <p class="lable" :class="{ 'focused-status' : inMy }" @click="navigateTo('/myp0000')">마이</p>
     </q-btn>
   </div>
 </template>

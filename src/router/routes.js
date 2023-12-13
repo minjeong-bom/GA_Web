@@ -1,6 +1,7 @@
 import Posting from "pages/Posting.vue";
 import Article from "pages/Article.vue";
 import Login from "pages/JOI/Login.vue";
+import Search from "pages/Search.vue";
 
 const routes = [
   {
@@ -19,11 +20,23 @@ const routes = [
     ]
   },
   {
+    path: '/myp',
+    component: () => import('layouts/FullPageLayout.vue'),
+    children: [
+      { path: '/myp0000', component: () => import('pages/MYP/MYP0000.vue') },
+    ]
+  },
+  {
     path: '/ser',
     component: () => import('layouts/FullPageLayout.vue'),
     children: [
       { path: '/ser0000', component: () => import('pages/SER/SER_0000.vue') },
     ]
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: Search
   },
   {
     path: '/login',

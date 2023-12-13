@@ -9,7 +9,6 @@
       <div>
         <!-- Article Card -->
         <tab :tabs="tabList" @changeTab="changeTab"></tab>
-        <!-- 테스트 -->
         <div v-for="item in articleList">
           <article-card
             :title="item.bc_title"
@@ -30,14 +29,13 @@
     </section>
 
     <!-- 아티클 더보기 -->
-    <button class="btn-learn-more">더 보기</button>
+    <button class="btn-learn-more" @click="addLoadArticle">더 보기</button>
     <!-- 피드백 -->
     <section class="feed-back-section">
       <img class="sun-animation" src="../assets/graphic/sun-animation.gif">
       <p>G@에 알려주고 싶은 이야기가 있나요?</p>
       <button class="btn-primary-small" @click="linkToServiceComment()">네, 있어요</button>
     </section>
-    <BottomAppBar></BottomAppBar>
   </q-page>
 </template>
 
@@ -81,7 +79,9 @@ export default defineComponent({
           title: '지애픽'
         },
       ],
+	    tabCategoryType: '',
       articleList: [],
+	    articleListLength: 5,
     }
   },
   created() {
@@ -90,39 +90,50 @@ export default defineComponent({
     this.changeTab(1);
   },
   mounted() {
-    this.getArticleList('all');
+    this.getArticleList('all', this.articleListLength);
   },
   methods: {
+	  addLoadArticle() {
+			this.articleListLength = this.articleListLength + 10;
+			this.getArticleList(this.tabCategoryType, this.articleListLength)
+	  },
 	  goToArticle(articleId) {
 		  this.$router.push({ path: '/article', query: { key: articleId } });
 	  },
     checkOnboard() {
-      if (this.userId) {
+      if (this.onboard) {
         return
       } else {
-        // this.$router.push('/login');
+        this.$router.push('/onb0000');
       }
     },
     checkLogin() {
-      if (this.onboardShow) {
-        // this.$router.push('/onboard');
+			this.checkOnboard();
+      if (this.userId) {
+        return
       } else {
-        return;
+	      this.$router.push('/login');
       }
     },
     changeTab(tabId) {
 	    this.articleList = [];
+	    this.articleListLength = 5;
+
 	    if (tabId === 1) {
 				this.getArticleList('');
+				this.tabCategoryType = '';
       } else if (tabId === 2) {
 	      this.getArticleList('story');
+		    this.tabCategoryType = 'story';
       } else if (tabId === 3) {
 	      this.getArticleList('skills');
+		    this.tabCategoryType = 'skills';
       } else {
 	      this.getArticleList('gapick');
+				this.tabCategoryType = 'gapick'
       }
     },
-    async getArticleList(category) {
+    async getArticleList(category, limit) {
       const commonConfig = {
         url: '/api/crud/lists/',
         data: {
@@ -132,7 +143,7 @@ export default defineComponent({
           "columns_opts": {
             "bc_foreign_key2": "SNXKQEZS"
           },
-          "limit": 5
+          "limit": limit
         },
         etc: {
           headers : {
@@ -201,7 +212,7 @@ export default defineComponent({
   },
   computed: {
     userId() {
-      return localStorage.getItem('user_id');
+      return localStorage.getItem('userId');
     },
     onboard() {
       return localStorage.getItem('isOnboard');

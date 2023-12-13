@@ -7,9 +7,9 @@
 			            :user-profile="''"
 			            :article-type="article.articleType"
 			            :view-count="article.viewCount"
-			            :writerName="article.createrName"
+			            :creater-name="article.createrName"
 			            :job-title="article.createrJob"
-			            :created-at="''"
+			            :created-at="article.createdAt"
 			            :control-ui="false"/>
 		</div>
 		<div class="headline-wrap">
@@ -167,7 +167,13 @@ export default {
 				const content = res.data.response.view;
 
 				this.article.articleType = content.bc_foreign_key;
-				this.article.articleType2 = content.bc_foreign_key2;
+				if (content.bc_foreign_key === 'DPORHCPV') {
+					this.article.articleType = '스토리';
+				} else if (content.bc_foreign_key === 'KWUOXKGM') {
+					this.article.articleType = '취업 스킬';
+				} else if (content.bc_foreign_key === 'CEZTXGLJ') {
+					this.article.articleType = '지애픽';
+				}
 
 				this.article.title = content.bc_title;
 				this.article.viewCount = content.bc_count;
@@ -199,11 +205,6 @@ export default {
 				this.article.createrName = response.mem_title;
 				this.article.createrJob = response.mem_job;
 
-				const categoryInfo = {
-					DPORHCPV: "스토리",
-					KWUOXKGM: "취업 스킬",
-					CEZTXGLJ: "지애픽"
-				};
 			} catch (e) {
 				console.error(e);
 			}

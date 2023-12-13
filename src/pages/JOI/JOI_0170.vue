@@ -85,7 +85,7 @@ export default {
 				label="총 경력이 몇 년인지 입력하세요"
 				maxlength="3"
 				type="tel"
-				style="font-size: 1.125rem"
+				style="font-size: 1.125rem;"
 			/>
 			<!-- 분야 -->
 			<q-select

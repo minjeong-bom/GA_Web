@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <!-- Card Id -->
-      <article-id :job-title="badgeTitle" :article-type="articleType" :article-type2="articleType2" :view-count="viewCount" :writer="writer" :created-at="createdAt"/>
+      <article-id :job-title="badgeTitle" :article-type="articleType2" :article-type2="articleType2" :view-count="viewCount" :creater-name="writer" :created-at="createdAt"/>
       <!-- Thumbnail & Title -->
       <div class="article-card-thumbnail">
         <div class="article-card-headline-wrap">
@@ -26,6 +26,7 @@
 
 <script>
 import ArticleId from "components/card/ArticleId.vue";
+import article from "../../pages/Article.vue";
 
 export default {
   components: {ArticleId},
@@ -49,6 +50,9 @@ export default {
     },
   },
 	computed: {
+		article() {
+			return article
+		},
 		titleText42 () {
 			if (this.title.length > 42) {
 				return this.title.substring(0, 42);

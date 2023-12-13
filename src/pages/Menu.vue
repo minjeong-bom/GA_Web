@@ -35,6 +35,7 @@ export default {
 					lable: "마이페이지",
 					iconClass: 'fa-user',
 					subLable: '',
+					path: '/myp0000',
 				},
 				{
 					color: '',

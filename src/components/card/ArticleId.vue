@@ -1,12 +1,12 @@
 <script>
 import timeAgo from '/src/timeData/timeAgo'
+import article from "../../pages/Article.vue";
 export default {
   name: "ArticleId",
-  props: {
+	props: {
     articleType: String,
-    articleType2: String,
     viewCount: String,
-    writer: String,
+	  createrName: String,
     jobTitle: String,
     createdAt: {
 			type: String,
@@ -29,15 +29,6 @@ export default {
 				return false;
 			}
     },
-	  categoryName() {
-			if (this.articleType === 'KWUOXKGM') {
-				return '취업스킬'
-			} else if (this.articleType === 'DPORHCPV') {
-				return '스토리'
-			} else if (this.articleType === 'CEZTXGLJ') {
-				return '지애픽'
-			}
-	  }
   }
 }
 </script>
@@ -54,9 +45,9 @@ export default {
       <!-- 00님이 000을 올렸어요 (하위메뉴) -->
       <div class="created-user-and-lable">
         <div class="created-user-info-wrap card-headline-1">
-          <span>{{ writer? writer : "익명" }}님이</span><span><span class="high-light">{{ categoryName }}</span>{{ articleType === '스토리'? '를' : '을' }} 올렸어요</span>
-          <div v-if="articleType2" class="cartegory2-lable">
-            <span>{{ articleType2 }}</span>
+          <span>{{ createrName ? createrName : "비공개 회원" }}님이</span><span><span class="high-light">{{ articleType }}</span>{{ articleType === '스토리'? '를' : '을' }} 올렸어요</span>
+          <div v-if="articleType" class="cartegory2-lable">
+            <span>{{ articleType }}</span>
           </div>
         </div>
       </div>

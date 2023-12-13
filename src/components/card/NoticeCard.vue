@@ -58,7 +58,7 @@ export default {
 			});
 		},
 		goToDetailView(id) {
-			this.$router.push({ path: '/eve0100', query: { key: id } });
+			this.$router.push({ path: '/not0100', query: { key: id } });
 		}
 	},
 }

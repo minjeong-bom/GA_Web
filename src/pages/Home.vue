@@ -86,7 +86,6 @@ export default defineComponent({
   },
   created() {
     this.checkOnboard();
-    this.checkLogin();
     this.changeTab(1);
   },
   mounted() {
@@ -102,13 +101,12 @@ export default defineComponent({
 	  },
     checkOnboard() {
       if (this.onboard) {
-        return
+        this.checkLogin();
       } else {
         this.$router.push('/onb0000');
       }
     },
     checkLogin() {
-			this.checkOnboard();
       if (this.userId) {
         return
       } else {

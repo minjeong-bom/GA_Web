@@ -2,7 +2,7 @@
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
 
 export default {
-  name: "MYR_2120",
+  name: "MYR_2130",
   components: {TextButtonTopBar},
   props: {
     goalArea: {

@@ -65,7 +65,10 @@ export default {
 			const regex = /[\S]+[시군](?=\s|$)/;
 			const match = text.match(regex);
 			this.cityName = match ? match[0] : '';
-		}
+		},
+    navigateTo(path) {
+      this.$router.push(path);
+    },
 	},
 	computed: {
 		localUserKey() {
@@ -147,7 +150,7 @@ export default {
 			</div>
 		</section>
 		<section class="my-menu-list">
-			<div class="my-menu flex-sb">
+			<div class="my-menu flex-sb" @click="navigateTo('/myr0000')">
 				<p style="display: flex; gap: 0.625rem; align-items: center;">
 					<i class="fa-solid fa-book"></i>
 					<span class="user-title"> 내 게시글</span>

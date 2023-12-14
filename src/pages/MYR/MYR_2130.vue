@@ -81,12 +81,12 @@ export default {
         </span>
       </p>
 
-      <q-file filled bottom-slots class="full-width" v-model="selectedFile" label="Label" counter>
+      <q-file filled bottom-slots class="full-width" v-model="selectedFile" label="프로필 사진" counter>
         <template v-slot:prepend>
-          <q-icon name="cloud_upload" @click.stop.prevent />
+          <q-icon name="add_a_photo"/>
         </template>
-        <template v-slot:append>
-          <q-icon name="close" @click.stop.prevent="selectedFile = null" class="cursor-pointer" />
+        <template v-slot:append >
+          <q-icon v-if="selectedFile" name="close" @click.stop.prevent="selectedFile = null" class="cursor-pointer"/>
         </template>
         <template v-slot:hint>
           png, jpeg만 가능

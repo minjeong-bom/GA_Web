@@ -4,10 +4,12 @@ import MYR_2120 from "pages/MYR/MYR_2120.vue";
 import MyrCard from "components/card/MyrCard.vue";
 import LineGuage from "components/data-visual/line-guage.vue";
 import MyrInfoCard from "components/card/MyrInfoCard.vue";
+import MYR_2130 from "pages/MYR/MYR_2130.vue";
 
 export default {
   name: "CreateMyResume",
   components: {
+    MYR_2130,
     MyrInfoCard,
     LineGuage,
     TextButtonTopBar,
@@ -21,6 +23,7 @@ export default {
       goalArea: '', // 목표 업종,
       goalCompany: '', // 목표 회사,
       mrpPhoto: '', // 사진,
+      mrpPhotoKey: '', // 사진,
       myHistory: {
         resm_cp_depart: [], // 회사 이름, 소속 부서
         resm_cp_field: [], // 회사 주요 담당 업무
@@ -52,6 +55,7 @@ export default {
       familys: Number,
       showModal: {
         myr2120: false,
+        myr2130: false,
       }
     }
   },
@@ -60,6 +64,33 @@ export default {
       this.goalArea = goalArea;
       this.goalCompany = goalCompany;
       this.closeModal('myr2120');
+    },
+    async saveProfileImage(key) {
+      debugger
+      this.closeModal('myr2130');
+      this.mrpPhotoKey = key;
+      // 아래는 저장된 이미지 재 조회
+      try {
+        const config = {
+          url: '/api/crud/single/' + key,
+          body: {
+            "prefix": "bc",
+            "alias": "bc",
+            "scopes": "bc_content"
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprinttest',
+            }
+          }
+        }
+        const result = await this.$api.post(config.url, config.body, config.etc);
+        console.log(result);
+        this.mrpPhoto = result.data.response.view.bc_content;
+        console.log(this.mrpPhoto);
+      } catch (e) {
+        console.error(e);
+      }
     },
     async saveMyResume() {
       try {
@@ -131,10 +162,16 @@ export default {
       if (card === 'myr2120') {
         this.showModal.myr2120 = true;
       }
+      if (card === 'myr2130') {
+        this.showModal.myr2130 = true;
+      }
     },
     closeModal(card) {
       if (card === 'myr2120') {
         this.showModal.myr2120 = false;
+      }
+      if (card === 'myr2130') {
+        this.showModal.myr2130 = false;
       }
     }
   },
@@ -146,19 +183,33 @@ export default {
       let value = 0;
 
       value += this.goalArea ? 16 : 0;
-      value += this.mrpPhoto ? 16 : 0;
+      value += this.mrpPhotoKey ? 16 : 0;
       value += this.myHistory.resm_cp_depart.length > 0 ? 16 : 0;
       value += this.myShool.resm_sc_title.length > 0 ? 16 : 0;
       value += this.myLanguage.resm_fl_category.length > 0 ? 32 : 0;
 
       return value;
-    }
+    },
+    goalResult() {
+      const arraySet = [
+        {
+          name: '목표 분야',
+          result: this.goalArea
+        },
+        {
+          name: '목표 기업',
+          result: this.goalCompany
+        }
+      ];
+
+      return arraySet;
+    },
   }
 }
 </script>
 
 <template>
-  <div>
+  <div class="myr-page">
     <text-button-top-bar :title-text="'이력서 작성'" :button-name="'저장'" @action="saveMyResume"></text-button-top-bar>
 
     <section class="section-md">
@@ -187,7 +238,7 @@ export default {
     <section class="section-l">
       <!-- 목표 분야 및 기업 -->
       <myr-card
-        v-if="!this.goalArea || !this.goalCompany"
+        v-if="!goalArea || !goalCompany"
         :card-head-line="'목표 분야 및 기업'"
         :card-title="'목표를 세우는 것이 가장 중요해요'"
         :card-thumb-name-imgae-name="'myr-card-thumb-1'"
@@ -198,16 +249,7 @@ export default {
       <myr-info-card
         v-else
         :card-head-line="'목표 분야 및 기업'"
-        :results="[
-          {
-          name: '목표 분야',
-          result: this.goalArea
-        },
-        {
-          name: '목표 기업',
-          result: this.goalCompany
-        }
-        ]"
+        :results="goalResult"
         @click="openModal('myr2120')"
       />
       <!-- 프로필 사진 -->
@@ -217,7 +259,10 @@ export default {
         :card-thumb-name-imgae-name="'myr-card-thumb-2'"
         :card-description="'기업의 62.6%가 이력서 사진 때문에 서류전형에서 지원자를 탈락시킨 경험이 있다고해요.'"
         :card-caption="'(사람인 이력서 사진 평가 조사 결과)'"
+        :uploadPhoto="mrpPhoto"
+        @click="openModal('myr2130')"
       />
+
       <!-- 경령 및 성과 -->
       <myr-card
         :card-head-line="'경력 및 성과'"
@@ -256,6 +301,12 @@ export default {
       :goal-area="goalArea"
       :goal-company="goalCompany"
       @saveGoalSetting="saveGoalSetting"
+      class="popup-modal"
+    />
+    <MYR_2130
+      v-if="showModal.myr2130"
+      :profile-image="mrpPhoto"
+      @saveProfileImage="saveProfileImage"
       class="popup-modal"
     />
   </div>

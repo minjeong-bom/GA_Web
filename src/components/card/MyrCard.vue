@@ -5,6 +5,7 @@ export default {
     cardHeadLine: String,
     cardTitle: String,
     cardThumbNameImgaeName: String,
+    uploadPhoto: String,
     cardDescription: String,
     cardCaption: String,
   }
@@ -23,7 +24,12 @@ export default {
         style="color: var(--labels-secondary)"
       />
     </div>
-    <div class="input-card">
+    <div v-if="uploadPhoto" class="input-card full-width">
+      <div>
+        <img class="profile-image" :src="'data:image/jpeg;base64,' + uploadPhoto"/>
+      </div>
+    </div>
+    <div class="input-card" v-else>
       <img :src="`src/assets/graphic/${cardThumbNameImgaeName}.png`"/>
       <div>
         <p class="input-card-title sub-title-1">
@@ -46,20 +52,6 @@ export default {
   align-self: stretch;
   gap: 5px;
   width: 100%;
-}
-
-.headline-3 {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-
-  color: var(--labels-secondary);
-
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 21px; /* 131.25% */
-  letter-spacing: -0.4px;
 }
 
 .input-card {
@@ -88,5 +80,11 @@ export default {
 .input-card img {
   width: 4.75rem;
   height: 4.75rem;
+}
+
+.profile-image {
+  width: 30% !important;
+  height: auto !important;
+  border-radius: 4px;
 }
 </style>

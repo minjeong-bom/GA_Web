@@ -5,59 +5,57 @@ export default {
   name: "MYR_2130",
   components: {TextButtonTopBar},
   props: {
-    goalArea: {
-      type: String,
-      default: '',
-    },
-    goalCompany: {
-      type: String,
-      default: '',
-    }
+    profileImage: String,
   },
   data() {
     return {
-      inputGoalArea: '',
-      inputGoalCompany: '',
-      backgroundList: [
-        "건설·건축",
-        "공공·복지",
-        "구매·자재·물류",
-        "교육",
-        "금융·보험",
-        "기획·전략",
-        "디자인",
-        "마케팅·홍보·조사",
-        "미디어·문화·스포츠",
-        "바이오·제약·식품",
-        "상품기획·MD",
-        "서비스",
-        "생산",
-        "연구·R&D",
-        "영업·판매·무역",
-        "운전·운송·배송",
-        "의료",
-        "인사·노무·HRD",
-        "IT개발·데이터",
-        "총무·법무·사무",
-        "회계·세무·재무",
-        "고객상담·TM"
-      ],
+      uploadImage : '',
+      selectedFile: '',
     }
   },
   mounted() {
-    this.inputGoalArea = this.goalArea;
-    this.inputGoalCompany = this.goalCompany;
+    this.uploadImage = this.profileImage;
   },
   methods: {
     save() {
-      this.$emit('saveGoalSetting', this.inputGoalArea, this.inputGoalCompany, );
+      this.uploadFile();
     },
-    navigateTo(path) {
-      this.$router.push(path);
-    },
-    openModal(modalName) {
-      if (modalName === '') {
+    uploadFile() {
+      if (this.selectedFile) {
+        const reader = new FileReader();
 
+        reader.onload = async (e) => {
+          const imageData = e.target.result.split(',')[1];
+
+          const config = {
+            url: '/api/crud/create',
+            body: {
+              data_prefix: "bc",
+              data_title: "profile",
+              data_foreign_key: "QAACWXSQ",
+              data_foreign_key2: "UZPWQOWR",
+              data_content: imageData,
+              data_writer_name: "TJXPOWQA"
+            },
+            etc: {
+              headers: {
+                'SPRINT-API-KEY': 'sprinttest',
+              }
+            }
+          };
+
+          try {
+            const result = await this.$api.post(config.url, config.body, config.etc);
+            console.log('Upload successful', result);
+            this.$emit('saveProfileImage', result.data.response.result.data_key);
+          } catch (error) {
+            console.error('Error uploading file', error);
+          }
+        };
+
+        reader.readAsDataURL(this.selectedFile);
+      } else {
+        alert('Please select an image to upload.');
       }
     }
   },
@@ -70,35 +68,39 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="myr-page">
     <text-button-top-bar :title-text="'이력서 작성'"></text-button-top-bar>
     <section class="sub-myr-view">
-      <q-select
-        v-model="inputGoalArea"
-        :options="backgroundList"
-        label="목표 업종"
-        placeholder="목표 업종을 선택하세요."
-        behavior="menu"
-        style="font-size: 1.125rem"
-        class="full-width"
-      />
-      <q-input
-        v-model="inputGoalCompany"
-        :options="backgroundList"
-        label="목표 기업"
-        placeholder="취업을 바라는 목표 기업명을 입력하세요."
-        behavior="menu"
-        style="font-size: 1.125rem"
-        class="full-width"
-      />
+      <p class="full-width">
+        <span class="sub-title-1">사진</span><br>
+        <span class="footnote">
+          많은 채용 전문가의 말에 따르면...<br>
+          사진은 첫인상을 좌우하는 결정적 요인이에요.<br>
+          목표 업종과 직무에 맞는 사진을 선택하는 것이 중요해요.
+          보통 3X4 비율의 반명함판 사진을 많이 사용해요.
+        </span>
+      </p>
+
+      <q-file filled bottom-slots class="full-width" v-model="selectedFile" label="Label" counter>
+        <template v-slot:prepend>
+          <q-icon name="cloud_upload" @click.stop.prevent />
+        </template>
+        <template v-slot:append>
+          <q-icon name="close" @click.stop.prevent="selectedFile = null" class="cursor-pointer" />
+        </template>
+        <template v-slot:hint>
+          png, jpeg만 가능
+        </template>
+      </q-file>
     </section>
+
     <q-btn
       dense
       size="lg"
       square
-      :disable="inputGoalArea === '' || inputGoalCompany === ''"
-      class="full-width bottom-fixed-btn btn-save nomal-text-3"
       @click="save()"
+      :disable="!selectedFile"
+      class="full-width bottom-fixed-btn btn-save nomal-text-3"
       style="background-color: var(--ga-red); color: #fff;">
       <span>저장</span>
     </q-btn>
@@ -110,19 +112,32 @@ export default {
   font-weight: 600 !important;
 }
 
-.sub-myr-view {
-  display: flex;
-  padding: 1.875rem 1rem 3.125rem 1rem;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-}
-
 </style>
 
 <style scoped>
 .bottom-fixed-btn {
   position: fixed;
   bottom: 0;
+}
+
+.footnote {
+  color: #808080;
+}
+
+.btn-upload-profile {
+  display: flex;
+  width: 13.125rem;
+  height: 17.5rem;
+  padding: 0rem 4.28125rem 0rem 4.34375rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  border: none;
+  border-radius: 0.75rem;
+  background: var(--BG-Secondary);
+
+  color: var(--ga-red);
 }
 </style>

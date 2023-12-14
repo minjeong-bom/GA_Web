@@ -52,25 +52,12 @@ export default {
     save() {
       this.$emit('saveGoalSetting', this.inputGoalArea, this.inputGoalCompany, );
     },
-    navigateTo(path) {
-      this.$router.push(path);
-    },
-    openModal(modalName) {
-      if (modalName === '') {
-
-      }
-    }
   },
-  computed: {
-    localUserKey() {
-      return localStorage.getItem('userKey');
-    }
-  }
 }
 </script>
 
 <template>
-  <div>
+  <div class="myr-page">
     <text-button-top-bar :title-text="'이력서 작성'"></text-button-top-bar>
     <section class="sub-myr-view">
       <q-select

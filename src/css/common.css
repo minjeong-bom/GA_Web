@@ -241,3 +241,10 @@
 
   color: var(--grays-gray-2);
 }
+
+.myr-modal-save-button {
+  margin-top: 2rem;
+  width: 100%;
+  background: var(--ga-red);
+  color: #fff;
+}

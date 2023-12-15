@@ -5,6 +5,7 @@ import MyrCard from "components/card/MyrCard.vue";
 import LineGuage from "components/data-visual/line-guage.vue";
 import MyrInfoCard from "components/card/MyrInfoCard.vue";
 import MYR_2130 from "pages/MYR/MYR_2130.vue";
+import MYR_2140 from "pages/MYR/MYR_2140.vue";
 
 export default {
   name: "CreateMyResume",
@@ -14,7 +15,8 @@ export default {
     LineGuage,
     TextButtonTopBar,
     MYR_2120,
-    MyrCard
+    MyrCard,
+    MYR_2140
   },
   data() {
     return {
@@ -54,8 +56,10 @@ export default {
       married: Boolean,
       familys: Number,
       showModal: {
+        scrollLock: false,
         myr2120: false,
         myr2130: false,
+        myr2140: false,
       }
     }
   },
@@ -92,6 +96,30 @@ export default {
         console.error(e);
       }
     },
+	  saveHistory(companyName, departmentName, yourJob, performance, start, end) {
+			this.closeModal('myr2140');
+
+		  if (companyName.length === departmentName.length) {
+			  this.myHistory.resm_cp_depart = companyName.map((item, index) => {
+				  return { companyName: item, departmentName: departmentName[index] };
+			  });
+		  } else {
+			  console.error('회사명과 부서의 배열 길이가 다릅니다');
+		  }
+
+			this.myHistory.resm_cp_field = yourJob;
+			this.myHistory.resm_cp_performance = performance;
+
+		  if (start.length === end.length) {
+			  this.myHistory.resm_cp_range = start.map((start, index) => {
+				  return { start: start, end: end[index] };
+			  });
+		  } else {
+			  console.error('시작 날짜와 종료 날짜의 배열 길이가 다릅니다.');
+		  }
+
+		  console.log(this.myHistory);
+	  },
     async saveMyResume() {
       try {
         const config = {
@@ -159,19 +187,28 @@ export default {
       this.$router.push(path);
     },
     openModal(card) {
+      this.showModal.scrollLock = true;
       if (card === 'myr2120') {
         this.showModal.myr2120 = true;
       }
       if (card === 'myr2130') {
         this.showModal.myr2130 = true;
       }
+      if (card === 'myr2140') {
+        this.showModal.myr2140 = true;
+      }
     },
     closeModal(card) {
+      this.showModal.scrollLock = false;
+
       if (card === 'myr2120') {
         this.showModal.myr2120 = false;
       }
       if (card === 'myr2130') {
         this.showModal.myr2130 = false;
+      }
+      if (card === 'myr2140') {
+        this.showModal.myr2140 = false;
       }
     }
   },
@@ -212,89 +249,93 @@ export default {
   <div class="myr-page">
     <text-button-top-bar :title-text="'이력서 작성'" :button-name="'저장'" @action="saveMyResume"></text-button-top-bar>
 
-    <section class="section-md">
-      <q-input
-        v-model="myrTitle"
-        class="full-width"
-        hint="제출할 기업/기관 등으로 구분해 보세요. 예) ㅇㅇ기업용, ㅇㅇ업무용"
-        label="이력서명"></q-input>
-    </section>
+    <div :class="{ 'background-scroll-rock' : showModal.scrollLock }">
+      <section class="section-md">
+        <q-input
+          v-model="myrTitle"
+          class="full-width"
+          hint="제출할 기업/기관 등으로 구분해 보세요. 예) ㅇㅇ기업용, ㅇㅇ업무용"
+          label="이력서명"></q-input>
+      </section>
 
-    <section class="section-s">
-      <h3 class="headline-3">이직 또는 전직 여부
-        <q-icon name="info"></q-icon>
-      </h3>
-      <div class="flex-sb">
-        <q-radio v-model="userGoal" val="이직" label="이직"/>
-        <q-radio v-model="userGoal" val="전직" label="전직"/>
-      </div>
-    </section>
+      <section class="section-s">
+        <h3 class="headline-3">이직 또는 전직 여부
+          <q-icon name="info"></q-icon>
+        </h3>
+        <div class="flex-sb">
+          <q-radio v-model="userGoal" val="이직" label="이직"/>
+          <q-radio v-model="userGoal" val="전직" label="전직"/>
+        </div>
+      </section>
 
-    <section class="section-s">
-      <h3 class="headline-3">이력서 작성 완성도</h3>
-      <line-guage :value="donePersent"></line-guage>
-    </section>
+      <section class="section-s">
+        <h3 class="headline-3">이력서 작성 완성도</h3>
+        <line-guage :value="donePersent"></line-guage>
+      </section>
 
-    <section class="section-l">
-      <!-- 목표 분야 및 기업 -->
-      <myr-card
-        v-if="!goalArea || !goalCompany"
-        :card-head-line="'목표 분야 및 기업'"
-        :card-title="'목표를 세우는 것이 가장 중요해요'"
-        :card-thumb-name-imgae-name="'myr-card-thumb-1'"
-        :card-description="'기업마다 요구하는 역량이나 우대사항은 모두 달라요. 기업은 요구사항에 맞는 적합한 인재를 원하죠. 그래서 목표에 맞게 준비를 해야해요.'"
-        @click="openModal('myr2120')"
-        @saveGoalSetting="saveGoalSetting"
-      />
-      <myr-info-card
-        v-else
-        :card-head-line="'목표 분야 및 기업'"
-        :results="goalResult"
-        @click="openModal('myr2120')"
-      />
-      <!-- 프로필 사진 -->
-      <myr-card
-        :card-head-line="'프로필 사진'"
-        :card-title="'돋보이는 사진은 이력서를 각인시키는 효과가 있어요'"
-        :card-thumb-name-imgae-name="'myr-card-thumb-2'"
-        :card-description="'기업의 62.6%가 이력서 사진 때문에 서류전형에서 지원자를 탈락시킨 경험이 있다고해요.'"
-        :card-caption="'(사람인 이력서 사진 평가 조사 결과)'"
-        :uploadPhoto="mrpPhoto"
-        @click="openModal('myr2130')"
-      />
+      <section class="section-l">
+        <!-- 목표 분야 및 기업 -->
+        <myr-card
+          v-if="!goalArea || !goalCompany"
+          :card-head-line="'목표 분야 및 기업'"
+          :card-title="'목표를 세우는 것이 가장 중요해요'"
+          :card-thumb-name-imgae-name="'myr-card-thumb-1'"
+          :card-description="'기업마다 요구하는 역량이나 우대사항은 모두 달라요. 기업은 요구사항에 맞는 적합한 인재를 원하죠. 그래서 목표에 맞게 준비를 해야해요.'"
+          @click="openModal('myr2120')"
+          @saveGoalSetting="saveGoalSetting"
+        />
+        <myr-info-card
+          v-else
+          :card-head-line="'목표 분야 및 기업'"
+          :results="goalResult"
+          @click="openModal('myr2120')"
+        />
+        <!-- 프로필 사진 -->
+        <myr-card
+          :card-head-line="'프로필 사진'"
+          :card-title="'돋보이는 사진은 이력서를 각인시키는 효과가 있어요'"
+          :card-thumb-name-imgae-name="'myr-card-thumb-2-1'"
+          :card-description="'기업의 62.6%가 이력서 사진 때문에 서류전형에서 지원자를 탈락시킨 경험이 있다고해요.'"
+          :card-caption="'(사람인 이력서 사진 평가 조사 결과)'"
+          :uploadPhoto="mrpPhoto"
+          @click="openModal('myr2130')"
+        />
 
-      <!-- 경령 및 성과 -->
-      <myr-card
-        :card-head-line="'경력 및 성과'"
-        :card-title="'목표하는 기업에 맞는 경력과 성과를 작성하세요.'"
-        :card-thumb-name-imgae-name="'myr-card-thumb-2-1'"
-        :card-description="'경력사항의 배점은 약 10%를 차지해요. 유사업무 경력이 2개 이상일 때 좋은 점수를 받을 수 있어요.'"
-        :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
-      />
-      <!-- 학력 및 외국어 -->
-      <myr-card
-        :card-head-line="'학력 및 외국어'"
-        :card-title="'최종 학력과 관련 전공을 중심으로 작성하는 것이 좋아요. 업무에 직접적 연관이 있는 외국어는 우대해줘요'"
-        :card-thumb-name-imgae-name="'myr-card-thumb-4'"
-        :card-description="'학력과 어학의 배점은 각 45%, 10% 정도의 비중을 차지해요. 전공 관련성과 학점이 약 20%를 차지하고, 대학원의 경우 가점이 있어요.'"
-        :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
-      />
-      <!-- 자격 및 기타 교육 -->
-      <myr-card
-        :card-head-line="'자격 및 기타 교육'"
-        :card-title="'기업이 요구하는 역량과 관련된 자격 및 교육 사항은 신뢰를 더해줄 수 있어요'"
-        :card-thumb-name-imgae-name="'myr-card-thumb-5'"
-        :card-description="'자격의 배점은 약 10% 정도의 비중을 차지해요. 기타 교육 사항은 약 5%의 추가 점수를 받을 수 있어요.'"
-        :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
-      />
-      <!-- 인적 사항 -->
-      <myr-card
-        :card-head-line="'인적 사항'"
-        :card-title="'인적 사항은 서류 전형 필수 정보에요'"
-        :card-thumb-name-imgae-name="'myr-card-thumb-6'"
-        :card-description="'가족 관계 확인을 위해 필요해요.'"
-      />
-    </section>
+        <!-- 경령 및 성과 -->
+        <myr-card
+          :card-head-line="'경력 및 성과'"
+          :card-title="'목표하는 기업에 맞는 경력과 성과를 작성하세요.'"
+          :card-thumb-name-imgae-name="'myr-card-thumb-2'"
+          :card-description="'경력사항의 배점은 약 10%를 차지해요. 유사업무 경력이 2개 이상일 때 좋은 점수를 받을 수 있어요.'"
+          :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
+          @click="openModal('myr2140')"
+        />
+        <!-- 학력 및 외국어 -->
+        <myr-card
+          :card-head-line="'학력 및 외국어'"
+          :card-title="'최종 학력과 관련 전공을 중심으로 작성하는 것이 좋아요. 업무에 직접적 연관이 있는 외국어는 우대해줘요'"
+          :card-thumb-name-imgae-name="'myr-card-thumb-4'"
+          :card-description="'학력과 어학의 배점은 각 45%, 10% 정도의 비중을 차지해요. 전공 관련성과 학점이 약 20%를 차지하고, 대학원의 경우 가점이 있어요.'"
+          :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
+        />
+        <!-- 자격 및 기타 교육 -->
+        <myr-card
+          :card-head-line="'자격 및 기타 교육'"
+          :card-title="'기업이 요구하는 역량과 관련된 자격 및 교육 사항은 신뢰를 더해줄 수 있어요'"
+          :card-thumb-name-imgae-name="'myr-card-thumb-5'"
+          :card-description="'자격의 배점은 약 10% 정도의 비중을 차지해요. 기타 교육 사항은 약 5%의 추가 점수를 받을 수 있어요.'"
+          :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
+        />
+        <!-- 인적 사항 -->
+        <myr-card
+          :card-head-line="'인적 사항'"
+          :card-title="'인적 사항은 서류 전형 필수 정보에요'"
+          :card-thumb-name-imgae-name="'myr-card-thumb-6'"
+          :card-description="'가족 관계 확인을 위해 필요해요.'"
+        />
+      </section>
+    </div>
+
     <!-- 하위 컴포넌트 -->
     <MYR_2120
       v-if="showModal.myr2120"
@@ -309,10 +350,20 @@ export default {
       @saveProfileImage="saveProfileImage"
       class="popup-modal"
     />
+    <MYR_2140
+      v-if="showModal.myr2140"
+      class="popup-modal"
+      @saveHistory="saveHistory"
+    />
   </div>
 </template>
 
 <style scoped>
+.background-scroll-rock {
+  height: 0;
+  overflow: hidden;
+}
+
 .section-md {
   display: flex;
   width: 100%;
@@ -347,5 +398,6 @@ export default {
   z-index: 100;
   width: 100%;
   height: 100%;
+  overflow: scroll;
 }
 </style>

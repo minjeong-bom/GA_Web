@@ -92,18 +92,18 @@ export default {
           png, jpeg만 가능
         </template>
       </q-file>
+
+      <q-btn
+        flat
+        rounded
+        size="lg"
+        @click="save()"
+        :disable="!selectedFile"
+        label="저장"
+        class="full-width myr-modal-save-button nomal-text-3"/>
     </section>
 
-    <q-btn
-      dense
-      size="lg"
-      square
-      @click="save()"
-      :disable="!selectedFile"
-      class="full-width bottom-fixed-btn btn-save nomal-text-3"
-      style="background-color: var(--ga-red); color: #fff;">
-      <span>저장</span>
-    </q-btn>
+
   </div>
 </template>
 

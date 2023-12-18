@@ -6,17 +6,19 @@ import LineGuage from "components/data-visual/line-guage.vue";
 import MyrInfoCard from "components/card/MyrInfoCard.vue";
 import MYR_2130 from "pages/MYR/MYR_2130.vue";
 import MYR_2140 from "pages/MYR/MYR_2140.vue";
+import MYR_2150 from "pages/MYR/MYR_2150.vue";
 
 export default {
   name: "CreateMyResume",
   components: {
-    MYR_2130,
     MyrInfoCard,
     LineGuage,
     TextButtonTopBar,
+	  MyrCard,
     MYR_2120,
-    MyrCard,
-    MYR_2140
+	  MYR_2130,
+    MYR_2140,
+	  MYR_2150
   },
   data() {
     return {
@@ -60,6 +62,7 @@ export default {
         myr2120: false,
         myr2130: false,
         myr2140: false,
+        myr2150: false,
       }
     }
   },
@@ -119,6 +122,9 @@ export default {
 		  }
 
 		  console.log(this.myHistory);
+	  },
+	  saveSchoolAndLanguage() {
+			console.log('saved');
 	  },
     async saveMyResume() {
       try {
@@ -197,6 +203,9 @@ export default {
       if (card === 'myr2140') {
         this.showModal.myr2140 = true;
       }
+	    if (card === 'myr2150') {
+		    this.showModal.myr2150 = true;
+	    }
     },
     closeModal(card) {
       this.showModal.scrollLock = false;
@@ -210,6 +219,9 @@ export default {
       if (card === 'myr2140') {
         this.showModal.myr2140 = false;
       }
+	    if (card === 'myr2150') {
+		    this.showModal.myr2150 = false;
+	    }
     }
   },
   computed: {
@@ -317,6 +329,7 @@ export default {
           :card-thumb-name-imgae-name="'myr-card-thumb-4'"
           :card-description="'학력과 어학의 배점은 각 45%, 10% 정도의 비중을 차지해요. 전공 관련성과 학점이 약 20%를 차지하고, 대학원의 경우 가점이 있어요.'"
           :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
+          @click="openModal('myr2150')"
         />
         <!-- 자격 및 기타 교육 -->
         <myr-card
@@ -355,6 +368,11 @@ export default {
       class="popup-modal"
       @saveHistory="saveHistory"
     />
+	  <MYR_2150
+		  v-if="showModal.myr2150"
+		  class="popup-modal"
+		  @saveSchoolAndLanguage="saveSchoolAndLanguage"
+	  />
   </div>
 </template>
 

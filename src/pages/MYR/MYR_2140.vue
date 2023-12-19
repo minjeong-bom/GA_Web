@@ -1,6 +1,24 @@
 <script>
 export default {
 	name: "MYR_2140",
+  props: {
+    depart: {
+      type: Array,
+      default: [],
+    },
+    range: {
+      type: Array,
+      default: [],
+    },
+    performances: {
+      type: Array,
+      default: [],
+    },
+    filed: {
+      type: Array,
+      default: [],
+    }
+  },
 	data() {
 		return {
 			groupCount: 1,
@@ -12,6 +30,22 @@ export default {
 			end: [],
 		}
 	},
+  mounted() {
+    if (this.range[0]) {
+      this.groupCount = this.range.length;
+
+      this.depart.forEach(item => {
+        this.companyName.push(item.companyName);
+        this.departmentName.push(item.departmentName);
+      });
+      this.range.forEach(item => {
+        this.start.push(item.start);
+        this.end.push(item.end);
+      });
+      this.yourJob = this.filed;
+      this.performance = this.performances;
+    }
+  },
 	methods: {
 		addGroup() {
 			this.groupCount = this.groupCount + 1;
@@ -22,18 +56,14 @@ export default {
 	},
 	computed: {
 		doneInput() {
-			let result = false;
-			if (
-				this.groupCount === this.companyName.length &&
-				this.groupCount === this.departmentName.length &&
-				this.groupCount === this.yourJob.length &&
-				this.groupCount === this.start.length &&
-				this.groupCount === this.performance.length &&
-				this.groupCount === this.end.length
-			) {
-				result = true;
-			}
-			return result;
+			return (
+        this.groupCount === this.companyName.length &&
+        this.groupCount === this.departmentName.length &&
+        this.groupCount === this.yourJob.length &&
+        this.groupCount === this.start.length &&
+        this.groupCount === this.performance.length &&
+        this.groupCount === this.end.length
+      )
 		}
 	}
 }

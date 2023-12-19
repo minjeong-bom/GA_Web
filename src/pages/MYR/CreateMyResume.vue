@@ -14,11 +14,11 @@ export default {
     MyrInfoCard,
     LineGuage,
     TextButtonTopBar,
-	  MyrCard,
+    MyrCard,
     MYR_2120,
-	  MYR_2130,
+    MYR_2130,
     MYR_2140,
-	  MYR_2150
+    MYR_2150
   },
   data() {
     return {
@@ -34,7 +34,7 @@ export default {
         resm_cp_range: [], // 회사 근무기간
         resm_cp_performance: [], // 회사 성과
       }, // 경력 및 성과,
-      myShool: {
+      mySchool: {
         resm_sc_title: [], // 학력 학교명
         resm_sc_major: [], // 학력 전공
         resm_sc_range: [], // 학력 재학기간
@@ -99,33 +99,45 @@ export default {
         console.error(e);
       }
     },
-	  saveHistory(companyName, departmentName, yourJob, performance, start, end) {
-			this.closeModal('myr2140');
+    saveHistory(companyName, departmentName, yourJob, performance, start, end) {
+      this.closeModal('myr2140');
 
-		  if (companyName.length === departmentName.length) {
-			  this.myHistory.resm_cp_depart = companyName.map((item, index) => {
-				  return { companyName: item, departmentName: departmentName[index] };
-			  });
-		  } else {
-			  console.error('회사명과 부서의 배열 길이가 다릅니다');
-		  }
+      if (companyName.length === departmentName.length) {
+        this.myHistory.resm_cp_depart = companyName.map((item, index) => {
+          return {companyName: item, departmentName: departmentName[index]};
+        });
+      } else {
+        console.error('회사명과 부서의 배열 길이가 다릅니다');
+      }
 
-			this.myHistory.resm_cp_field = yourJob;
-			this.myHistory.resm_cp_performance = performance;
+      this.myHistory.resm_cp_field = yourJob;
+      this.myHistory.resm_cp_performance = performance;
 
-		  if (start.length === end.length) {
-			  this.myHistory.resm_cp_range = start.map((start, index) => {
-				  return { start: start, end: end[index] };
-			  });
-		  } else {
-			  console.error('시작 날짜와 종료 날짜의 배열 길이가 다릅니다.');
-		  }
+      if (start.length === end.length) {
+        this.myHistory.resm_cp_range = start.map((start, index) => {
+          return {start: start, end: end[index]};
+        });
+      } else {
+        console.error('시작 날짜와 종료 날짜의 배열 길이가 다릅니다.');
+      }
 
-		  console.log(this.myHistory);
-	  },
-	  saveSchoolAndLanguage() {
-			console.log('saved');
-	  },
+      console.log(this.myHistory);
+    },
+    saveSchoolAndLang(schoolName, schoolRange1, schoolRange2, schoolMagor, languageType, languageRLevel, languageWLevel, languageLLevel) {
+      this.closeModal('myr2150');
+
+      this.mySchool.resm_sc_title = schoolName;
+      this.mySchool.resm_sc_major = schoolMagor;
+      if (schoolRange1.length === schoolRange2.length) {
+        this.mySchool.resm_sc_range = schoolRange1.map((schoolRange1, index) => {
+          return {start: schoolRange1, end: schoolRange2[index]};
+        })
+      };
+      this.myLanguage.resm_fl_category = languageType;
+      this.myLanguage.resm_fl_speak = languageLLevel;
+      this.myLanguage.resm_fl_read = languageRLevel;
+      this.myLanguage.resm_fl_write = languageWLevel;
+    },
     async saveMyResume() {
       try {
         const config = {
@@ -146,9 +158,9 @@ export default {
             resm_cp_range: this.myHistory.resm_cp_range, // 회사 근무기간
             resm_cp_performance: this.myHistory.resm_cp_performance, // 회사 성과
             // 학력
-            resm_sc_title: this.myShool.resm_sc_title, // 학력 학교명
-            resm_sc_major: this.myShool.resm_sc_major, // 학력 전공
-            resm_sc_range: this.myShool.resm_sc_range, // 학력 재학기간
+            resm_sc_title: this.mySchool.resm_sc_title, // 학력 학교명
+            resm_sc_major: this.mySchool.resm_sc_major, // 학력 전공
+            resm_sc_range: this.mySchool.resm_sc_range, // 학력 재학기간
             // 외국어
             resm_fl_category: this.myLanguage.resm_fl_category, // 외국어 종류
             resm_fl_write: this.myLanguage.resm_fl_write, // 외국어 수준 쓰기
@@ -203,9 +215,9 @@ export default {
       if (card === 'myr2140') {
         this.showModal.myr2140 = true;
       }
-	    if (card === 'myr2150') {
-		    this.showModal.myr2150 = true;
-	    }
+      if (card === 'myr2150') {
+        this.showModal.myr2150 = true;
+      }
     },
     closeModal(card) {
       this.showModal.scrollLock = false;
@@ -219,9 +231,9 @@ export default {
       if (card === 'myr2140') {
         this.showModal.myr2140 = false;
       }
-	    if (card === 'myr2150') {
-		    this.showModal.myr2150 = false;
-	    }
+      if (card === 'myr2150') {
+        this.showModal.myr2150 = false;
+      }
     }
   },
   computed: {
@@ -234,7 +246,7 @@ export default {
       value += this.goalArea ? 16 : 0;
       value += this.mrpPhotoKey ? 16 : 0;
       value += this.myHistory.resm_cp_depart.length > 0 ? 16 : 0;
-      value += this.myShool.resm_sc_title.length > 0 ? 16 : 0;
+      value += this.mySchool.resm_sc_title.length > 0 ? 16 : 0;
       value += this.myLanguage.resm_fl_category.length > 0 ? 32 : 0;
 
       return value;
@@ -253,6 +265,16 @@ export default {
 
       return arraySet;
     },
+    myHistoryResult() {
+      const arraySet = [
+        {
+          name: '경력 사항',
+          result: this.myHistory
+        },
+      ];
+
+      return arraySet;
+    }
   }
 }
 </script>
@@ -315,11 +337,18 @@ export default {
 
         <!-- 경령 및 성과 -->
         <myr-card
+          v-if="myHistory.resm_cp_field"
           :card-head-line="'경력 및 성과'"
           :card-title="'목표하는 기업에 맞는 경력과 성과를 작성하세요.'"
           :card-thumb-name-imgae-name="'myr-card-thumb-2'"
           :card-description="'경력사항의 배점은 약 10%를 차지해요. 유사업무 경력이 2개 이상일 때 좋은 점수를 받을 수 있어요.'"
           :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
+          @click="openModal('myr2140')"
+        />
+        <myr-info-card
+          v-else
+          :card-head-line="'경력 및 성과'"
+          :results="myHistoryResult"
           @click="openModal('myr2140')"
         />
         <!-- 학력 및 외국어 -->
@@ -365,14 +394,25 @@ export default {
     />
     <MYR_2140
       v-if="showModal.myr2140"
+      :depart="myHistory.resm_cp_depart"
+      :range="myHistory.resm_cp_range"
+      :performances="myHistory.resm_cp_performance"
+      :filed="myHistory.resm_cp_field"
       class="popup-modal"
       @saveHistory="saveHistory"
     />
-	  <MYR_2150
-		  v-if="showModal.myr2150"
-		  class="popup-modal"
-		  @saveSchoolAndLanguage="saveSchoolAndLanguage"
-	  />
+    <MYR_2150
+      v-if="showModal.myr2150"
+      class="popup-modal"
+      :saved-school-name="mySchool.resm_sc_title"
+      :saved-school-range="mySchool.resm_sc_range"
+      :saved-school-majors="mySchool.resm_sc_major"
+      :saved-language-names="myLanguage.resm_fl_category"
+      :saved-laugage-r-level="myLanguage.resm_fl_read"
+      :saved-laguage-w-level="myLanguage.resm_fl_write"
+      :saved-langeage-l-levels="myLanguage.resm_fl_speak"
+      @saveSchoolAndLang="saveSchoolAndLang"
+    />
   </div>
 </template>
 

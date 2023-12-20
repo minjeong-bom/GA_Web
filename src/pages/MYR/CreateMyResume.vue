@@ -1,12 +1,13 @@
 <script>
-import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
-import MYR_2120 from "pages/MYR/MYR_2120.vue";
-import MyrCard from "components/card/MyrCard.vue";
-import LineGuage from "components/data-visual/line-guage.vue";
-import MyrInfoCard from "components/card/MyrInfoCard.vue";
-import MYR_2130 from "pages/MYR/MYR_2130.vue";
-import MYR_2140 from "pages/MYR/MYR_2140.vue";
-import MYR_2150 from "pages/MYR/MYR_2150.vue";
+import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue"
+import MYR_2120 from "pages/MYR/MYR_2120.vue"
+import MyrCard from "components/card/MyrCard.vue"
+import LineGuage from "components/data-visual/line-guage.vue"
+import MyrInfoCard from "components/card/MyrInfoCard.vue"
+import MYR_2130 from "pages/MYR/MYR_2130.vue"
+import MYR_2140 from "pages/MYR/MYR_2140.vue"
+import MYR_2150 from "pages/MYR/MYR_2150.vue"
+import MYR_2160 from "pages/MYR/MYR_2160.vue"
 
 export default {
   name: "CreateMyResume",
@@ -18,7 +19,8 @@ export default {
     MYR_2120,
     MYR_2130,
     MYR_2140,
-    MYR_2150
+    MYR_2150,
+    MYR_2160
   },
   data() {
     return {
@@ -63,19 +65,19 @@ export default {
         myr2130: false,
         myr2140: false,
         myr2150: false,
+        myr2160: false,
       }
     }
   },
   methods: {
     saveGoalSetting(goalArea, goalCompany) {
-      this.goalArea = goalArea;
-      this.goalCompany = goalCompany;
-      this.closeModal('myr2120');
+      this.goalArea = goalArea
+      this.goalCompany = goalCompany
+      this.closeModal('myr2120')
     },
     async saveProfileImage(key) {
-      debugger
-      this.closeModal('myr2130');
-      this.mrpPhotoKey = key;
+      this.closeModal('myr2130')
+      this.mrpPhotoKey = key
       // 아래는 저장된 이미지 재 조회
       try {
         const config = {
@@ -91,52 +93,69 @@ export default {
             }
           }
         }
-        const result = await this.$api.post(config.url, config.body, config.etc);
-        console.log(result);
-        this.mrpPhoto = result.data.response.view.bc_content;
-        console.log(this.mrpPhoto);
+        const result = await this.$api.post(config.url, config.body, config.etc)
+        console.log(result)
+        this.mrpPhoto = result.data.response.view.bc_content
+        console.log(this.mrpPhoto)
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
     },
     saveHistory(companyName, departmentName, yourJob, performance, start, end) {
-      this.closeModal('myr2140');
+      this.closeModal('myr2140')
 
       if (companyName.length === departmentName.length) {
         this.myHistory.resm_cp_depart = companyName.map((item, index) => {
-          return {companyName: item, departmentName: departmentName[index]};
-        });
+          return {companyName: item, departmentName: departmentName[index]}
+        })
       } else {
-        console.error('회사명과 부서의 배열 길이가 다릅니다');
+        console.error('회사명과 부서의 배열 길이가 다릅니다')
       }
 
-      this.myHistory.resm_cp_field = yourJob;
-      this.myHistory.resm_cp_performance = performance;
+      this.myHistory.resm_cp_field = yourJob
+      this.myHistory.resm_cp_performance = performance
 
       if (start.length === end.length) {
         this.myHistory.resm_cp_range = start.map((start, index) => {
-          return {start: start, end: end[index]};
-        });
+          return {start: start, end: end[index]}
+        })
       } else {
-        console.error('시작 날짜와 종료 날짜의 배열 길이가 다릅니다.');
+        console.error('시작 날짜와 종료 날짜의 배열 길이가 다릅니다.')
       }
 
-      console.log(this.myHistory);
+      console.log(this.myHistory)
     },
     saveSchoolAndLang(schoolName, schoolRange1, schoolRange2, schoolMagor, languageType, languageRLevel, languageWLevel, languageLLevel) {
-      this.closeModal('myr2150');
-
-      this.mySchool.resm_sc_title = schoolName;
-      this.mySchool.resm_sc_major = schoolMagor;
+      this.mySchool.resm_sc_title = schoolName
+      this.mySchool.resm_sc_major = schoolMagor
       if (schoolRange1.length === schoolRange2.length) {
         this.mySchool.resm_sc_range = schoolRange1.map((schoolRange1, index) => {
-          return {start: schoolRange1, end: schoolRange2[index]};
+          return {start: schoolRange1, end: schoolRange2[index]}
         })
-      };
-      this.myLanguage.resm_fl_category = languageType;
-      this.myLanguage.resm_fl_speak = languageLLevel;
-      this.myLanguage.resm_fl_read = languageRLevel;
-      this.myLanguage.resm_fl_write = languageWLevel;
+      } else {
+        console.error('시작 날짜와 종료 날짜의 배열 길이가 다릅니다.')
+      }
+
+      this.myLanguage.resm_fl_category = languageType
+      this.myLanguage.resm_fl_speak = languageLLevel
+      this.myLanguage.resm_fl_read = languageRLevel
+      this.myLanguage.resm_fl_write = languageWLevel
+
+      this.closeModal('myr2150')
+    },
+    saveLicenseAndEdu(licenseName, licenseInst, licenseDate, eduName, eduInst, eduDateStart, eduDateEnd) {
+      this.myLisence.resm_ct_title = licenseName
+      this.myLisence.resm_ct_inst = eduInst
+      this.myLisence.resm_ct_date = licenseDate
+      this.myEducation.resm_ed_title = eduName
+      this.myEducation.resm_ed_inst = eduInst
+      if (eduDateStart.length === eduDateEnd.length) {
+        this.mySchool.resm_sc_range = eduDateStart.map((eduDateStart, index) => {
+          return {start: eduDateStart, end: eduDateEnd[index]}
+        })
+      }
+
+      this.closeModal('myr2160')
     },
     async saveMyResume() {
       try {
@@ -196,60 +215,66 @@ export default {
             }
           }
         }
-        const result = this.$api.post(config.url, config.body, config.etc);
+        const result = this.$api.post(config.url, config.body, config.etc)
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
     },
     navigateTo(path) {
-      this.$router.push(path);
+      this.$router.push(path)
     },
     openModal(card) {
-      this.showModal.scrollLock = true;
+      this.showModal.scrollLock = true
       if (card === 'myr2120') {
-        this.showModal.myr2120 = true;
+        this.showModal.myr2120 = true
       }
       if (card === 'myr2130') {
-        this.showModal.myr2130 = true;
+        this.showModal.myr2130 = true
       }
       if (card === 'myr2140') {
-        this.showModal.myr2140 = true;
+        this.showModal.myr2140 = true
       }
       if (card === 'myr2150') {
-        this.showModal.myr2150 = true;
+        this.showModal.myr2150 = true
+      }
+      if (card === 'myr2160') {
+        this.showModal.myr2160 = true
       }
     },
     closeModal(card) {
-      this.showModal.scrollLock = false;
+      this.showModal.scrollLock = false
 
       if (card === 'myr2120') {
-        this.showModal.myr2120 = false;
+        this.showModal.myr2120 = false
       }
       if (card === 'myr2130') {
-        this.showModal.myr2130 = false;
+        this.showModal.myr2130 = false
       }
       if (card === 'myr2140') {
-        this.showModal.myr2140 = false;
+        this.showModal.myr2140 = false
       }
       if (card === 'myr2150') {
-        this.showModal.myr2150 = false;
+        this.showModal.myr2150 = false
+      }
+      if (card === 'myr2160') {
+        this.showModal.myr2160 = false
       }
     }
   },
   computed: {
     localUserKey() {
-      return localStorage.getItem('userKey');
+      return localStorage.getItem('userKey')
     },
     donePersent() {
-      let value = 0;
+      let value = 0
 
-      value += this.goalArea ? 16 : 0;
-      value += this.mrpPhotoKey ? 16 : 0;
-      value += this.myHistory.resm_cp_depart.length > 0 ? 16 : 0;
-      value += this.mySchool.resm_sc_title.length > 0 ? 16 : 0;
-      value += this.myLanguage.resm_fl_category.length > 0 ? 32 : 0;
+      value += this.goalArea ? 16 : 0
+      value += this.mrpPhotoKey ? 16 : 0
+      value += this.myHistory.resm_cp_depart.length > 0 ? 16 : 0
+      value += this.mySchool.resm_sc_title.length > 0 ? 16 : 0
+      value += this.myLanguage.resm_fl_category.length > 0 ? 32 : 0
 
-      return value;
+      return value
     },
     goalResult() {
       const arraySet = [
@@ -261,19 +286,55 @@ export default {
           name: '목표 기업',
           result: this.goalCompany
         }
-      ];
+      ]
 
-      return arraySet;
+      return arraySet
     },
     myHistoryResult() {
-      const arraySet = [
-        {
-          name: '경력 사항',
-          result: this.myHistory
-        },
-      ];
+      let arraySet = [];
 
-      return arraySet;
+      const target = this.myHistory;
+      for (let i = 0; i < this.myHistory.resm_cp_range.length; i++) {
+        arraySet.push({
+          name: '경력' + (i + 1),
+          result: [
+            target.resm_cp_depart[i].companyName,
+            target.resm_cp_depart[i].departmentName,
+            target.resm_cp_field[i],
+            target.resm_cp_performance[i],
+            target.resm_cp_range[i].start + ' ~ ' + this.myHistory.resm_cp_range[i].end
+          ],
+        })
+      }
+
+      return arraySet
+    },
+    mySchoolAndLangResult() {
+      let arraySet = [];
+
+      const target = this.mySchool;
+      for (let i = 0; i < this.mySchool.resm_sc_title.length; i++) {
+        arraySet.push({
+          name: '학력' + (i + 1),
+          result: [
+            target.resm_sc_title[i] + ', ' + target.resm_sc_major[i],
+            target.resm_sc_range[i].start + ' ~ ' + target.resm_sc_range[i].end
+          ],
+        })
+      }
+
+      const target2 = this.myLanguage;
+      for (let i = 0; i < this.myLanguage.resm_fl_category.length; i++) {
+        arraySet.push({
+          name: '외국어' + (i + 1),
+          result: [
+            target2.resm_fl_category[i],
+            ''
+          ],
+        })
+      }
+
+      return arraySet
     }
   }
 }
@@ -318,12 +379,7 @@ export default {
           @click="openModal('myr2120')"
           @saveGoalSetting="saveGoalSetting"
         />
-        <myr-info-card
-          v-else
-          :card-head-line="'목표 분야 및 기업'"
-          :results="goalResult"
-          @click="openModal('myr2120')"
-        />
+        <myr-info-card v-else :card-head-line="'목표 분야 및 기업'" :results="goalResult" @click="openModal('myr2120')"/>
         <!-- 프로필 사진 -->
         <myr-card
           :card-head-line="'프로필 사진'"
@@ -334,10 +390,9 @@ export default {
           :uploadPhoto="mrpPhoto"
           @click="openModal('myr2130')"
         />
-
         <!-- 경령 및 성과 -->
         <myr-card
-          v-if="myHistory.resm_cp_field"
+          v-if="!this.myHistory.resm_cp_field.length"
           :card-head-line="'경력 및 성과'"
           :card-title="'목표하는 기업에 맞는 경력과 성과를 작성하세요.'"
           :card-thumb-name-imgae-name="'myr-card-thumb-2'"
@@ -345,14 +400,10 @@ export default {
           :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
           @click="openModal('myr2140')"
         />
-        <myr-info-card
-          v-else
-          :card-head-line="'경력 및 성과'"
-          :results="myHistoryResult"
-          @click="openModal('myr2140')"
-        />
+        <myr-info-card v-else :card-head-line="'경력 및 성과'" :item-length="5" :results="myHistoryResult" @click="openModal('myr2140')"/>
         <!-- 학력 및 외국어 -->
         <myr-card
+          v-if="!this.mySchool.resm_sc_title.length"
           :card-head-line="'학력 및 외국어'"
           :card-title="'최종 학력과 관련 전공을 중심으로 작성하는 것이 좋아요. 업무에 직접적 연관이 있는 외국어는 우대해줘요'"
           :card-thumb-name-imgae-name="'myr-card-thumb-4'"
@@ -360,6 +411,10 @@ export default {
           :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
           @click="openModal('myr2150')"
         />
+        <p v-else>
+          {{ mySchoolAndLangResult }}
+        </p>
+        <myr-info-card v-else :card-head-line="'학력 및 외국어'" :item-length="2" :results="mySchoolAndLangResult" @click="openModal('myr2140')"/>
         <!-- 자격 및 기타 교육 -->
         <myr-card
           :card-head-line="'자격 및 기타 교육'"
@@ -367,6 +422,7 @@ export default {
           :card-thumb-name-imgae-name="'myr-card-thumb-5'"
           :card-description="'자격의 배점은 약 10% 정도의 비중을 차지해요. 기타 교육 사항은 약 5%의 추가 점수를 받을 수 있어요.'"
           :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
+          @click="openModal('myr2160')"
         />
         <!-- 인적 사항 -->
         <myr-card
@@ -412,6 +468,14 @@ export default {
       :saved-laguage-w-level="myLanguage.resm_fl_write"
       :saved-langeage-l-levels="myLanguage.resm_fl_speak"
       @saveSchoolAndLang="saveSchoolAndLang"
+    />
+    <MYR_2160
+      v-if="showModal.myr2160"
+      class="popup-modal"
+      :saved-license-name="myLisence.resm_ct_title"
+      :saved-license-inst="myLisence.resm_ct_inst"
+      :saved-license-date="myLisence.resm_ct_date"
+      @saveLicenseAndEdu="saveLicenseAndEdu"
     />
   </div>
 </template>

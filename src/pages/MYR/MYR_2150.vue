@@ -1,6 +1,9 @@
 <script>
+import MyrTextButtonTopBar from "components/app-bar/MyrTextButtonTopBar.vue";
+
 export default {
   name: "MYR_21450",
+  components: {MyrTextButtonTopBar},
   props: {
     savedSchoolName: {
       type: Array,
@@ -46,7 +49,7 @@ export default {
       languageLeadingLevels: [],
     }
   },
-  mounted() {
+  created() {
     if (this.savedSchoolName.length) {
       this.schoolGroupCount = this.savedSchoolName.length;
 
@@ -74,18 +77,22 @@ export default {
     addSchoolGroup() {
       this.schoolGroupCount = this.schoolGroupCount + 1;
     },
-    saveSchoolAndLang() {
-      this.$emit(
-        'saveSchoolAndLang',
-        this.schoolNames,
-        this.schoolRangesStart,
-        this.schoolRangesEnd,
-        this.schoolMajors,
-        this.languageNames,
-        this.languageReadingLevels,
-        this.languageWriteLevels,
-        this.languageLeadingLevels,
-      )
+    saveSchoolAndLang(status) {
+      if (status === 'cancel') {
+        this.$emit('saveSchoolAndLang');
+      } else {
+        this.$emit(
+          'saveSchoolAndLang',
+          this.schoolNames,
+          this.schoolRangesStart,
+          this.schoolRangesEnd,
+          this.schoolMajors,
+          this.languageNames,
+          this.languageReadingLevels,
+          this.languageWriteLevels,
+          this.languageLeadingLevels,
+        )
+      }
     }
   },
   computed: {
@@ -103,6 +110,7 @@ export default {
 
 <template>
   <div class="myr-page">
+    <MyrTextButtonTopBar :title-text="'학력 및 외국어'" :back-path="saveSchoolAndLang('cancel')"/>
     <section class="sub-myr-view">
       <!-- 학력 사항 -->
       <div class="full-width">

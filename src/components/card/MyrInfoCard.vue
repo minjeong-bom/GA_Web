@@ -7,7 +7,8 @@ export default {
       type: Array,
       default: [],
     },
-  }
+    itemLength: Number,
+  },
 }
 </script>
 
@@ -15,16 +16,14 @@ export default {
   <div class="myr-info-card-layout">
     <div class="flex-sb full-width">
       <h3 class="headline-3">{{ cardHeadLine }}</h3>
-      <q-btn
-        dense
-        flat
-        round
-        icon="add"
-        style="color: var(--labels-secondary)"
-      />
+      <q-btn dense flat round icon="add" style="color: var(--labels-secondary)"/>
     </div>
     <div class="myr-info-card-wrap">
-      <div v-for="item in results">
+      <div v-if="itemLength" v-for="(item, index) in results">
+        <p v-show="item.result[i]" class="tag-group-title" v-for="(list, i) in itemLength">{{ item.result[i] }}</p>
+        <p class="caption-1">{{ item.name }}</p>
+      </div>
+      <div v-else v-for="(item, index) in results">
         <p class="tag-group-title">{{ item.result }}</p>
         <p class="caption-1">{{ item.name }}</p>
       </div>

@@ -55,6 +55,7 @@ export default {
 }
 
 .input-card {
+  width: 100%;
   padding: 12px;
   border: 1px solid #CDCDCD;
   display: flex;

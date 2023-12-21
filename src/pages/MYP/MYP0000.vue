@@ -18,7 +18,8 @@ export default {
 				jobSearch: '', // 구직 활동 여부
 				currentBiz: '', // 현업 종사 여부
 				searchGoal: '', // 구직 활동 목표
-			}
+			},
+      selectedFile: '', // 이미지 데이터
 		}
 	},
 	mounted() {
@@ -59,6 +60,44 @@ export default {
 				console.error(e);
 			}
 		},
+    uploadFile() {
+      if (this.selectedFile) {
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+          const imageData = e.target.result.split(',')[1];
+
+          const config = {
+            url: '/api/crud/create',
+            body: {
+              data_prefix: "bc",
+              data_title: "profile",
+              data_foreign_key: "QAACWXSQ",
+              data_foreign_key2: "UZPWQOWR",
+              data_content: imageData,
+              data_writer_name: "TJXPOWQA"
+            },
+            etc: {
+              headers: {
+                'SPRINT-API-KEY': 'sprinttest',
+              }
+            }
+          };
+
+          try {
+            const result = await this.$api.post(config.url, config.body, config.etc);
+            console.log('Upload successful', result);
+            this.$emit('saveProfileImage', result.data.response.result.data_key);
+          } catch (error) {
+            console.error('Error uploading file', error);
+          }
+        };
+
+        reader.readAsDataURL(this.selectedFile);
+      } else {
+        alert('Please select an image to upload.');
+      }
+    },
 		extractCityOrCounty() {
 			const text = this.address;
 			// "시" 또는 "군"으로 끝나는 단어를 찾는 정규 표현식

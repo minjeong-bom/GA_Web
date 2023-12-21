@@ -53,11 +53,11 @@ export default {
       </div>
       <p class="lable" :class="{ 'focused-status' : inAlarm }">알림</p>
     </q-btn>
-    <q-btn flat class="bottom-app-bar-item">
+    <q-btn flat class="bottom-app-bar-item" @click="navigateTo('/myp0000')">
       <div class="icon-wrap" :class="{ 'focused-status' : inMy }">
         <q-icon name="emoji_emotions" />
       </div>
-      <p class="lable" :class="{ 'focused-status' : inMy }" @click="navigateTo('/myp0000')">마이</p>
+      <p class="lable" :class="{ 'focused-status' : inMy }">마이</p>
     </q-btn>
   </div>
 </template>
@@ -86,6 +86,7 @@ export default {
 
 .icon-wrap {
   display: flex;
+  width: 100%;
   height: 2rem;
   padding: 0.25rem 1.25rem;
   justify-content: center;

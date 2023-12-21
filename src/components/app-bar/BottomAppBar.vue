@@ -17,11 +17,11 @@ export default {
     checkIsPageName() {
       const thisPage = this.$route.path
       if (thisPage === '/') {
-        this.inHome = true;
+        this.inHome = true
       }
     },
     navigateTo(path) {
-      this.$router.push(path);
+      this.$router.push(path)
     }
   }
 }

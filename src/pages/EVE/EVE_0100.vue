@@ -1,7 +1,7 @@
 <script>
 import TitleTopBar from "components/app-bar/TitleTopBar.vue";
 import SkeletonLine from "components/loading/SkeletonLine.vue";
-import DDay from "src/timeData/dDay";
+import DDay from "src/script/timeData/dDay";
 
 export default {
 	name: "EVE_0100",

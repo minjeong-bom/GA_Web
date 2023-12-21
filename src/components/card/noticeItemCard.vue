@@ -1,5 +1,5 @@
 <script>
-import TimeAgo from "src/timeData/timeAgo";
+import TimeAgo from "src/script/timeData/timeAgo";
 export default {
 	name: "noticeItemCard",
 	props: {

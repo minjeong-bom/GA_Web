@@ -9,7 +9,6 @@ import axios from 'axios'
 // for each client)
 const api = axios.create({
   baseURL: 'https://combom.dev.go-sprint.co.kr/',
-  headers: 'SPRINT-API-KEY: SPRINTTEST',
 })
 
 export default boot(({ app }) => {

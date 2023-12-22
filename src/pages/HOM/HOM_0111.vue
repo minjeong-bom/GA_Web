@@ -19,11 +19,15 @@ export default defineComponent({
 				const config = {
 					url: '/api/crud/lists/',
 					body: {
-						"alias": "empathy",
-						"prefix": "empathy",
-						"scopes": "empathy_log_title,empathy_log_mem_key,empathy_log_data_key",
-						"columns_opts" : this.articleKey
-					},
+            alias: "bc",
+            prefix: "bc",
+            scopes: "bc_key,bc_title,bc_regdate,bc_writer_name,bc_content",
+            columns_opts : {
+              bc_foreign_key2  : 'FWKOBTMQ',
+              bc_title: this.articleKey,
+            },
+            limit : 100
+          },
 					etc: {
 						headers: {
 							'SPRINT-API-KEY': 'sprintcombom'
@@ -42,7 +46,7 @@ export default defineComponent({
 			for (let item of array) {
 				try {
 					const res = await this.$api.post(
-						`/api/crud/single/${item.empathy_log_mem_key}`,
+						`/api/crud/single/${item.bc_writer_name}`,
 						{
 							prefix: "mem",
 							alias: "mem",

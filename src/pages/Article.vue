@@ -1,47 +1,24 @@
 <template>
 	<div class="article-layout">
 		<text-button-top-bar :title-text="this.categoryName"></text-button-top-bar>
-		<div class="user-profile-wrap">
-			<!-- creater info -->
-			<article-id style="width: 100%"
-			            :user-profile="''"
-			            :article-type="article.articleType"
-			            :view-count="article.viewCount"
-			            :creater-name="article.createrName"
-			            :job-title="article.createrJob"
-			            :created-at="article.createdAt"
-			            :control-ui="false"/>
-		</div>
-		<div class="headline-wrap">
-			<!-- headline -->
-			<h1 class="article-card-headline">{{ article.title }}</h1>
-			<!-- created at -->
-			<p class="article-created-at-text">{{ article.createdAt }}</p>
-		</div>
-
-		<div class="article-overview-wrap">
+    <!-- 아티클 헤더 (작성자 프로필, 제목, 작성 시각) -->
+    <article-header :article="article"/>
+    <!-- 아티클 공감 & 댓글 수 + 아티클 컨트롤러 -->
+		<div class="flex-sb article-overview-wrap">
 			<!-- likes & comment -->
-			<div class="article-overview">
-				<span class="lable">공감</span>
-				<span class="value">10</span>
-				<span>∙</span>
-				<span class="lable">댓글</span>
-				<span class="value">{{ comments.length }}</span>
-			</div>
-			<div>
-				<!-- 상단 컨트롤 -->
-				<section>
-					<q-btn flat round icon="text_fields" style="opacity: 0.3"/>
-					<q-btn flat round icon="bookmark" @click="addBookmark()" style="opacity: 0.3"/>
-					<q-btn flat round icon="share" style="opacity: 0.3"/>
-				</section>
-			</div>
+      <article-overview-info :likes-length="likes" :comment-length="comments"/>
+      <article-controller :article-key="articleKey"/>
 		</div>
+    <!-- 썸네일 이미지 -->
+    <section v-if="isLoading">
+      <skeleton-line :lines="4"></skeleton-line>
+    </section>
+    <img v-else class="thumbnail-image-style" :src="'data:image/jpeg;base64,' + article.thumbnail"/>
 		<!-- 본문 -->
 		<section v-if="isLoading" class="article-content">
 			<skeleton-line :lines="4"></skeleton-line>
 		</section>
-		<section v-else class="article-content" style="min-height: 200px" v-html="article.content"></section>
+		<section v-else v-html="article.content" class="article-content"></section>
 		<!-- article controller -->
 		<section class="article-end-control-wrap">
 			<q-btn flat icon="text_fields" style="opacity: 0.3"/>
@@ -79,7 +56,7 @@
 				<section class="liker-slide">
 					<q-avatar v-for="item in likes" size="40px">
 						<div class="user-profile-wrap"></div>
-						<img class="imoji" :src="`src/assets/graphic/face-${item.empathy_log_title}.png`">
+						<img class="imoji" :src="`src/assets/graphic/face-${item.bc_content}.png`">
 					</q-avatar>
 				</section>
 				<!-- PageNation -->
@@ -118,9 +95,14 @@ import ArticleId from "components/card/ArticleId.vue";
 import CommentId from "components/comment/commentId.vue";
 import SkeletonLine from "components/loading/SkeletonLine.vue";
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
+import ArticleController from "components/button-grop/article-controller.vue";
+import ArticleHeader from "components/page-content/article-header.vue";
+import ArticleOverviewInfo from "components/page-content/article-overview-info.vue";
 
 export default {
-	components: {TextButtonTopBar, SkeletonLine, CommentId, ArticleId},
+	components: {
+    ArticleOverviewInfo,
+    ArticleHeader, ArticleController, TextButtonTopBar, SkeletonLine, CommentId, ArticleId},
 	data() {
 		return {
 			isLoading: true,
@@ -134,6 +116,8 @@ export default {
 				content: '',
 				createdAt: '',
 				createrJob: '',
+        thumbnailKey: '',
+        thumbnail: '',
 			},
 			comments: [],
 			likes: [],
@@ -142,9 +126,9 @@ export default {
 		}
 	},
 	mounted() {
-		this.getArticleContent();
-		this.getCommentList();
-		this.getLikeList();
+		this.getArticleContent()
+		this.getCommentList()
+		this.getLikeList()
 	},
 	methods: {
 		async getArticleContent() {
@@ -162,29 +146,55 @@ export default {
 						}
 					}
 				}
-				const res = await this.$api.post(config.url, config.body, config.etc);
-				this.isLoading = false;
-				const content = res.data.response.view;
+				const res = await this.$api.post(config.url, config.body, config.etc)
+				this.isLoading = false
+				const content = res.data.response.view
 
 				this.article.articleType = content.bc_foreign_key;
 				if (content.bc_foreign_key === 'DPORHCPV') {
-					this.article.articleType = '스토리';
+					this.article.articleType = '스토리'
 				} else if (content.bc_foreign_key === 'KWUOXKGM') {
-					this.article.articleType = '취업 스킬';
+					this.article.articleType = '취업 스킬'
 				} else if (content.bc_foreign_key === 'CEZTXGLJ') {
-					this.article.articleType = '지애픽';
+					this.article.articleType = '지애픽'
 				}
 
-				this.article.title = content.bc_title;
-				this.article.viewCount = content.bc_count;
-				this.article.content = content.bc_content.replace(/(?:\r\n|\r|\n)/g, '<br/>')
-				this.article.createrKey = content.bc_writer_name;
+				this.article.title = content.bc_title
+				this.article.viewCount = content.bc_count
+				this.article.content = content.bc_content.body.replace(/(?:\r\n|\r|\n)/g, '<br/>')
+        this.article.thumbnailKey = content.bc_content.thumbnailKey
+        this.article.createrKey = content.bc_writer_name
 				this.article.createdAt = content.bc_regdate;
 				this.getCreaterInfo();
+        this.getThumbnail();
 			} catch (e) {
 				console.error(e);
 			}
 		},
+    async getThumbnail() {
+      this.isLoading = true;
+      try {
+        const config = {
+          url: '/api/crud/single/' + this.article.thumbnailKey,
+          body: {
+            "prefix": "bc",
+            "alias": "bc",
+            "scopes": "bc_content"
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprinttest',
+            }
+          }
+        }
+        const result = await this.$api.post(config.url, config.body, config.etc)
+        this.article.thumbnail = result.data.response.view.bc_content
+        this.isLoading = false;
+        console.log(this.mrpPhoto)
+      } catch (e) {
+        console.error(e)
+      }
+    },
 		async getCreaterInfo() {
 			try {
 				const config = {
@@ -201,9 +211,9 @@ export default {
 					}
 				}
 				const res = await this.$api.post(config.url, config.body, config.etc);
-				const response = res.data.response.view;
-				this.article.createrName = response.mem_title;
-				this.article.createrJob = response.mem_job;
+				const response = res.data.response.view
+				this.article.createrName = response.mem_title
+				this.article.createrJob = response.mem_job
 
 			} catch (e) {
 				console.error(e);
@@ -226,8 +236,8 @@ export default {
 				}
 				const res = await this.$api.post(config.url, config.body, config.etc);
 				if (res.status) {
-					this.addComment = '';
-					this.getCommentList();
+					this.addComment = ''
+					this.getCommentList()
 				}
 			} catch (e) {
 				console.error(e);
@@ -243,10 +253,10 @@ export default {
 						}
 					}
 				}
-				const res = await this.$api.get(config.url, config.etc);
-				this.comments = res.data.response.lists;
+				const res = await this.$api.get(config.url, config.etc)
+				this.comments = res.data.response.lists
 			} catch (e) {
-				console.error(e);
+				console.error(e)
 			}
 		},
 		async getLikeList() {
@@ -254,11 +264,15 @@ export default {
 				const config = {
 					url: '/api/crud/lists/',
 					body: {
-						"alias": "empathy",
-						"prefix": "empathy",
-						"scopes": "empathy_log_title,empathy_log_mem_key,empathy_log_data_key",
-						"columns_opts" : this.articleKey
-					},
+            alias: "bc",
+            prefix: "bc",
+            scopes: "bc_key,bc_title,bc_regdate,bc_writer_name,bc_content",
+            columns_opts : {
+              bc_foreign_key2  : 'FWKOBTMQ',
+              bc_title: this.articleKey,
+            },
+            limit : 100
+          },
 					etc: {
 						headers: {
 							'SPRINT-API-KEY': 'sprintcombom'
@@ -266,43 +280,62 @@ export default {
 					}
 				}
 				const res = await this.$api.post(config.url, config.body, config.etc);
-				this.likes = res.data.response.lists;
+				this.likes = res.data.response.lists
 			} catch (e) {
-				console.error(e);
+				console.error(e)
 			}
 		},
 		async createLike(likeType) {
 			let config
-			if (this.myLike) {
-				return
-			}
 			try {
-				config = {
-					url: '/api/crud/create',
-					body: {
-						data_prefix : 'empathy',
-						data_log_title: likeType,
-						data_log_data_key : this.articleKey,
-						data_log_mem_key: this.storageUserKey,
-					},
-					etc: {
-						headers: {
-							'SPRINT-API-KEY': 'sprintcombom'
-						}
-					}
-				}
+        if (this.myLike) {
+          config = {
+            url: '/api/crud/create',
+            body: {
+              data_prefix : "bc",
+              data_key : this.myLike.bc_key,
+              data_title: this.articleKey, // 게시글 키값
+              data_foreign_key: "IOFDAZME",
+              data_foreign_key2: "FWKOBTMQ",
+              data_content: likeType, // 반응종류
+              data_writer_name: this.storageUserKey
+            },
+            etc: {
+              headers: {
+                'SPRINT-API-KEY': 'sprintcombom'
+              }
+            }
+          }
+        }
+        else {
+          config = {
+            url: '/api/crud/create',
+            body: {
+              data_prefix : "bc",
+              data_title: this.articleKey, // 게시글 키값
+              data_foreign_key: "IOFDAZME",
+              data_foreign_key2: "FWKOBTMQ",
+              data_content: likeType, // 반응종류
+              data_writer_name: this.storageUserKey
+            },
+            etc: {
+              headers: {
+                'SPRINT-API-KEY': 'sprintcombom'
+              }
+            }
+          }
+        }
 				const res = await this.$api.post(config.url, config.body, config.etc);
+        this.getLikeList()
 				if (res.status) {
 					this.showLikeButtons = false
 				}
 			} catch (e) {
-				console.error(e);
+				console.error(e)
 			}
 		},
-		async addBookmark() {
-		},
 		openLikeList() {
-			this.$router.push({ path: '/hom0111', query: { key: this.articleKey } });
+			this.$router.push({ path: '/hom0111', query: { key: this.articleKey } })
 		},
 	},
 	computed: {
@@ -328,87 +361,24 @@ export default {
 		articleKey() {
 			return this.$route.query.key;
 		},
-		myLikeType() {
-			const item = this.likes.find(item => item.empathy_log_mem_key === this.storageUserKey);
-// 찾은 객체의 empathy_log_title 반환
-			if (item) {
-				return item.empathy_log_title;
-			} else {
-				return false;
-			}
-		},
 		myLike() {
-			const item = this.likes.find(item => item.empathy_log_mem_key === this.storageUserKey);
+      return this.likes.find(item => item.bc_writer_name === this.storageUserKey);
 		}
 	}
 }
 </script>
 
 <style scoped>
-.headline-wrap {
-	display: flex;
-	padding: 1rem;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 0.375rem;
-}
-
-.article-created-at-text {
-	color: #999;
-	font-family: Pretendard;
-	font-size: 0.75rem;
-	font-style: normal;
-	font-weight: 600;
-	line-height: 1.25rem; /* 166.667% */
-}
-
-.user-profile-wrap {
-	display: flex;
-	padding: 1rem 1rem 0rem 1rem;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 0.625rem;
-}
-
-.article-overview-wrap {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-
-.article-overview-wrap > div {
-	padding: 0.6875rem 1rem;
-}
-
-.article-overview {
-	display: flex;
-	align-items: center;
-	gap: 0.1875rem;
-}
-
-.article-overview .value {
-	color: var(--ga-red);
-	font-family: Spoqa Han Sans Neo, "sans-serif";
-	font-size: 0.75rem;
-	font-style: normal;
-	font-weight: 500;
-}
-
-.article-overview .lable {
-	color: #999;
-	font-family: Pretendard;
-	font-size: 0.75rem;
-	font-style: normal;
-	font-weight: 500;
-}
-
 .article-content {
 	display: flex;
 	padding: 0rem 1rem 1.25rem 1rem;
 	flex-direction: column;
 	align-items: flex-start;
+  min-height: 200px;
 	gap: 0.625rem;
 }
+
+
 
 .gray-button {
 	color: var(--grays-gray) !important;
@@ -521,5 +491,10 @@ export default {
 .like-button:hover {
 	/* 마우스 오버 시 크기 증가 */
 	transform: scale(1.1); /* 10% 크기 증가 */
+}
+
+.thumbnail-image-style {
+  width: 100%;
+  max-height: 200px;
 }
 </style>

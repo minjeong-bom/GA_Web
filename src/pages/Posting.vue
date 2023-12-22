@@ -39,6 +39,7 @@
 <script>
 import {useQuasar} from 'quasar'
 import {ref} from 'vue'
+import {uploadFile} from "src/script/upload/uploadImage";
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
 
 export default {
@@ -91,18 +92,34 @@ export default {
   methods: {
     async save() {
       if (this.thumbnail) {
-
+        const data_title = 'articleImage'
+        const data_writer_name = this.userKey
+        const data_foreign_key = 'FHGBWGLF' // 아티클 이미지 업로드 카테고리 키
+        try {
+          const response = await uploadFile(this.thumbnail, data_title, data_writer_name, data_foreign_key);
+          // 서버에서 받은 응답 데이터를 이용하여 원하는 작업 수행
+          this.content.thumbnailKey = response.response.result.data_key
+        } catch (error) {
+          // 에러 처리
+          console.error('Error in uploadFile', error);
+        }
       }
 
       try {
+        const contentData = {
+          body: this.content.body,
+          tags: this.content.tags,
+          thumbnailKey: this.content.thumbnailKey,
+        };
+
         const config = {
           url: '/api/crud/create',
           body: {
             data_prefix: 'bc',
             data_title: this.title,
-            data_foreign_key: 'DPORHCPV', // 카테고리 (스토리)
-            data_foreign_key2: 'SNXKQEZS', // 테이블
-            data_content: this.content,
+            data_foreign_key: 'DPORHCPV', // '스토리' 카테고리 키
+            data_foreign_key2: 'SNXKQEZS', // 게시판 키
+            data_content: JSON.stringify(contentData),
             data_writer_name: this.userKey,
           },
           etc: {

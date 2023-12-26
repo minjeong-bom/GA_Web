@@ -7,12 +7,10 @@
 		<div class="flex-sb article-overview-wrap">
 			<!-- likes & comment -->
       <article-overview-info :likes-length="likes" :comment-length="comments"/>
-      <article-controller :article-key="articleKey"/>
+      <article-controller :article-key="articleKey" :user-key="storageUserKey"/>
 		</div>
     <!-- 썸네일 이미지 -->
-    <section v-if="isLoading">
-      <skeleton-line :lines="4"></skeleton-line>
-    </section>
+    <skeleton-line v-if="isLoading" :lines="4"/>
     <img v-else class="thumbnail-image-style" :src="'data:image/jpeg;base64,' + article.thumbnail"/>
 		<!-- 본문 -->
 		<section v-if="isLoading" class="article-content">

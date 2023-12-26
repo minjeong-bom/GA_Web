@@ -2,8 +2,14 @@
 export default {
   name: "article-overview-info",
   props: {
-    likesLength: String,
-    commentLength: String,
+    likesLength: {
+      type: Array,
+      default: [],
+    },
+    commentLength: {
+      type: Array,
+      default: [],
+    },
   }
 }
 </script>
@@ -11,10 +17,10 @@ export default {
 <template>
   <div class="article-overview">
     <span class="lable">공감</span>
-    <span class="value"> {{ likesLength.length }}</span>
+    <span class="value">{{ likesLength.length }}</span>
     <span> ∙ </span>
     <span class="lable">댓글</span>
-    <span class="value"> {{ commentLength.length }}</span>
+    <span class="value">{{ commentLength.length }}</span>
   </div>
 </template>
 
@@ -23,6 +29,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 11px 16px;
+  gap: 3px;
 }
 
 .article-overview .value {

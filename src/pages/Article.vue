@@ -10,7 +10,9 @@
       <article-controller :article-key="articleKey" :user-key="storageUserKey"/>
 		</div>
     <!-- 썸네일 이미지 -->
-    <skeleton-line v-if="isLoading" :lines="4"/>
+    <section v-if="isLoading" class="article-content">
+      <skeleton-card :lines="1"></skeleton-card>
+    </section>
     <img v-else class="thumbnail-image-style" :src="'data:image/jpeg;base64,' + article.thumbnail"/>
 		<!-- 본문 -->
 		<section v-if="isLoading" class="article-content">
@@ -18,25 +20,13 @@
 		</section>
 		<section v-else v-html="article.content" class="article-content"></section>
 		<!-- article controller -->
-		<section class="article-end-control-wrap">
-			<q-btn flat icon="text_fields" style="opacity: 0.3"/>
-			<q-btn flat icon="bookmark" style="opacity: 0.3"/>
-			<q-btn flat icon="share" style="opacity: 0.3"/>
-		</section>
+    <article-controller :article-key="articleKey" :user-key="storageUserKey"/>
     <!-- end line -->
-		<div class="end-line">
-			<div></div>
-		</div>
+		<div class="end-line"></div>
     <!-- control area -->
 		<div class="article-likes">
-			<div class="article-overview">
-				<span class="lable">공감</span>
-				<span class="value">10</span>
-				<span>∙</span>
-				<span class="lable">댓글</span>
-				<span class="value">{{ comments.length }}</span>
-			</div>
-			<div class="likes-list-area">
+      <article-overview-info :likes-length="likes" :comment-length="comments"/>
+      <div class="likes-list-area">
 				<!-- Add Like -->
         <div class="add-likes-wrap">
           <q-btn size="14px" flat round style="background: #FD384E" @click="showLikeButtons = !showLikeButtons">
@@ -96,9 +86,11 @@ import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
 import ArticleController from "components/button-grop/article-controller.vue";
 import ArticleHeader from "components/page-content/article-header.vue";
 import ArticleOverviewInfo from "components/page-content/article-overview-info.vue";
+import SkeletonCard from "components/loading/SkeletonCard.vue";
 
 export default {
 	components: {
+    SkeletonCard,
     ArticleOverviewInfo,
     ArticleHeader, ArticleController, TextButtonTopBar, SkeletonLine, CommentId, ArticleId},
 	data() {
@@ -493,6 +485,5 @@ export default {
 
 .thumbnail-image-style {
   width: 100%;
-  max-height: 200px;
 }
 </style>

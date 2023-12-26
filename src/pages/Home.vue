@@ -34,7 +34,7 @@
     <section class="feed-back-section">
       <img class="sun-animation" src="../assets/graphic/sun-animation.gif">
       <p>G@에 알려주고 싶은 이야기가 있나요?</p>
-      <button class="btn-primary-small" @click="linkToServiceComment()">네, 있어요</button>
+      <button class="btn-primary-small">네, 있어요</button>
     </section>
   </q-page>
 </template>

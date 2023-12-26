@@ -144,16 +144,6 @@ h1, h2, h3, h4, h5, h6, p {
   color: var(--grays-gray-2);
 }
 
-.article-card-headline {
-  margin-block-end: 0;
-  margin-block-start: 0;
-  font-family: Pretendard;
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-}
-
 .lable-1 {
   font-size: 0.875rem;
   font-style: normal;

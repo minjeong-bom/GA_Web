@@ -1,5 +1,5 @@
 <script>
-import timeAgo from '/src/timeData/timeAgo'
+import timeAgo from '/src/script/timeData/timeAgo'
 import article from "../../pages/Article.vue";
 export default {
   name: "ArticleId",

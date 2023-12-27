@@ -9,24 +9,23 @@ export default {
 </script>
 
 <template>
-  <div class="article-overview">
+  <div class="frame">
     <span class="lable">공감</span>
     <span class="value">{{ likesLength }}</span>
-    <span> ∙ </span>
+    <span>∙</span>
     <span class="lable">댓글</span>
     <span class="value">{{ commentLength }}</span>
   </div>
 </template>
 
 <style scoped>
-.article-overview {
+.frame {
   display: flex;
   align-items: center;
-  padding: 11px 16px;
   gap: 3px;
 }
 
-.article-overview .value {
+.value {
   color: var(--ga-red);
   font-family: Spoqa Han Sans Neo, "sans-serif";
   font-size: 0.75rem;
@@ -34,7 +33,7 @@ export default {
   font-weight: 500;
 }
 
-.article-overview .lable {
+.lable {
   color: #999;
   font-family: Pretendard;
   font-size: 0.75rem;

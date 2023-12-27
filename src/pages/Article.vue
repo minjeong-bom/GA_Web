@@ -1,17 +1,17 @@
 <template>
   <div class="article-layout">
     <text-button-top-bar :title-text="this.categoryName"></text-button-top-bar>
-    <!-- 🍒 헤더 -->
+    <!-- 헤더 -->
     <article-header :article="article"/>
-    <!-- ❤️ 댓글수 & 공감수, 북마크 & 공유 & 폰트크기 설정 -->
+    <!-- 댓글수 & 공감수, 북마크 & 공유 & 폰트크기 설정 -->
     <div class="flex-sb article-overview-wrap">
-      <article-overview-info :likes-length="counts.likes" :comment-length="counts.comments"/>
+      <article-overview-info :likes-length="counts.likes" :comment-length="counts.comments" class="article-overview"/>
       <article-controller :article-key="articleKey" :user-key="storageUserKey" @setFontSize="setFontSize"/>
     </div>
-    <!-- 🖼️ 썸네일 -->
+    <!-- 썸네일 -->
     <skeleton-card v-if="isLoading" :lines="1"></skeleton-card>
     <img v-else class="thumbnail-image-style" :src="'data:image/jpeg;base64,' + article.thumbnail">
-    <!-- 📄 본문 -->
+    <!-- 본문 -->
     <section class="article-content">
       <skeleton-line v-if="isLoading" :lines="4"></skeleton-line>
       <p v-else v-html="article.content" :class="fontSizeClass"></p>
@@ -21,9 +21,9 @@
     <!-- 👍 댓글수 & 공감수, 좋아요 목록 -->
     <div class="article-likes">
       <article-overview-info :likes-length="counts.likes" :comment-length="counts.comments"/>
-      <like-stamp :article-key="articleKey" :user-key="storageUserKey" @likesCount="likesCount"></like-stamp>
+      <like-stamp :article-key="articleKey" :user-key="storageUserKey" @likesCount="likesCount"/>
     </div>
-    <!-- 💬 댓글 입력, 댓글 목록 -->
+    <!-- 댓글 입력, 댓글 목록 -->
     <comment-u-i :storage-user-key="storageUserKey" :article-key="articleKey"
                  @commentsCount="commentsCount"></comment-u-i>
   </div>
@@ -221,15 +221,11 @@ export default {
   min-height: 200px;
 }
 
-.gray-button {
-  color: var(--grays-gray) !important;
-}
-
-.article-end-control-wrap {
+.article-overview {
   display: flex;
-  padding: 0rem 0rem 0.625rem 1rem;
   align-items: center;
-  gap: 1.125rem;
+  padding: 11px 16px;
+  gap: 3px;
 }
 
 .article-likes {

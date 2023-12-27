@@ -7,7 +7,6 @@ export default {
   },
   data() {
     return {
-      showLikeButtons: false,
       likes: [],
       myLike: '',
     }
@@ -104,11 +103,8 @@ export default {
           }
         }
         const res = await this.$api.post(config.url, config.body, config.etc);
-        // this.getLikeList()
-        this.$emit('getLikeList')
-        if (res.status) {
-          this.showLikeButtons = false
-        }
+        this.getLikeList();
+        this.$emit('getLikeList');
       } catch (e) {
         console.error(e)
       }
@@ -124,23 +120,28 @@ export default {
   <div class="likes-list-area">
     <!-- Add Like -->
     <div class="add-likes-wrap">
-      <q-btn size="14px" flat round style="background: #FD384E" @click="showLikeButtons = !showLikeButtons">
+      <q-btn size="14px" flat round style="background: #FD384E">
         <q-icon name="add" color="white"/>
-        <q-menu max-width="500px" class="font-size-menu">
-          <q-list class="font-size-option-list">
-            <q-item clickable v-close-popup>
+        <q-menu max-width="500px" class="likes-button-group">
+          <q-list class="likes-button-list">
+            <q-item clickable v-close-popup class="likes-button-item">
               <img class="like-button" src="../../assets/graphic/face-like.png" @click="createLike('like')"/>
+            </q-item>
+            <q-item clickable v-close-popup class="likes-button-item">
+              <img class="like-button" src="../../assets/graphic/face-sad.png" @click="createLike('sad')"/>
+            </q-item>
+            <q-item clickable v-close-popup class="likes-button-item">
+              <img class="like-button" src="../../assets/graphic/face-gido.png" @click="createLike('gido')"/>
+            </q-item>
+            <q-item clickable v-close-popup class="likes-button-item">
+              <img class="like-button" src="../../assets/graphic/face-angry.png" @click="createLike('angry')"/>
+            </q-item>
+            <q-item clickable v-close-popup class="likes-button-item">
+              <img class="like-button" src="../../assets/graphic/face-good.png" @click="createLike('good')"/>
             </q-item>
           </q-list>
         </q-menu>
       </q-btn>
-      <div v-show="showLikeButtons" class="likes-button-group">
-        <img class="like-button" src="../../assets/graphic/face-like.png" @click="createLike('like')"/>
-        <img class="like-button" src="../../assets/graphic/face-sad.png" @click="createLike('sad')"/>
-        <img class="like-button" src="../../assets/graphic/face-gido.png" @click="createLike('gido')"/>
-        <img class="like-button" src="../../assets/graphic/face-angry.png" @click="createLike('angry')"/>
-        <img class="like-button" src="../../assets/graphic/face-good.png" @click="createLike('good')"/>
-      </div>
     </div>
     <!-- Like List -->
     <section class="liker-slide">
@@ -162,10 +163,6 @@ export default {
 }
 
 .likes-button-group {
-  z-index: 10;
-  position: absolute;
-  top: -4rem;
-
   display: flex;
   height: 3.5rem;
   padding: 0rem 0.625rem;
@@ -179,19 +176,17 @@ export default {
 }
 
 .like-button {
-  width: 42px;
-  /* 기본 스타일 */
-  transition: transform 1s ease-in-out;
+  width: 45px;
+  height: 45px;
 }
 
-.like-button:hover {
-  /* 마우스 오버 시 크기 증가 */
-  transform: scale(1.1); /* 10% 크기 증가 */
-}
+
 
 .likes-list-area {
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
 }
 
@@ -204,9 +199,23 @@ export default {
 }
 
 .liker-slide {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
+.likes-button-list {
+  display: flex;
+  gap: 0.625rem;
+  padding: 0rem 0.625rem;
+}
+
+.likes-button-item {
+  padding: 0 !important;
+}
+
+q-item {
+  padding: 0;
+}
 </style>

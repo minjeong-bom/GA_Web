@@ -111,7 +111,9 @@ export default {
       inputElement.select();
       document.execCommand('copy');
       document.body.removeChild(inputElement);
-
+    },
+    setFontSize() {
+      this.$emit('setFontSize', )
     }
   }
 }

@@ -35,7 +35,7 @@ export default {
 	width: 100%;
 	height: 46px;
 	background: #fff;
-	padding-right: 8px;
+	padding-right: 16px;
 }
 
 h2 {

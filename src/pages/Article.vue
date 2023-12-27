@@ -2,7 +2,7 @@
   <div class="article-layout">
     <text-button-top-bar :title-text="this.categoryName"></text-button-top-bar>
     <!-- 헤더 -->
-    <article-header :article="article"/>
+    <article-header :articleKey="articleKey" :article="article" :user-key="storageUserKey"/>
     <!-- 댓글수 & 공감수, 북마크 & 공유 & 폰트크기 설정 -->
     <div class="flex-sb article-overview-wrap">
       <article-overview-info :likes-length="counts.likes" :comment-length="counts.comments" class="article-overview"/>

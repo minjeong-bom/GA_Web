@@ -11,6 +11,7 @@
         <tab :tabs="tabList" @changeTab="changeTab"></tab>
         <div v-for="item in articleList">
           <article-card
+            :article-key="item.bc_key"
             :title="item.bc_title"
             :article-thumb="item.articleThumb"
             :article-type="item.category_name"
@@ -21,7 +22,7 @@
             :writer-thumb="item.writerThumb"
             :motivation="item.motivation"
             :view-count="item.bc_count"
-            @click="goToArticle(item.bc_key)"
+            :creater-key="item.bc_writer_key"
           >
           </article-card>
         </div>
@@ -95,9 +96,6 @@ export default defineComponent({
 	  addLoadArticle() {
 			this.articleListLength = this.articleListLength + 10;
 			this.getArticleList(this.tabCategoryType, this.articleListLength)
-	  },
-	  goToArticle(articleId) {
-		  this.$router.push({ path: '/article', query: { key: articleId } });
 	  },
     checkOnboard() {
       if (this.onboard) {
@@ -194,6 +192,7 @@ export default defineComponent({
 						}
 					)
 					if (res.data.status === 'success') {
+						item.bc_writer_key = item.bc_writer_name;
 						item.bc_writer_name = res.data.response.view.mem_title;
 						if (res.data.response.view.mem_job) {
 							item.badgeTitle = res.data.response.view.mem_job

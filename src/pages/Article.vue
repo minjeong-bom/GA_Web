@@ -1,31 +1,30 @@
 <template>
 	<div class="article-layout">
 		<text-button-top-bar :title-text="this.categoryName"></text-button-top-bar>
-    <!-- 아티클 헤더 (작성자 프로필, 제목, 작성 시각) -->
+    <!-- 헤더 -->
     <article-header :article="article"/>
-    <!-- 아티클 공감 & 댓글 수 + 아티클 컨트롤러 -->
+    <!-- 댓글수 & 공감수, 북마크 & 공유 & 폰트크기 설정 -->
 		<div class="flex-sb article-overview-wrap">
-			<!-- likes & comment -->
-      <article-overview-info :likes-length="likes" :comment-length="comments"/>
+      <article-overview-info :likes-length="counts.likes" :comment-length="counts.comments"/>
       <article-controller :article-key="articleKey" :user-key="storageUserKey" @setFontSize="setFontSize"/>
 		</div>
-    <!-- 썸네일 이미지 -->
+    <!-- 썸네일 -->
     <section v-if="isLoading" class="article-content">
       <skeleton-card :lines="1"></skeleton-card>
     </section>
-    <img v-else class="thumbnail-image-style" :src="'data:image/jpeg;base64,' + article.thumbnail"/>
+    <img v-else class="thumbnail-image-style" :src="'data:image/jpeg;base64,' + article.thumbnail">
 		<!-- 본문 -->
 		<section v-if="isLoading" class="article-content">
 			<skeleton-line :lines="4"></skeleton-line>
 		</section>
-		<section v-else v-html="article.content" class="article-content"></section>
-		<!-- article controller -->
-    <article-controller :article-key="articleKey" :user-key="storageUserKey"/>
-    <!-- end line -->
-		<div class="end-line"></div>
-    <!-- control area -->
+		<section v-else v-html="article.content" class="article-content" :class="fontSizeClass"></section>
+    <!-- 북마크 & 공유 & 폰트크기 설정 -->
+    <article-controller :article-key="articleKey" :user-key="storageUserKey" @setFontSize="setFontSize"/>
+    <!-- 구분선 -->
+    <div class="end-line"/>
+    <!-- 댓글수 & 공감수, 좋아요 목록 -->
 		<div class="article-likes">
-      <article-overview-info :likes-length="likes" :comment-length="comments"/>
+      <article-overview-info :likes-length="counts.likes" :comment-length="counts.comments"/>
       <like-stamp :article-key="articleKey" :user-key="storageUserKey"></like-stamp>
     </div>
 		<!-- create comments -->
@@ -86,17 +85,27 @@ export default {
         thumbnailKey: '',
         thumbnail: '',
 			},
+      counts: {
+        comments: 0,
+        likes: 0,
+      },
+      articleFontSize: '',
 			comments: [],
 			likes: [],
 			addComment: '',
 			showLikeButtons: false,
+      thumbnailImageSource: null,
 		}
 	},
 	mounted() {
 		this.getArticleContent()
 		this.getCommentList()
-	},
+    this.setFontSize()
+  },
 	methods: {
+    setFontSize() {
+      this.articleFontSize = parseInt(localStorage.getItem('articleFontSize')) || '';
+    },
 		async getArticleContent() {
 			try {
 				const config = {
@@ -134,7 +143,7 @@ export default {
 				this.getCreaterInfo();
         this.getThumbnail();
 			} catch (e) {
-				console.error(e);
+				console.error('게시글이 유효하지 않습니다.', e);
 			}
 		},
     async getThumbnail() {
@@ -155,10 +164,11 @@ export default {
         }
         const result = await this.$api.post(config.url, config.body, config.etc)
         this.article.thumbnail = result.data.response.view.bc_content
+        this.thumbnailImageSource = `data:image/jpeg;base64,${this.article.thumbnail}`;
         this.isLoading = false;
-        console.log(this.mrpPhoto)
       } catch (e) {
-        console.error(e)
+        console.error('썸네일이 없는 게시글입니다.', e);
+
       }
     },
 		async getCreaterInfo() {
@@ -182,7 +192,7 @@ export default {
 				this.article.createrJob = response.mem_job
 
 			} catch (e) {
-				console.error(e);
+        console.error('사용자 정보가 유효하지 않습니다.', e);
 			}
 		},
 		async createComment() {
@@ -206,8 +216,8 @@ export default {
 					this.getCommentList()
 				}
 			} catch (e) {
-				console.error(e);
-			}
+        console.error('댓글 생성 실패');
+      }
 		},
 		async getCommentList() {
 			try {
@@ -222,7 +232,7 @@ export default {
 				const res = await this.$api.get(config.url, config.etc)
 				this.comments = res.data.response.lists
 			} catch (e) {
-				console.error(e)
+				console.error('댓글이 없는 게시글 입니다.', e.message)
 			}
 		},
 	},
@@ -249,6 +259,16 @@ export default {
 		articleKey() {
 			return this.$route.query.key;
 		},
+    fontSizeClass() {
+      switch(this.articleFontSize) {
+        case 1: return 'font-size-1';
+        case 2: return 'font-size-2';
+        case 3: return 'font-size-3';
+        case 4: return 'font-size-4';
+        case 5: return 'font-size-5';
+        default: return '';
+      }
+    }
 	}
 }
 </script>
@@ -258,8 +278,6 @@ export default {
 	padding: 0rem 1rem 1.25rem 1rem;
   min-height: 200px;
 }
-
-
 
 .gray-button {
 	color: var(--grays-gray) !important;

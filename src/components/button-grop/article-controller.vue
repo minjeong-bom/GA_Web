@@ -100,13 +100,20 @@ export default {
       }
     },
     share() {
-      navigator.clipboard.writeText(window.location.href)
-        .then(() => {
-          Notify.create('클립보드에 복사되었습니다');
-        })
-        .catch((error) => {
-          console.error('클립보드 복사 실패', error);
-        });
+      const currentURL = window.location.href;
+      this.sharedURL = currentURL;
+      this.copyToClipboard();
+
+      this.$q.notify('클립보드에 복사되었습니다');
+    },
+    copyToClipboard() {
+      // 텍스트를 클립보드에 복사하는 코드
+      const inputElement = document.createElement('input');
+      inputElement.value = this.sharedURL;
+      document.body.appendChild(inputElement);
+      inputElement.select();
+      document.execCommand('copy');
+      document.body.removeChild(inputElement);
     },
     setFontSize(size) {
       localStorage.setItem('articleFontSize', size);
@@ -130,8 +137,7 @@ export default {
               clickable v-close-popup
               class="font-size-option"
               :class="{'focus': fontSize === 1}"
-              @click="setFontSize(1)"
-            >
+              @click="setFontSize(1)">
               <div class="font-size-symbol font-size-1">가</div>
               <p class="comment-card-text">크기1</p>
             </q-item>
@@ -139,8 +145,7 @@ export default {
               clickable v-close-popup
               class="font-size-option"
               :class="{'focus': fontSize === 2}"
-              @click="setFontSize(2)"
-            >
+              @click="setFontSize(2)">
               <div class="font-size-symbol font-size-2">가</div>
               <p class="comment-card-text">크기2</p>
             </q-item>
@@ -148,8 +153,7 @@ export default {
               clickable v-close-popup
               class="font-size-option"
               :class="{'focus': fontSize === 3}"
-              @click="setFontSize(3)"
-            >
+              @click="setFontSize(3)">
               <div class="font-size-symbol font-size-3">가</div>
               <p class="comment-card-text">크기3</p>
             </q-item>
@@ -157,8 +161,7 @@ export default {
               clickable v-close-popup
               class="font-size-option"
               :class="{'focus': fontSize === 4}"
-              @click="setFontSize(4)"
-            >
+              @click="setFontSize(4)">
               <div class="font-size-symbol font-size-4">가</div>
               <p class="comment-card-text">크기4</p>
             </q-item>
@@ -166,8 +169,7 @@ export default {
               clickable v-close-popup
               class="font-size-option"
               :class="{'focus': fontSize === 5}"
-              @click="setFontSize(5)"
-            >
+              @click="setFontSize(5)">
               <div class="font-size-symbol font-size-5">가</div>
               <p class="comment-card-text">크기5</p>
             </q-item>

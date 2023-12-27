@@ -38,9 +38,11 @@ export default {
         }
         const res = await this.$api.post(config.url, config.body, config.etc);
         this.likes = res.data.response.lists;
+        this.$emit('likesCount', this.likes.length);
         this.checkMyLike();
       } catch (e) {
-        console.error(e)
+        console.error('공감이 없는 게시글 입니다.', e.message);
+        this.$emit('likesCount', 0);
       }
     },
     checkMyLike() {
@@ -124,6 +126,13 @@ export default {
     <div class="add-likes-wrap">
       <q-btn size="14px" flat round style="background: #FD384E" @click="showLikeButtons = !showLikeButtons">
         <q-icon name="add" color="white"/>
+        <q-menu max-width="500px" class="font-size-menu">
+          <q-list class="font-size-option-list">
+            <q-item clickable v-close-popup>
+              <img class="like-button" src="../../assets/graphic/face-like.png" @click="createLike('like')"/>
+            </q-item>
+          </q-list>
+        </q-menu>
       </q-btn>
       <div v-show="showLikeButtons" class="likes-button-group">
         <img class="like-button" src="../../assets/graphic/face-like.png" @click="createLike('like')"/>

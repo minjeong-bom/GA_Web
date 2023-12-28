@@ -96,7 +96,7 @@ export default {
           </q-item>
         </q-list>
       </q-menu>
-      <q-menu v-if="isMyPost">
+      <q-menu v-else>
         <q-list style="min-width: 100px">
           <q-item clickable v-close-popup @click="reportArticle">
             <q-item-section>신고하기</q-item-section>

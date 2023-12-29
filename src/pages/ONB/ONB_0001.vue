@@ -7,7 +7,7 @@
 					함께 이야기해요!
 				</h1>
 				<p class="description">“스토리" 카테고리 만나보기</p>
-				<img class="center-img" src="src/assets/graphic/onboard_graphic_story.png">
+				<img class="center-img" src="../../assets/graphic/onboard_graphic_story.png">
 			</div>
 			<q-btn @click="goNext()" rounded size="lg" flat class="onboard-fixed-button" style="background: #000">
 				<p style="color: #fff">다음으로 (1/3)</p>

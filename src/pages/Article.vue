@@ -68,11 +68,11 @@
             <q-icon name="add" color="white"/>
           </q-btn>
 	        <div v-show="showLikeButtons" class="likes-button-group">
-		        <img class="like-button" src="src/assets/graphic/face-like.png" @click="createLike('like')"/>
-		        <img class="like-button" src="src/assets/graphic/face-sad.png" @click="createLike('sad')"/>
-		        <img class="like-button" src="src/assets/graphic/face-gido.png" @click="createLike('gido')"/>
-		        <img class="like-button" src="src/assets/graphic/face-angry.png" @click="createLike('angry')"/>
-		        <img class="like-button" src="src/assets/graphic/face-good.png" @click="createLike('good')"/>
+		        <img class="like-button" src="../assets/graphic/face-like.png" @click="createLike('like')"/>
+		        <img class="like-button" src="../assets/graphic/face-sad.png" @click="createLike('sad')"/>
+		        <img class="like-button" src="../assets/graphic/face-gido.png" @click="createLike('gido')"/>
+		        <img class="like-button" src="../assets/graphic/face-angry.png" @click="createLike('angry')"/>
+		        <img class="like-button" src="../assets/graphic/face-good.png" @click="createLike('good')"/>
 	        </div>
         </div>
 				<!-- Like List -->
@@ -98,7 +98,7 @@
 			<q-input dense rounded outlined v-model="addComment" :placeholder="commentInputPlaceholder" style="width: 100%;">
 				<template v-slot:append>
 					<q-btn flat round @click="createComment" style="right: -10px">
-						<img src="src/assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
+						<img src="../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
 					</q-btn>
 				</template>
 			</q-input>

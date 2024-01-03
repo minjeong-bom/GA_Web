@@ -2,9 +2,20 @@
   <div>
     <div class="card">
       <!-- Card Id -->
-      <article-id :job-title="badgeTitle" :article-type="articleType2" :article-type2="articleType2" :view-count="viewCount" :creater-name="writer" :created-at="createdAt"/>
+      <article-id
+        :article-key="articleKey"
+        :job-title="badgeTitle"
+        :article-type="articleType2"
+        :article-type2="articleType2"
+        :view-count="viewCount"
+        :creater-name="writer"
+        :created-at="createdAt"
+        :control-ui="true"
+        :user-key="storageUserKey"
+        :creater-key="createrKey"
+      />
       <!-- Thumbnail & Title -->
-      <div class="article-card-thumbnail">
+      <div class="article-card-thumbnail" @click="goToArticle(articleKey)">
         <div class="article-card-headline-wrap">
           <h4 class="article-card-headline">{{ titleText42 }}</h4>
         </div>
@@ -31,9 +42,11 @@ import article from "../../pages/Article.vue";
 export default {
   components: {ArticleId},
   props: {
+    articleKey: String,
     title: String,
     articleType: String,
     articleType2: String,
+    createrKey: String,
     writer: String,
     badgeTitle: String,
     createdAt: String,
@@ -44,9 +57,8 @@ export default {
     viewCount: String,
   },
   methods: {
-    linkToArticle() {
-      this.$router.push('article');
-      // $route.query.name
+    goToArticle(articleId) {
+      this.$router.push({ path: '/article', query: { key: articleId } });
     },
   },
 	computed: {
@@ -59,7 +71,10 @@ export default {
 			} else {
 				return this.title;
 			}
-		}
+		},
+    storageUserKey() {
+      return localStorage.getItem('userKey');
+    }
 	}
 }
 </script>

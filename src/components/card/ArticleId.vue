@@ -1,25 +1,42 @@
 <script>
-import timeAgo from '/src/timeData/timeAgo'
-import article from "../../pages/Article.vue";
+import timeAgo from '/src/script/timeData/timeAgo'
+import IconAlart from "components/modal/iconAlart.vue";
+import {useQuasar} from "quasar";
+import ConfilrmDialog from "components/modal/confilrmDialog.vue";
 export default {
   name: "ArticleId",
+  components: {ConfilrmDialog, IconAlart},
 	props: {
+    articleKey: String,
     articleType: String,
     viewCount: String,
 	  createrName: String,
     jobTitle: String,
-    createdAt: {
-			type: String,
-	    default: ''
-    },
+    createdAt: String,
 	  controlUi: {
 			type: Boolean,
 		  default: true,
 	  },
-	  userProfile: {
-			type: String,
-		  default: '',
-	  }
+	  userProfile: String,
+    createrKey: String, // 작성자의 키값
+    userKey: String, // 사용자의 키값
+  },
+  data() {
+    return {
+      deleteModal: false,
+    }
+  },
+  methods: {
+    editArticle() {
+      console.log(this.articleKey, 'Edit');
+    },
+    deleteArticle() {
+      this.deleteModal = false;
+      console.log(this.articleKey, 'Delete');
+    },
+    reportArticle() {
+      // 신고하기 기능 추가
+    }
   },
   computed: {
     createdAtTimeShow() {
@@ -29,6 +46,10 @@ export default {
 				return false;
 			}
     },
+    isMyPost() {
+      console.log(this.createrKey, this.userKey);
+      return this.createrKey === this.userKey;
+    }
   }
 }
 </script>
@@ -45,7 +66,11 @@ export default {
       <!-- 00님이 000을 올렸어요 (하위메뉴) -->
       <div class="created-user-and-lable">
         <div class="created-user-info-wrap card-headline-1">
-          <span>{{ createrName ? createrName : "비공개 회원" }}님이</span><span><span class="high-light">{{ articleType }}</span>{{ articleType === '스토리'? '를' : '을' }} 올렸어요</span>
+          <span>{{ createrName ? createrName : "비공개 회원" }}님이</span>
+          <span>
+            <span class="high-light">{{ articleType }}</span>
+            {{ articleType === '스토리'? '를' : '을' }} 올렸어요
+          </span>
           <div v-if="articleType" class="cartegory2-lable">
             <span>{{ articleType }}</span>
           </div>
@@ -60,7 +85,33 @@ export default {
       </div>
     </div>
     <!-- More Button -->
-    <q-btn flat round icon="more_vert" v-if="controlUi" />
+    <q-btn flat round icon="more_vert" v-if="controlUi" >
+      <q-menu v-if="isMyPost">
+        <q-list style="min-width: 100px">
+          <q-item clickable v-close-popup @click="editArticle()">
+            <q-item-section>수정하기</q-item-section>
+          </q-item>
+          <q-item clickable v-close-popup @click="deleteModal = true">
+            <q-item-section>삭제하기</q-item-section>
+          </q-item>
+        </q-list>
+      </q-menu>
+      <q-menu v-else>
+        <q-list style="min-width: 100px">
+          <q-item clickable v-close-popup @click="reportArticle">
+            <q-item-section>신고하기</q-item-section>
+          </q-item>
+        </q-list>
+      </q-menu>
+    </q-btn>
+
+    <confilrm-dialog
+      :alert-show="deleteModal"
+      :description="'정말 삭제하시겠습니까?'"
+      :confirm-button-text="'삭제'"
+      @cancel="deleteModal = false"
+      @confirm="deleteArticle"
+    ></confilrm-dialog>
   </div>
 </template>
 

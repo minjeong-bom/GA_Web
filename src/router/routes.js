@@ -94,7 +94,6 @@ const routes = [
     children: [
       { path: '/joi0000', component: () => import('pages/JOI/JOI_0000.vue') },
       { path: '/joi4999', component: () => import('pages/JOI/JOI_4999.vue') },
-      { path: '/joi5000', component: () => import('pages/JOI/JOI_5000.vue') },
       { path: '/joi0100', component: () => import('pages/JOI/JOI_0100.vue') }, // 아이디, 비번 설정
       { path: '/joi0110', component: () => import('pages/JOI/JOI_0110.vue') }, // 이메일 설정
       { path: '/joi0140', component: () => import('pages/JOI/JOI_0140.vue') }, // 약관 동의
@@ -106,7 +105,7 @@ const routes = [
   },
   // 본인인증 페이지
   {
-    path: '/joi5000',
+    path: '/joi_5000',
     name: 'mok_std_request',
     component: () => import('../pages/auth/mok_vue_index.vue')
   },

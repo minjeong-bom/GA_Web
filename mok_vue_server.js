@@ -24,13 +24,6 @@ const port = 5000 ;
 /* 모든 URL에 대한 CORS 허용 */
 app.use(cors());
 
-/* 특정 URL에 대한 CORS 허용 */
-let corsOptions = {
-  origin: 'https://이용기관 본인확인-표준창 인증요청 처리 (Vue)URL',
-  credentials: true
-}
-app.use(cors(corsOptions));
-
 /* 루트(root)패키지의 정적파일을 읽기위한 설정 */
 app.use(express.static('./'));
 
@@ -51,11 +44,11 @@ const MOK_RESULT_REQUEST_URL = 'https://scert.mobile-ok.com/gui/service/v1/resul
 // const MOK_RESULT_REQUEST_URL = 'https://cert.mobile-ok.com/gui/service/v1/result/request';  // 운영
 
 /* 2-1 본인확인 Node.js서버 매핑 URL */
-const requestUri = 'https://본인확인 요청 URL/mok/mok_std_request';  // mok 인증 요청 URI
-const resultUri = 'https://본인확인 요청 URL/mok/mok_std_result';  // mok 결과 요청 URI
+const requestUri = 'https://goodafternoon.life/#/joi5000';  // mok 인증 요청 URI
+const resultUri = 'https://goodafternoon.life/#/redirect';  // mok 결과 요청 URI
 
 /* 2-3 결과 수신 후 전달 URL 설정 - "https://" 포함한 URL 입력 */
-const resultUrl = 'https://이용기관 본인확인-표준창 요청 (Node.js)URL/mok/mok_std_result';
+const resultUrl = 'https://goodafternoon.life/#/redirect';
 
 /* 3. 본인확인 서비스 API 설정 */
 /* 3-1 키파일 경로(본인확인 키정보파일 Path)설정 */
@@ -103,8 +96,8 @@ app.post(requestUri, (req, res) => {
     /* 본인확인 결과 타입 */
     /* 본인확인 결과 타입, "MOKToken"  : 개인정보 응답결과를 이용기관 서버에서 본인확인 서버에 요청하여 수신 후 처리 */
     /* 본인확인 결과 타입, "MOKResult" : 개인정보 응답결과를 이용자 브라우져로 수신 후 처리 (이용시 반드시 재사용 방지처리 개발) */
-    , 'retTransferType' : 'MOKToken'
-    // , 'retTransferType' : 'MOKResult'
+    // , 'retTransferType' : 'MOKToken'
+    , 'retTransferType' : 'MOKResult'
     /* 본인확인 결과 수신 URL */
     , 'returnUrl' : resultUrl
   };

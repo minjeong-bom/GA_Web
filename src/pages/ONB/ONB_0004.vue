@@ -7,7 +7,7 @@
 					곧 생기실거에요
 				</h1>
 				<p class="description">아름다운 삶을 응원합니다</p>
-				<img class="center-img" src="src/assets/graphic/onboard_graphic_ga.png">
+				<img class="center-img" src="../../assets/graphic/onboard_graphic_ga.png">
 			</div>
 			<q-btn @click="goNext()" rounded size="lg" flat class="onboard-fixed-button" style="background: var(--ga-red)">
 				<p style="color: #fff">지애와 함께하기</p>

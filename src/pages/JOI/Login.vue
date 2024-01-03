@@ -28,9 +28,9 @@
 			</q-btn>
 			<!-- 회원가입 버튼 -->
 			<q-btn class="join-us-button" flat style="background: #F5F5F5;" @click="navigateTo('joi0000')">
-				<img src="src/assets/icon/icon-clab.svg">
+				<img src="../../assets/icon/icon-clab.svg">
 				<p>1분만에 회원 가입 하기</p>
-				<img src="src/assets/icon/icon-clab.svg">
+				<img src="../../assets/icon/icon-clab.svg">
 			</q-btn>
 			<section class="help-btn-wrap flex-center">
 				<q-btn flat rounded><u>아이디 찾기</u></q-btn>
@@ -44,19 +44,19 @@
 			<div class="social-login-button-group flex-center">
 				<!-- Apple -->
 				<q-avatar size="3.8rem">
-					<img src="src/assets/graphic/btn-sns-login.png">
+					<img src="../../assets/graphic/btn-sns-login.png">
 				</q-avatar>
 				<!-- Google -->
 				<q-avatar size="3.8rem">
-					<img src="src/assets/graphic/btn-sns-login-1.png">
+					<img src="../../assets/graphic/btn-sns-login-1.png">
 				</q-avatar>
 				<!-- Naver -->
 				<q-avatar size="3.8rem">
-					<img src="src/assets/graphic/btn-sns-login-2.png">
+					<img src="../../assets/graphic/btn-sns-login-2.png">
 				</q-avatar>
 				<!-- Kakao -->
 				<q-avatar size="3.8rem">
-					<img src="src/assets/graphic/btn-sns-login-3.png">
+					<img src="../../assets/graphic/btn-sns-login-3.png">
 				</q-avatar>
 			</div>
 		</div>

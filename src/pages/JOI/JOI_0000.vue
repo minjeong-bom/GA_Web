@@ -18,16 +18,16 @@ export default {
 		</h1>
 
 		<div class="l-column button-group">
-			<q-btn @click="navigate('joi5000')" flat rounded class="full-width join-type-button" style="background: var(--ga-red)" size="lg">
+			<q-btn @click="navigate('joi4999')" flat rounded class="full-width join-type-button" style="background: var(--ga-red)" size="lg">
 				<p>일반회원</p>
 			</q-btn>
-			<q-btn @click="navigate('joi5000')" flat rounded class="full-width join-type-button" style="background: #43B366;" size="lg">
+			<q-btn @click="navigate('joi4999')" flat rounded class="full-width join-type-button" style="background: #43B366;" size="lg">
 				<div>
 					<p>전문가 회원</p>
 					<p class="caption-1">재취업 관련 강사, 컨설턴트, 헤드헌터, 심리상담사 등</p>
 				</div>
 			</q-btn>
-			<q-btn @click="navigate('joi5000')" flat rounded class="full-width join-type-button" style="background: #1F1F1F" size="lg">
+			<q-btn @click="navigate('joi4999')" flat rounded class="full-width join-type-button" style="background: #1F1F1F" size="lg">
 				<div>
 					<p>기업 회원</p>
 					<p class="caption-1">기업 인사 담당자</p>

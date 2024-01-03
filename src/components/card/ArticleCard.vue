@@ -131,4 +131,13 @@ export default {
 .like-read-wrap section * {
   color: #999999;
 }
+
+.article-card-headline {
+  margin-block-end: 0;
+  margin-block-start: 0;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
 </style>

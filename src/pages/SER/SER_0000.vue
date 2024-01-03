@@ -20,7 +20,7 @@ export default {
         </p>
       </section>
       <section>
-        <img src="src/assets/graphic/intro-graphic-2.png"/>
+        <img src="../../assets/graphic/intro-graphic-2.png"/>
       </section>
       <section>
         <h2 class="section-header">서비스를 만들게 된 중요한 사실</h2>

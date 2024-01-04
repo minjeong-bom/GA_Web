@@ -2,7 +2,12 @@
 import TitleTopBar from "components/app-bar/TitleTopBar.vue";
 
 export default {
-  components: {TitleTopBar}
+  components: {TitleTopBar},
+  methods: {
+    navigateTo(path) {
+      this.$router.push(path);
+    }
+  }
 }
 </script>
 
@@ -37,12 +42,12 @@ export default {
 
       <div class="cus-btn-group l-column">
         <!-- 문의 버튼 -->
-        <q-btn rounded flat class="full-width primary-btn input-lable-text-comment">
+        <q-btn rounded flat class="full-width primary-btn input-lable-text-comment" @click="navigateTo('/myp4110')">
           문의하기
         </q-btn>
 
         <!-- 만족도 조사 버튼 -->
-        <q-btn flat class="full-width secondary-btn">
+        <q-btn flat class="full-width secondary-btn" >
           <div class="full-width flex-sb">
             고객센터가 도움이 되었나요?
             <q-icon name="arrow_forward_ios" size="14px"></q-icon>

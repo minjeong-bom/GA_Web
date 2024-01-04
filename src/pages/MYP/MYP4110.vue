@@ -33,6 +33,7 @@ export default {
         return
       } else if (this.files.length > 3) {
         this.openModal('파일은 3개까지 업로드 할 수 있습니다.')
+        return
       } else if (this.files) {
         for (let i = 0; i < this.files.length; i++) {
           try {
@@ -48,6 +49,14 @@ export default {
       }
       if (allUploadsSuccessful) {
         try {
+          const content = [
+            this.title, // 문의 제목
+            this.content,  // 문의 내용
+            "", // 관리자 답변
+            this.uploadFilesKey, // 첨부파일 업로드 키
+            "", // 문의 유형
+          ]
+
           const config = {
             url: '/api/crud/create',
             body: {
@@ -55,12 +64,7 @@ export default {
               data_title: this.storageUserKey,
               data_foreign_key: "IOZOZWFG",
               data_foreign_key2: "ZRBTGTEX",
-              data_content: [
-                this.title, // 문의 제목
-                this.content,  // 문의 내용
-                "", // 관리자 답변
-                this.uploadFilesKey, // 첨부파일 업로드 키
-              ],
+              data_content: JSON.stringify(content),
               data_writer_name: this.storageUserKey,
             },
             etc: {
@@ -70,11 +74,10 @@ export default {
             }
           }
 
-          const response = await this.$api.post(config.url, config.body, config.etc);
+          const res = await this.$api.post(config.url, config.body, config.etc);
           this.isLoading = false;
           this.$q.notify('1:1 문의가 등록되었습니다');
-          this.$router.push('/');
-
+          this.$router.push({ path: '/myp4120', query: { key: res.data.response.result.data_key } });
         } catch (e) {
           this.$q.notify('1:1 문의를 등록할 수 없습니다. 관리자에게 문의해주세요.');
           console.error('1:1 문의글 등록 실패', e);

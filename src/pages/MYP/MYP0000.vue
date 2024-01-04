@@ -1,5 +1,6 @@
 <script>
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
+import { extractCityOrCounty } from '../../script/text/cityExtractor';
 
 export default {
 	name: "MYP0000",
@@ -19,9 +20,18 @@ export default {
 				currentBiz: '', // 현업 종사 여부
 				searchGoal: '', // 구직 활동 목표
 			},
-      selectedFile: '', // 이미지 데이터
+      file: null, // 이미지 데이터
 		}
 	},
+  watch: {
+    // 'file' 데이터 속성을 감시합니다.
+    file(newFile, oldFile) {
+      // 파일이 변경되었을 때 실행할 로직
+      if (newFile !== oldFile) {
+        this.uploadFile();
+      }
+    }
+  },
 	mounted() {
 		this.getMyInfo()
 	},
@@ -61,7 +71,7 @@ export default {
 			}
 		},
     uploadFile() {
-      if (this.selectedFile) {
+      if (this.file) {
         const reader = new FileReader();
 
         reader.onload = async (e) => {
@@ -93,20 +103,19 @@ export default {
           }
         };
 
-        reader.readAsDataURL(this.selectedFile);
+        reader.readAsDataURL(this.file);
       } else {
         alert('Please select an image to upload.');
       }
     },
 		extractCityOrCounty() {
-			const text = this.address;
-			// "시" 또는 "군"으로 끝나는 단어를 찾는 정규 표현식
-			const regex = /[\S]+[시군](?=\s|$)/;
-			const match = text.match(regex);
-			this.cityName = match ? match[0] : '';
+			this.cityName = extractCityOrCounty(this.address);
 		},
     navigateTo(path) {
       this.$router.push(path);
+    },
+    triggerFileInput() {
+      this.$refs.fileInput.pickFiles();
     },
 	},
 	computed: {
@@ -136,7 +145,18 @@ export default {
 		<section class="user-info-wrap">
 			<div class="user-thumbnail-wrap">
 				<img class="user-thumbnail" style="background-image: url('src/assets/graphic/user-profile-thumb-sample.jpeg')"/>
-				<q-btn dense round size="sm" flat class="upload-photo" icon="photo_camera" style="background: #fff"></q-btn>
+				<q-btn
+          dense round size="sm" flat
+          class="upload-photo"
+          icon="photo_camera"
+          style="background: #fff"
+          @click="triggerFileInput"
+        />
+        <q-file
+          v-model="file"
+          style="display: none"
+          ref="fileInput"
+        />
 			</div>
 			<div class="l-column user-detail-info text-align-center">
 				<h2 class="user-name-text">{{ localUserName }}</h2>

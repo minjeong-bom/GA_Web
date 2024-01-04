@@ -26,6 +26,8 @@ const routes = [
       { path: '/myp0000', component: () => import('pages/MYP/MYP0000.vue') },
       { path: '/myp4100', component: () => import('pages/MYP/MYP4100.vue') },
       { path: '/myp4110', component: () => import('pages/MYP/MYP4110.vue') },
+      { path: '/myp4120', component: () => import('pages/MYP/MYP4120.vue') },
+      { path: '/myp4130', component: () => import('pages/MYP/MYP4130.vue') },
     ]
   },
   {

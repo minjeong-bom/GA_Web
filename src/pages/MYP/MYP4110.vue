@@ -52,13 +52,14 @@ export default {
             url: '/api/crud/create',
             body: {
               data_prefix : "bc",
-              data_title: [
-                this.storageUserKey, this.title
-              ],
+              data_title: this.storageUserKey,
               data_foreign_key: "IOZOZWFG",
               data_foreign_key2: "ZRBTGTEX",
               data_content: [
-                this.content, "", this.uploadFilesKey
+                this.title, // 문의 제목
+                this.content,  // 문의 내용
+                "", // 관리자 답변
+                this.uploadFilesKey, // 첨부파일 업로드 키
               ],
               data_writer_name: this.storageUserKey,
             },

@@ -35,8 +35,8 @@ export default {
 	<div>
 		<q-dialog v-model="localAlertShow">
 			<q-card>
-				<q-card-section class="alert-header flex-center">
-					<q-icon size="md" :name="this.iconName"/>
+				<q-card-section v-if="iconName" class="alert-header flex-center">
+					<q-icon size="sm" :name="this.iconName" class="high-light"/>
 				</q-card-section>
 
 				<q-card-section class="q-pt-none">
@@ -45,8 +45,11 @@ export default {
 					</p>
 				</q-card-section>
 
-				<q-card-actions align="right">
-					<q-btn flat :label="this.buttonInnerText" color="primary" v-close-popup @click="this.$emit('confirm')"/>
+				<q-card-actions align="center">
+					<q-btn flat v-close-popup
+                 :label="this.buttonInnerText"
+                 @click="this.$emit('confirm')"
+          />
 				</q-card-actions>
 			</q-card>
 		</q-dialog>

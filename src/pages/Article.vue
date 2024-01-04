@@ -216,11 +216,6 @@ export default {
 </script>
 
 <style scoped>
-.article-content {
-  padding: 0rem 1rem 1.25rem 1rem;
-  min-height: 200px;
-}
-
 .article-overview {
   display: flex;
   align-items: center;

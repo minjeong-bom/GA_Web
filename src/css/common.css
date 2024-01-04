@@ -36,6 +36,7 @@
 .flex-sb {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .error-msg {
@@ -83,6 +84,8 @@
   margin-bottom: calc(env(safe-area-inset-bottom) + 74px) !important;
 }
 
+/* button */
+
 .btn-outline-primary {
   padding: 0px;
   background-color: transparent;
@@ -102,15 +105,13 @@
   font-weight: bold;
 }
 
-/* button */
-
 .btn-primary-small {
   display: flex;
   height: 40px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  /*gap: 8px;*/
   flex-shrink: 0;
   border-radius: 100px;
   background-color: #FD384E;
@@ -118,6 +119,17 @@
   padding: 10px 24px;
   border: none;
   font-size: 0.875rem;
+}
+
+.primary-btn {
+  background: var(--ga-red);
+  color: #fff;
+
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.00625rem;
 }
 
 .end-line {
@@ -282,4 +294,8 @@
 
 .font-size-5, .font-size-5>* {
   font-size: 1.375rem !important;
+}
+
+.nomal-page-layout {
+  padding: 1rem;
 }

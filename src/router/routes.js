@@ -24,6 +24,8 @@ const routes = [
     component: () => import('layouts/FullPageLayout.vue'),
     children: [
       { path: '/myp0000', component: () => import('pages/MYP/MYP0000.vue') },
+      { path: '/myp4100', component: () => import('pages/MYP/MYP4100.vue') },
+      { path: '/myp4110', component: () => import('pages/MYP/MYP4110.vue') },
     ]
   },
   {
@@ -101,6 +103,13 @@ const routes = [
       { path: '/joi0160', component: () => import('pages/JOI/JOI_0160.vue') }, // 가입 완료
       { path: '/joi0170', component: () => import('pages/JOI/JOI_0170.vue') }, // 가입 완료
       { path: '/joi0180', component: () => import('pages/JOI/JOI_0180.vue') }, // 가입 완료
+    ]
+  },
+  {
+    path: '/cus',
+    component: () => import('layouts/ContentFooterLayout.vue'),
+    children: [
+      { path: '/cus0000', component: () => import('pages/CUS/CUS_0000.vue')}
     ]
   },
   // 본인인증 페이지

@@ -10,10 +10,11 @@
         <!-- Article Card -->
         <tab :tabs="tabList" @changeTab="changeTab"></tab>
         <div v-for="item in articleList">
-          <article-card
+          <skeleton-card v-if="isLoading" :lines="10"/>
+          <article-card v-else
             :article-key="item.bc_key"
             :title="item.bc_title"
-            :article-thumb="item.articleThumb"
+            :article-thumb="item.bc_thumb"
             :article-type="item.category_name"
             :article-type2="item.category_name"
             :writer="item.bc_writer_name"
@@ -50,10 +51,12 @@ import Tab from "components/tab/Tab.vue";
 import EventCard from "components/card/EventCard.vue";
 import NoticeCard from "components/card/NoticeCard.vue";
 import BottomAppBar from "components/app-bar/BottomAppBar.vue";
+import SkeletonCard from "components/loading/SkeletonCard.vue";
 
 export default defineComponent({
   name: 'IndexPage',
   components: {
+    SkeletonCard,
     BottomAppBar,
     'article-card': ArticleCard,
     'tab': Tab,
@@ -83,6 +86,8 @@ export default defineComponent({
 	    tabCategoryType: '',
       articleList: [],
 	    articleListLength: 5,
+      thumbnailList: [],
+      isLoading: true,
     }
   },
   created() {
@@ -135,7 +140,7 @@ export default defineComponent({
         data: {
           "alias": "bc",
           "prefix": "bc",
-          "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key",
+          "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content",
           "columns_opts": {
             "bc_foreign_key2": "SNXKQEZS"
           },
@@ -167,13 +172,52 @@ export default defineComponent({
         DPORHCPV: "스토리",
         KWUOXKGM: "취업 스킬",
         CEZTXGLJ: "지애픽"
-      };
+      }
+
       response.forEach(item => {
         item.category_name = categoryInfo[item.bc_foreign_key] || null;
-      });
+      })
 
       // 작성자명 가공 함수 호출
       this.replaceWriterNames(response);
+      this.getThumbnail();
+    },
+    async getThumbnail() {
+      const config = {
+        url: '/api/crud/lists/',
+        body: {
+          "alias": "bc",
+          "prefix": "bc",
+          "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content",
+          "columns_opts" : {
+            "bc_foreign_key": "FHGBWGLF",
+            "bc_foreign_key2": "UZPWQOWR"
+          },
+          "limit" : 100
+        },
+        etc: {
+          headers : {
+            'SPRINT-API-KEY' : 'sprinttest',
+          }
+        }
+      }
+
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      let response = res.data.response.lists;
+      this.thumbnailList = response;
+
+      this.addThumbnailsToArticles();
+    },
+    addThumbnailsToArticles() {
+      this.articleList.forEach(article => {
+        const thumbnailKey = article.bc_content?.thumbnailKey;
+        const thumbnail = this.thumbnailList.find(t => t.bc_key === thumbnailKey);
+        if (thumbnail) {
+          article.bc_thumb = thumbnail.bc_content;
+        }
+      })
+
+      this.isLoading = false
     },
     async replaceWriterNames(array) {
       for (let item of array) {

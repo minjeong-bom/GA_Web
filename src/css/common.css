@@ -299,3 +299,7 @@
 .nomal-page-layout {
   padding: 1rem;
 }
+
+.q-skeleton--anim-wave {
+  z-index: 0;
+}

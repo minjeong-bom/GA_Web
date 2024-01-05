@@ -24,8 +24,7 @@
             :motivation="item.motivation"
             :view-count="item.bc_count"
             :creater-key="item.bc_writer_key"
-          >
-          </article-card>
+          />
         </div>
       </div>
     </section>
@@ -117,6 +116,8 @@ export default defineComponent({
       }
     },
     changeTab(tabId) {
+      this.isLoading = true;
+
 	    this.articleList = [];
 	    this.articleListLength = 5;
 

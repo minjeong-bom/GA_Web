@@ -17,27 +17,27 @@ export default {
       options: [
         {
           label: '오류 및 속도 느림',
-          value: '1'
+          value: '오류 및 속도 느림'
         },
         {
           label: '제공 정보',
-          value: '2'
+          value: '제공 정보'
         },
         {
           label: '검색 및 탐색 과정',
-          value: '3'
+          value: '검색 및 탐색 과정'
         },
         {
           label: '커뮤니티 운영',
-          value: '4'
+          value: '커뮤니티 운영'
         },
         {
           label: '컨설팅 서비스',
-          value: '5'
+          value: '컨설팅 서비스'
         },
         {
           label: '기타 의견',
-          value: '6'
+          value: '기타 의견'
         },
       ]
     }
@@ -65,23 +65,23 @@ export default {
 
       this.title = result.bc_title;
       this.content = result.bc_content;
+      this.writerKey = result.bc_writer_name;
     },
     async save() {
-      debugger
-      this.content[4] = this.group;
-      console.log(this.content)
+      this.content.type = this.group;
       try {
         const content = JSON.stringify(this.content);
 
         const config = {
           url: '/api/crud/create',
           body: {
-            data_prefix : "bc",
-            data_title: this.storageUserKey,
-            data_foreign_key: "IOZOZWFG",
-            data_foreign_key2: "ZRBTGTEX",
+            data_key: this.contentKey,
+            data_prefix : 'bc',
+            data_title: this.title,
+            data_foreign_key: 'IOZOZWFG',
+            data_foreign_key2: 'ZRBTGTEX',
             data_content: JSON.stringify(content),
-            data_writer_name: this.storageUserKey,
+            data_writer_name: this.writerKey,
           },
           etc: {
             headers: {
@@ -92,6 +92,7 @@ export default {
 
         const res = await this.$api.post(config.url, config.body, config.etc);
         this.isLoading = false;
+
         this.$router.push('/myp4130');
       } catch (e) {
         console.error('1:1 문의글 등록 실패', e);

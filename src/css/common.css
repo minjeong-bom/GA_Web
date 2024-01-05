@@ -303,3 +303,25 @@
 .q-skeleton--anim-wave {
   z-index: 0;
 }
+
+.center-graphic-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 25rem;
+}
+
+.center-graphic-layout img {
+  width: 8rem;
+  height: 8rem;
+}
+
+.cus-text-2 {
+  text-align: center;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 1.6875rem */
+}

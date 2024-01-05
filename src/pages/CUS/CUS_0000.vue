@@ -26,7 +26,7 @@ export default {
         빠른 시간 내 답변 드리겠습니다.
       </p>
 
-      <div class="cus-graphic-layout">
+      <div class="center-graphic-layout">
         <!-- 이미지 -->
         <img src="../../assets/graphic/customer-service-img.svg">
 
@@ -74,28 +74,6 @@ export default {
   line-height: 150%; /* 1.6875rem */
 
   margin-top: 2.5rem;
-}
-
-.cus-text-2 {
-  text-align: center;
-  font-size: 1.125rem;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%; /* 1.6875rem */
-}
-
-.cus-graphic-layout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  height: 25rem;
-}
-
-.cus-graphic-layout img {
-  width: 8rem;
-  height: 8rem;
 }
 
 .cus-btn-group {

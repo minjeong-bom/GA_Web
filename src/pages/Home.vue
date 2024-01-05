@@ -93,9 +93,6 @@ export default defineComponent({
     this.checkOnboard();
     this.changeTab(1);
   },
-  mounted() {
-    this.getArticleList('all', this.articleListLength);
-  },
   methods: {
 	  addLoadArticle() {
 			this.articleListLength = this.articleListLength + 10;

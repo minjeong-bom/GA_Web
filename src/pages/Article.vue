@@ -79,12 +79,10 @@ export default {
   },
   methods: {
     likesCount(count) {
-      this.counts.likes = count;
-      console.log('like', this.counts.likes)
+      this.counts.likes = Number(count);
     },
     commentsCount(count) {
-      this.counts.comments = count;
-      console.log('comment', this.counts.comments)
+      this.counts.comments = Number(count);
     },
     setFontSize() {
       this.articleFontSize = parseInt(localStorage.getItem('articleFontSize')) || 2;

@@ -36,6 +36,36 @@ export default {
 					iconClass: 'fa-user',
 					subLable: '',
 					path: '/myp0000',
+          sub: [
+            {
+              color: '',
+              lable: "내 게시글",
+              iconClass: 'fa-pen-to-square',
+              subLable: '',
+              path: '/myp0000',
+            },
+            {
+              color: '',
+              lable: "내 북마크",
+              iconClass: 'fa-bookmark',
+              subLable: '',
+              path: '/myp3000',
+            },
+            {
+              color: '',
+              lable: "내 이력서",
+              iconClass: 'fa-id-card-clip',
+              subLable: '',
+              path: '/myp0000',
+            },
+            {
+              color: '',
+              lable: "1:1 문의사항",
+              iconClass: 'fa-comments',
+              subLable: '',
+              path: '/myp4001',
+            },
+          ]
 				},
 				{
 					color: '',
@@ -122,19 +152,40 @@ export default {
 		<div class="headline-wrap">
 			<h1 class="headline-1">전체</h1>
 		</div>
-		<section>
-			<q-btn v-for="item in menuList" flat class="full-width" @click="this.$router.push(item.path)">
-				<div class="menu-item">
-					<div class="icon-lable-wrap">
-						<div class="icon-frame flex-center">
-							<i class="fa-solid" :class="item.iconClass"></i>
-						</div>
-						<span class="menu-lable-2">{{ item.lable }}</span>
-					</div>
-					<span v-if="item.subLable" class="footnote">{{ item.subLable }}</span>
-				</div>
-			</q-btn>
-		</section>
+		<div>
+			<section v-for="item in menuList" >
+				<q-btn flat class="full-width" @click="this.$router.push(item.path)">
+          <div class="menu-item">
+            <div class="icon-lable-wrap">
+              <div class="icon-frame flex-center">
+                <i class="fa-solid" :class="item.iconClass"></i>
+              </div>
+              <span class="menu-lable-2">{{ item.lable }}</span>
+            </div>
+            <span v-if="item.subLable" class="footnote">{{ item.subLable }}</span>
+          </div>
+				</q-btn>
+        <div v-if="item.sub" class="sub-menu-item-wrap">
+          <q-btn
+            v-if="item.sub"
+            flat dense
+            class="full-width"
+            v-for="sub in item.sub"
+            @click="this.$router.push(sub.path)"
+          >
+            <div class="menu-item">
+              <div class="icon-lable-wrap">
+                <div class="icon-frame flex-center">
+                  <i class="fa-solid sub-menu-lable" :class="sub.iconClass"></i>
+                </div>
+                <span class="sub-menu-lable">{{ sub.lable }}</span>
+              </div>
+              <span v-if="sub.subLable" class="footnote">{{ sub.subLable }}</span>
+            </div>
+          </q-btn>
+        </div>
+			</section>
+		</div>
 	</div>
 </template>
 
@@ -142,6 +193,7 @@ export default {
 .fa-solid {
 	font-size: 20px;
 }
+
 .close-button-wrap {
 	display: flex;
 	padding: 0.5rem 0.5rem 0.5rem 0rem;
@@ -183,5 +235,19 @@ section {
 .icon-frame {
 	width: 2rem;
 	height: 2rem;
+}
+
+.sub-menu-item-wrap {
+  padding-left: 32px;
+}
+
+.sub-menu-item-wrap .icon-frame {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.sub-menu-item-wrap .sub-menu-lable {
+  font-size: 1rem;
+  color: var(--labels-secondary)
 }
 </style>

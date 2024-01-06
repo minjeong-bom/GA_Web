@@ -46,7 +46,6 @@ export default {
     },
     checkMyLike() {
       this.myLike = this.likes.find(item => item.bc_writer_name === this.userKey);
-      console.log('this.myLike', this.myLike)
     },
     async createLike(likeType) {
       let config

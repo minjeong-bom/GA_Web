@@ -51,7 +51,6 @@ export default {
       }
     },
     isMyPost() {
-      console.log(this.createrKey, this.userKey);
       return this.createrKey === this.userKey;
     }
   }

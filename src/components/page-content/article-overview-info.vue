@@ -2,8 +2,8 @@
 export default {
   name: "article-overview-info",
   props: {
-    likesLength: String,
-    commentLength: String,
+    likesLength: Number,
+    commentLength: Number,
   }
 }
 </script>

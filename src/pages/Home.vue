@@ -8,7 +8,7 @@
       <!-- Article Cards -->
       <div>
         <!-- Article Card -->
-        <tab :tabs="tabList" @changeTab="changeTab"></tab>
+        <tab :tabs="tabList" @changeTab="changeTab" :default-tab="defaultTab"></tab>
         <div v-for="item in articleList">
           <skeleton-card v-if="isLoading" :lines="10"/>
           <article-card v-else
@@ -42,9 +42,6 @@
 
 <script>
 import {defineComponent} from 'vue'
-import {useRouter} from "vue-router";
-
-const router = useRouter();
 import ArticleCard from "components/card/ArticleCard.vue";
 import Tab from "components/tab/Tab.vue";
 import EventCard from "components/card/EventCard.vue";
@@ -83,6 +80,7 @@ export default defineComponent({
         },
       ],
 	    tabCategoryType: '',
+      defaultTab: 0,
       articleList: [],
 	    articleListLength: 5,
       thumbnailList: [],
@@ -91,7 +89,11 @@ export default defineComponent({
   },
   created() {
     this.checkOnboard();
-    this.changeTab(1);
+    const routeTab = this.$route.query.tab;
+    this.defaultTab = routeTab ? Number(routeTab) : 1;
+  },
+  mounted() {
+
   },
   methods: {
 	  addLoadArticle() {
@@ -118,67 +120,72 @@ export default defineComponent({
 	    this.articleList = [];
 	    this.articleListLength = 5;
 
-	    if (tabId === 1) {
+	    if (tabId == 1) {
 				this.getArticleList('');
 				this.tabCategoryType = '';
-      } else if (tabId === 2) {
+      } else if (tabId == 2) {
 	      this.getArticleList('story');
 		    this.tabCategoryType = 'story';
-      } else if (tabId === 3) {
+      } else if (tabId == 3) {
 	      this.getArticleList('skills');
 		    this.tabCategoryType = 'skills';
-      } else {
+      } else if (tabId == 4) {
 	      this.getArticleList('gapick');
 				this.tabCategoryType = 'gapick'
       }
     },
     async getArticleList(category, limit) {
-      const commonConfig = {
-        url: '/api/crud/lists/',
-        data: {
-          "alias": "bc",
-          "prefix": "bc",
-          "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content",
-          "columns_opts": {
-            "bc_foreign_key2": "SNXKQEZS"
+      try {
+        const commonConfig = {
+          url: '/api/crud/lists/',
+          data: {
+            "alias": "bc",
+            "prefix": "bc",
+            "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content",
+            "columns_opts": {
+              "bc_foreign_key2": "SNXKQEZS"
+            },
+            "limit": limit ? limit : 0
           },
-          "limit": limit
-        },
-        etc: {
-          headers : {
-            'SPRINT-API-KEY' : 'sprinttest',
+          etc: {
+            headers : {
+              'SPRINT-API-KEY' : 'sprinttest',
+            }
           }
+        };
+        let config = { ...commonConfig };
+
+        // 카테고리 별 'bc_foreign_key' 설정
+        if (category === 'story') {
+          config.data.columns_opts.bc_foreign_key = "DPORHCPV"; // 스토리
+        } else if (category === 'skills') {
+          config.data.columns_opts.bc_foreign_key = "KWUOXKGM"; // 스킬
+        } else if (category === 'gapick') {
+          config.data.columns_opts.bc_foreign_key = "CEZTXGLJ"; // 스킬
         }
-      };
-      let config = { ...commonConfig };
 
-      // 카테고리 별 'bc_foreign_key' 설정
-      if (category === 'story') {
-        config.data.columns_opts.bc_foreign_key = "DPORHCPV"; // 스토리
-      } else if (category === 'skills') {
-        config.data.columns_opts.bc_foreign_key = "KWUOXKGM"; // 스킬
-      } else if (category === 'gapick') {
-        config.data.columns_opts.bc_foreign_key = "CEZTXGLJ"; // 스킬
+        // API 호출
+        const res = await this.$api.post(config.url, config.data, config.etc);
+        let response = res.data.response.lists;
+
+        // 카테고리 이름 삽입
+        const categoryInfo = {
+          DPORHCPV: "스토리",
+          KWUOXKGM: "취업 스킬",
+          CEZTXGLJ: "지애픽"
+        }
+
+        response.forEach(item => {
+          item.category_name = categoryInfo[item.bc_foreign_key] || null;
+        })
+
+        // 작성자명 가공 함수 호출
+        this.replaceWriterNames(response);
+        this.getThumbnail();
+
+      } catch (e) {
+        console.error('게시글이 존재하지 않습니다.', e)
       }
-
-      // API 호출
-	    const res = await this.$api.post(config.url, config.data, config.etc);
-      let response = res.data.response.lists;
-
-      // 카테고리 이름 삽입
-      const categoryInfo = {
-        DPORHCPV: "스토리",
-        KWUOXKGM: "취업 스킬",
-        CEZTXGLJ: "지애픽"
-      }
-
-      response.forEach(item => {
-        item.category_name = categoryInfo[item.bc_foreign_key] || null;
-      })
-
-      // 작성자명 가공 함수 호출
-      this.replaceWriterNames(response);
-      this.getThumbnail();
     },
     async getThumbnail() {
       const config = {

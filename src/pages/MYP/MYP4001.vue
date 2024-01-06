@@ -86,7 +86,7 @@ export default {
         <div v-for="item in askList" class="ask-card-item" @click="navigateToAsk(item.bc_key)">
           <div class="flex-sb">
             <div class="l-column ask-card-text">
-              <p class="card-headline-1">{{ item.bc_content.title }}</p>
+              <p class="ask-card-title">{{ item.bc_content.title }}</p>
               <p class="caption-1">{{ item.bc_regdate }}</p>
             </div>
             <p class="caption-1">{{ item.bc_content.status === '0' ? '확인중' : '답변완료' }}</p>

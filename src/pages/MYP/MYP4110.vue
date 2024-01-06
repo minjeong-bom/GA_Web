@@ -35,7 +35,6 @@ export default {
           try {
             const response = await uploadFile(this.files[i], "1:1 문의 이미지", this.storageUserKey, "LVSXZTLQ");
             this.uploadFilesKey.push(response.response.result.data_key);
-            console.log(this.uploadFilesKey);
           } catch (e) {
             console.error('파일 업로드 실패', e);
             allUploadsSuccessful = false;

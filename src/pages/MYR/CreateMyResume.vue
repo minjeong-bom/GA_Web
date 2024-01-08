@@ -57,7 +57,7 @@ export default {
         resm_ed_inst: [], // 교육 기관
         resm_ed_range: [], // 교육 기간
       }, // 기타 교육
-      married: Boolean,
+      married: null,
       familys: Number,
       showModal: {
         scrollLock: false,
@@ -66,6 +66,7 @@ export default {
         myr2140: false,
         myr2150: false,
         myr2160: false,
+        myr2170: false,
       }
     }
   },
@@ -150,7 +151,7 @@ export default {
       this.myEducation.resm_ed_title = eduName
       this.myEducation.resm_ed_inst = eduInst
       if (eduDateStart.length === eduDateEnd.length) {
-        this.mySchool.resm_sc_range = eduDateStart.map((eduDateStart, index) => {
+        this.myEducation.resm_ed_range = eduDateStart.map((eduDateStart, index) => {
           return {start: eduDateStart, end: eduDateEnd[index]}
         })
       }
@@ -240,6 +241,9 @@ export default {
       if (card === 'myr2160') {
         this.showModal.myr2160 = true
       }
+      if (card === 'myr2170') {
+        this.showModal.myr2170 = true
+      }
     },
     closeModal(card) {
       this.showModal.scrollLock = false
@@ -258,6 +262,9 @@ export default {
       }
       if (card === 'myr2160') {
         this.showModal.myr2160 = false
+      }
+      if (card === 'myr2170') {
+        this.showModal.myr2170 = false
       }
     }
   },
@@ -335,7 +342,46 @@ export default {
       }
 
       return arraySet
-    }
+    },
+    myEducationAndLicenseResult() {
+      let arraySet = [];
+
+      const target = this.myLisence;
+      for (let i = 0; i < this.myLisence.resm_ct_title.length; i++) {
+        arraySet.push({
+          name: '자격증' + (i + 1),
+          result: [
+            target.resm_ct_title[i] + ', ' + target.resm_ct_date[i]
+          ],
+        })
+      }
+
+      const target2 = this.myEducation;
+      for (let i = 0; i < this.myEducation.resm_ed_title.length; i++) {
+        arraySet.push({
+          name: '교육' + (i + 1),
+          result: [
+            target2.resm_ed_title[i] + ', ' + target2.resm_ed_inst[i]
+          ],
+        })
+      }
+
+      return arraySet
+    },
+    personalInfoResult() {
+      const arraySet = [
+        {
+          name: '결혼 구분',
+          result: this.married ? 'O' : 'X'
+        },
+        {
+          name: '자녀수',
+          result: this.familys
+        }
+      ]
+
+      return arraySet
+    },
   }
 }
 </script>
@@ -417,6 +463,7 @@ export default {
         <myr-info-card v-else :card-head-line="'학력 및 외국어'" :item-length="2" :results="mySchoolAndLangResult" @click="openModal('myr2140')"/>
         <!-- 자격 및 기타 교육 -->
         <myr-card
+          v-if="!this.myLisence.resm_ct_title.length && !this.myEducation.resm_ed_title.length"
           :card-head-line="'자격 및 기타 교육'"
           :card-title="'기업이 요구하는 역량과 관련된 자격 및 교육 사항은 신뢰를 더해줄 수 있어요'"
           :card-thumb-name-imgae-name="'myr-card-thumb-5'"
@@ -424,13 +471,17 @@ export default {
           :card-caption="'(1000대 기업 서류 전형 기준표 기준)'"
           @click="openModal('myr2160')"
         />
+        <myr-info-card v-else :card-head-line="'자격 및 기타 교육'" :item-length="2" :results="myEducationAndLicenseResult" @click="openModal('myr2160')"/>
         <!-- 인적 사항 -->
         <myr-card
+          v-if="!this.married || !this.familys"
           :card-head-line="'인적 사항'"
           :card-title="'인적 사항은 서류 전형 필수 정보에요'"
           :card-thumb-name-imgae-name="'myr-card-thumb-6'"
           :card-description="'가족 관계 확인을 위해 필요해요.'"
+          @click="openModal('myr2170')"
         />
+        <myr-info-card v-else :card-head-line="'인적 사항'" :item-length="2" :results="personalInfoResult" @click="openModal('myr2170')"/>
       </section>
     </div>
 
@@ -475,6 +526,9 @@ export default {
       :saved-license-name="myLisence.resm_ct_title"
       :saved-license-inst="myLisence.resm_ct_inst"
       :saved-license-date="myLisence.resm_ct_date"
+      :saved-edu-name="myEducation.resm_ed_title"
+      :saved-edu-inst="myEducation.resm_ed_inst"
+      :saved-edu-date="myEducation.resm_ed_range"
       @saveLicenseAndEdu="saveLicenseAndEdu"
     />
   </div>

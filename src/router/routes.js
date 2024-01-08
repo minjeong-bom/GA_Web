@@ -36,8 +36,9 @@ const routes = [
     path: '/myr',
     component: () => import('layouts/FullPageLayout.vue'),
     children: [
-      { path: '/myr0000', component: () => import('pages/MYR/CreateMyResume.vue') },
+      { path: '/myr0000', component: () => import('pages/MYR/MYR_0000.vue') },
       { path: '/myr2120', component: () => import('pages/MYR/MYR_2120.vue') },
+      { path: '/myr0000/create', component: () => import('pages/MYR/CreateMyResume.vue') },
     ]
   },
   {

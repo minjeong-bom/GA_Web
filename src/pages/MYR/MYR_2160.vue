@@ -46,13 +46,19 @@ export default {
     }
   },
   mounted() {
-    if (this.savedLicenseName) {
+    if (this.savedEduName.length === 0 && this.savedLicenseName.length === 0) {
+      return
+    }
+    if (this.savedLicenseName || this.savedEduName) {
+      this.licenseGroupCount = this.savedLicenseName.length;
       this.licenseName = this.savedLicenseName;
       this.licenseInst = this.savedLicenseInst;
       this.licenseDate = this.savedLicenseDate;
 
+      this.eduGroupCount = this.savedEduName.length;
       this.eduName = this.savedEduName;
       this.eduInst = this.savedEduInst;
+      console.log('this.savedEduDate', this.savedEduDate)
       this.savedEduDate.forEach(item => {
         this.eduDateStart.push(item.start);
         this.eduDateEnd.push(item.end);

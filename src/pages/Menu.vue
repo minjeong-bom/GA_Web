@@ -56,7 +56,7 @@ export default {
               lable: "내 이력서",
               iconClass: 'fa-id-card-clip',
               subLable: '',
-              path: '/myp0000',
+              path: '/myr0000',
             },
             {
               color: '',

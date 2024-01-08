@@ -91,7 +91,7 @@ export default {
       <q-input dense rounded outlined v-model="addComment" :placeholder="commentInputPlaceholder" style="width: 100%;">
         <template v-slot:append>
           <q-btn flat round @click="createComment" style="right: -10px">
-            <img src="src/assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
+            <img src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
           </q-btn>
         </template>
       </q-input>

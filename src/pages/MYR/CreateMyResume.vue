@@ -8,6 +8,7 @@ import MYR_2130 from "pages/MYR/MYR_2130.vue"
 import MYR_2140 from "pages/MYR/MYR_2140.vue"
 import MYR_2150 from "pages/MYR/MYR_2150.vue"
 import MYR_2160 from "pages/MYR/MYR_2160.vue"
+import MYR_2170 from "pages/MYR/MYR_2170.vue";
 
 export default {
   name: "CreateMyResume",
@@ -20,7 +21,8 @@ export default {
     MYR_2130,
     MYR_2140,
     MYR_2150,
-    MYR_2160
+    MYR_2160,
+    MYR_2170
   },
   data() {
     return {
@@ -71,6 +73,70 @@ export default {
     }
   },
   methods: {
+
+    async saveMyResume() {
+      try {
+        const config = {
+          url: '/api/crud/create',
+          body: {
+            // 이력서
+            resm_title: this.myrTitle ? this.myrTitle : '제목없는 이력서', // 이력서 제목
+            resm_mem_key: this.localUserKey, // 작성자 키
+            // 목표
+            data_prefix: 'resm',
+            resm_type: this.goalCompany, // 목표 기업명
+            resm_category: this.goalArea, // 목표 분야
+            // 프로필
+            resm_profile_image: '', // 이력서 프로필 이미지
+            // 경력 사항
+            resm_cp_depart: this.myHistory.resm_cp_depart, // 회사 이름, 소속 부서
+            resm_cp_field: this.myHistory.resm_cp_field, // 회사 주요 담당 업무
+            resm_cp_range: this.myHistory.resm_cp_range, // 회사 근무기간
+            resm_cp_performance: this.myHistory.resm_cp_performance, // 회사 성과
+            // 학력
+            resm_sc_title: this.mySchool.resm_sc_title, // 학력 학교명
+            resm_sc_major: this.mySchool.resm_sc_major, // 학력 전공
+            resm_sc_range: this.mySchool.resm_sc_range, // 학력 재학기간
+            // 외국어
+            resm_fl_category: this.myLanguage.resm_fl_category, // 외국어 종류
+            resm_fl_write: this.myLanguage.resm_fl_write, // 외국어 수준 쓰기
+            resm_fl_read: this.myLanguage.resm_fl_read, // 외국어 수준 읽기
+            resm_fl_speak: this.myLanguage.resm_fl_speak, // 외국어 수준 말하기
+            // 자격증
+            resm_ct_title: this.myLisence.resm_ct_title, // 자격증 명
+            resm_ct_inst: this.myLisence.resm_ct_inst, // 자격증 발급기관
+            resm_ct_date: this.myLisence.resm_ct_date, // 자격증 취득년도
+            // 교육
+            resm_ed_title: this.myEducation.resm_ed_title, // 교육 명
+            resm_ed_inst: this.myEducation.resm_ed_inst, // 교육 기관
+            resm_ed_range: this.myEducation.resm_ed_range, // 교육 기간
+            // 인적 사항
+            resm_spouse: this.married, // 배우자 여부
+            resm_kids: this.familys, // 자녀수
+            // 해외 연수
+            resm_oc_title: '', // 해외 연수 명
+            resm_oc_country: '', // 해외 연수 국가
+            resm_oc_inst: '', // 해외 연수 기관
+            resm_oc_range: '', // 해외 연수 교육 기간
+            // 수상 내역
+            resm_aw_title: '', // 수상 내역 명
+            resm_aw_inst: '', // 수상 내역 발급 기관
+            resm_aw_date: '', // 수상 내역 수상연도
+            // ???
+            resm_career_summary: '', // 경력 요약
+            resm_strategy: '' // 핵심 역량
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprinttest',
+            }
+          }
+        }
+        const result = await this.$api.post(config.url, config.body, config.etc)
+      } catch (e) {
+        console.error(e)
+      }
+    },
     saveGoalSetting(goalArea, goalCompany) {
       this.goalArea = goalArea
       this.goalCompany = goalCompany
@@ -158,68 +224,10 @@ export default {
 
       this.closeModal('myr2160')
     },
-    async saveMyResume() {
-      try {
-        const config = {
-          url: '/api/crud/create',
-          body: {
-            // 이력서
-            resm_title: this.myrTitle ? this.myrTitle : '제목없는 이력서', // 이력서 제목
-            resm_mem_key: this.localUserKey, // 작성자 키
-            // 목표
-            data_prefix: 'resm',
-            resm_type: this.goalCompany, // 목표 기업명
-            resm_category: this.goalArea, // 목표 분야
-            // 프로필
-            resm_profile_image: '', // 이력서 프로필 이미지
-            // 경력 사항
-            resm_cp_depart: this.myHistory.resm_cp_depart, // 회사 이름, 소속 부서
-            resm_cp_field: this.myHistory.resm_cp_field, // 회사 주요 담당 업무
-            resm_cp_range: this.myHistory.resm_cp_range, // 회사 근무기간
-            resm_cp_performance: this.myHistory.resm_cp_performance, // 회사 성과
-            // 학력
-            resm_sc_title: this.mySchool.resm_sc_title, // 학력 학교명
-            resm_sc_major: this.mySchool.resm_sc_major, // 학력 전공
-            resm_sc_range: this.mySchool.resm_sc_range, // 학력 재학기간
-            // 외국어
-            resm_fl_category: this.myLanguage.resm_fl_category, // 외국어 종류
-            resm_fl_write: this.myLanguage.resm_fl_write, // 외국어 수준 쓰기
-            resm_fl_read: this.myLanguage.resm_fl_read, // 외국어 수준 읽기
-            resm_fl_speak: this.myLanguage.resm_fl_speak, // 외국어 수준 말하기
-            // 자격증
-            resm_ct_title: this.myLisence.resm_ct_title, // 자격증 명
-            resm_ct_inst: this.myLisence.resm_ct_inst, // 자격증 발급기관
-            resm_ct_date: this.myLisence.resm_ct_date, // 자격증 취득년도
-            // 교육
-            resm_ed_title: this.myEducation.resm_ed_title, // 교육 명
-            resm_ed_inst: this.myEducation.resm_ed_inst, // 교육 기관
-            resm_ed_range: this.myEducation.resm_ed_range, // 교육 기간
-            // 인적 사항
-            resm_spouse: this.married, // 배우자 여부
-            resm_kids: this.familys, // 자녀수
-            // 해외 연수
-            resm_oc_title: '', // 해외 연수 명
-            resm_oc_country: '', // 해외 연수 국가
-            resm_oc_inst: '', // 해외 연수 기관
-            resm_oc_range: '', // 해외 연수 교육 기간
-            // 수상 내역
-            resm_aw_title: '', // 수상 내역 명
-            resm_aw_inst: '', // 수상 내역 발급 기관
-            resm_aw_date: '', // 수상 내역 수상연도
-            // ???
-            resm_career_summary: '', // 경력 요약
-            resm_strategy: '' // 핵심 역량
-          },
-          etc: {
-            headers: {
-              'SPRINT-API-KEY': 'sprinttest',
-            }
-          }
-        }
-        const result = this.$api.post(config.url, config.body, config.etc)
-      } catch (e) {
-        console.error(e)
-      }
+    savePersonalInfo(married, familys) {
+      this.married = married
+      this.familys = familys
+      this.closeModal('myr2170')
     },
     navigateTo(path) {
       this.$router.push(path)
@@ -372,7 +380,7 @@ export default {
       const arraySet = [
         {
           name: '결혼 구분',
-          result: this.married ? 'O' : 'X'
+          result: this.married
         },
         {
           name: '자녀수',
@@ -474,14 +482,14 @@ export default {
         <myr-info-card v-else :card-head-line="'자격 및 기타 교육'" :item-length="2" :results="myEducationAndLicenseResult" @click="openModal('myr2160')"/>
         <!-- 인적 사항 -->
         <myr-card
-          v-if="!this.married || !this.familys"
+          v-if="!this.married"
           :card-head-line="'인적 사항'"
           :card-title="'인적 사항은 서류 전형 필수 정보에요'"
           :card-thumb-name-imgae-name="'myr-card-thumb-6'"
           :card-description="'가족 관계 확인을 위해 필요해요.'"
           @click="openModal('myr2170')"
         />
-        <myr-info-card v-else :card-head-line="'인적 사항'" :item-length="2" :results="personalInfoResult" @click="openModal('myr2170')"/>
+        <myr-info-card v-else :card-head-line="'인적 사항'" :results="personalInfoResult" @click="openModal('myr2170')"/>
       </section>
     </div>
 
@@ -535,6 +543,12 @@ export default {
       @saveLicenseAndEdu="saveLicenseAndEdu"
       @closeModal="closeModal"
       class="popup-modal"
+    />
+    <MYR_2170
+      v-if="showModal.myr2170"
+      class="popup-modal"
+      @savePersonalInfo="savePersonalInfo"
+      @closeModal="closeModal"
     />
   </div>
 </template>

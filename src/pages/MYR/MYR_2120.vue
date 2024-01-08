@@ -82,17 +82,17 @@ export default {
         style="font-size: 1.125rem"
         class="full-width"
       />
+
+      <q-btn
+        rounded
+        flat
+        size="lg"
+        label="저장"
+        :disable="!inputGoalArea || !inputGoalCompany"
+        class="full-width myr-modal-save-button"
+        @click="save"
+      />
     </section>
-    <q-btn
-      dense
-      size="lg"
-      square
-      :disable="inputGoalArea === '' || inputGoalCompany === ''"
-      class="full-width bottom-fixed-btn btn-save nomal-text-3"
-      @click="save()"
-      style="background-color: var(--ga-red); color: #fff;">
-      <span>저장</span>
-    </q-btn>
   </div>
 </template>
 
@@ -109,11 +109,4 @@ export default {
   gap: 1.25rem;
 }
 
-</style>
-
-<style scoped>
-.bottom-fixed-btn {
-  position: fixed;
-  bottom: 0;
-}
 </style>

@@ -46,7 +46,6 @@ export default {
     },
     checkMyLike() {
       this.myLike = this.likes.find(item => item.bc_writer_name === this.userKey);
-      console.log('this.myLike', this.myLike)
     },
     async createLike(likeType) {
       let config
@@ -147,7 +146,7 @@ export default {
     <section class="liker-slide">
       <q-avatar v-for="item in likes" size="40px">
         <div class="user-profile-wrap"></div>
-        <img class="imoji" :src="`src/assets/graphic/face-${item.bc_content}.png`">
+        <img class="imoji" :src="`../../assets/graphic/face-${item.bc_content}.png`">
       </q-avatar>
     </section>
     <!-- PageNation -->

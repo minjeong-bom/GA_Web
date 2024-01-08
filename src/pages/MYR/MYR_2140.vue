@@ -1,6 +1,9 @@
 <script>
+import MyrTextButtonTopBar from "components/app-bar/MyrTextButtonTopBar.vue";
+
 export default {
 	name: "MYR_2140",
+  components: {MyrTextButtonTopBar},
   props: {
     depart: {
       type: Array,
@@ -52,7 +55,10 @@ export default {
 		},
 		saveHistory() {
 			this.$emit('saveHistory', this.companyName, this.departmentName, this.yourJob, this.performance, this.start, this.end);
-		}
+		},
+    closeModal(closePath) {
+      this.$emit('closeModal', closePath);
+    }
 	},
 	computed: {
 		doneInput() {
@@ -71,6 +77,7 @@ export default {
 
 <template>
 	<div class="myr-page">
+    <myr-text-button-top-bar title-text="이력서 작성" back-path="myr2140" @closeModal="closeModal"/>
 		<section class="sub-myr-view">
 			<div class="full-width">
 				<h2 class="headline-2">경력 사항</h2>

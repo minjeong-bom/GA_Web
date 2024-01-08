@@ -21,6 +21,10 @@ export default {
   },
   methods: {
     async createComment() {
+      if (!this.articleKey) {
+        return
+      }
+
       try {
         const config = {
           url: '/api/crud/setcomment',
@@ -77,7 +81,7 @@ export default {
 
 <template>
   <div>
-    <!-- create comments -->
+    <!-- 댓글 추가 영역 -->
     <div class="comment-input-area">
       <!-- profile image -->
       <q-avatar size="40px">
@@ -87,16 +91,16 @@ export default {
       <q-input dense rounded outlined v-model="addComment" :placeholder="commentInputPlaceholder" style="width: 100%;">
         <template v-slot:append>
           <q-btn flat round @click="createComment" style="right: -10px">
-            <img src="src/assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
+            <img src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
           </q-btn>
         </template>
       </q-input>
     </div>
-    <!-- comment list -->
+    <!-- 댓글 목록 -->
     <section class="l-column comment-list">
       <div class="comment" v-for="item in comments">
         <comment-id :writer="item.user_title" :user-position="item.user_data.job" :created-at="item.comment_regdate"/>
-        <section class="comment-text">{{ item.comment_content }}</section>
+        <div class="comment-text">{{ item.comment_content }}</div>
       </div>
     </section>
   </div>
@@ -115,20 +119,6 @@ export default {
   padding: 10px 16px 0px 16px;
   flex-direction: column;
   align-items: flex-start;
-}
-
-.comment-text {
-  width: 100%;
-  border-radius: 20px;
-  background: var(--fills-quartternary);
-  padding: 16px;
-
-  color: #000;
-  font-family: Pretendard;
-  font-size: 17px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.4375rem; /* 135.294% */
 }
 
 .comment-list {

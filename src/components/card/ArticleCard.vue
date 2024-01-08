@@ -15,17 +15,26 @@
         :creater-key="createrKey"
       />
       <!-- Thumbnail & Title -->
-      <div class="article-card-thumbnail" @click="goToArticle(articleKey)">
-        <div class="article-card-headline-wrap">
+      <div v-if="articleThumb" class="article-card-thumbnail flex-center article-white-card">
+        <img :src="'data:image/jpeg;base64,' + articleThumb" @click="goToArticle(articleKey)"/>
+        <div class="overlay-headline" @click="goToArticle(articleKey)">
+          <div class="article-card-headline-wrap">
+            <h4 class="article-card-headline">{{ titleText42 }}</h4>
+          </div>
+        </div>
+      </div>
+      <div v-else class="article-white-card">
+        <div class="article-card-headline-wrap" @click="goToArticle(articleKey)">
           <h4 class="article-card-headline">{{ titleText42 }}</h4>
         </div>
       </div>
       <!-- Likes & Comment -->
       <div class="like-read-wrap">
-        <section>
-          <q-icon name="sentiment_satisfied_alt" size="18px"></q-icon>
-          <span>999</span>
-        </section>
+        <!--        <section>-->
+        <!--          <q-icon name="sentiment_satisfied_alt" size="18px"></q-icon>-->
+        <!--          <span>{{ motivation ? 0 }}</span>-->
+        <!--        </section>-->
+
         <section>
           <span>조회</span>
           <span>{{ viewCount }}</span>
@@ -58,24 +67,34 @@ export default {
   },
   methods: {
     goToArticle(articleId) {
-      this.$router.push({ path: '/article', query: { key: articleId } });
+      this.$router.push({path: '/article', query: {key: articleId}});
     },
   },
-	computed: {
-		article() {
-			return article
-		},
-		titleText42 () {
-			if (this.title.length > 42) {
-				return this.title.substring(0, 42);
-			} else {
-				return this.title;
-			}
-		},
+  computed: {
+    article() {
+      return article
+    },
+    titleText42() {
+      if (this.title.length > 42) {
+        return this.title.substring(0, 42);
+      } else {
+        return this.title;
+      }
+      const testing = {
+        bc_content: "/9j/4AAQSkZJRgABAQEASABIAAD/4gxYSUNDX1BST0ZJTEUAA",
+        bc_count: "0",
+        bc_foreign_key: "FHGBWGLF",
+        bc_foreign_key2: "UZPWQOWR",
+        bc_key: "URQAOBBW",
+        bc_regdate: "2023-12-21 16:31:55",
+        bc_title: "articleImage",
+        bc_writer_name: "NKDRTZPV"
+      }
+    },
     storageUserKey() {
       return localStorage.getItem('userKey');
     }
-	}
+  }
 }
 </script>
 
@@ -84,7 +103,7 @@ export default {
   padding-bottom: 0.38rem;
 }
 
-.article-card-thumbnail {
+.article-white-card {
   position: relative;
   width: 100%;
   height: 12.25rem;
@@ -92,14 +111,6 @@ export default {
   border-radius: 0.75rem;
   overflow: hidden;
   background-color: #fff;
-}
-
-.article-card-thumbnail img {
-  width: 100%;
-}
-
-.article-card-thumbnail {
-
 }
 
 .linear-gradient {
@@ -132,12 +143,27 @@ export default {
   color: #999999;
 }
 
-.article-card-headline {
-  margin-block-end: 0;
-  margin-block-start: 0;
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+.article-card-thumbnail {
+  width: 100%;
+  overflow: hidden;
+  height: 12.25rem;
+  background-color: #fff;
+}
+
+.article-card-thumbnail img {
+  width: 100%;
+}
+
+.overlay-headline {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 50%, #000 115.35%);
+}
+
+.overlay-headline .article-card-headline {
+  color: #fff;
 }
 </style>

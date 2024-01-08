@@ -24,14 +24,21 @@ const routes = [
     component: () => import('layouts/FullPageLayout.vue'),
     children: [
       { path: '/myp0000', component: () => import('pages/MYP/MYP0000.vue') },
+      { path: '/myp3000', component: () => import('pages/MYP/MYP3000.vue') }, // 북마크
+      { path: '/myp4001', component: () => import('pages/MYP/MYP4001.vue') },
+      { path: '/myp4100', component: () => import('pages/MYP/MYP4100.vue') },
+      { path: '/myp4110', component: () => import('pages/MYP/MYP4110.vue') },
+      { path: '/myp4120', component: () => import('pages/MYP/MYP4120.vue') },
+      { path: '/myp4130', component: () => import('pages/MYP/MYP4130.vue') },
     ]
   },
   {
     path: '/myr',
     component: () => import('layouts/FullPageLayout.vue'),
     children: [
-      { path: '/myr0000', component: () => import('pages/MYR/CreateMyResume.vue') },
+      { path: '/myr0000', component: () => import('pages/MYR/MYR_0000.vue') },
       { path: '/myr2120', component: () => import('pages/MYR/MYR_2120.vue') },
+      { path: '/myr0000/create', component: () => import('pages/MYR/CreateMyResume.vue') },
     ]
   },
   {
@@ -101,6 +108,13 @@ const routes = [
       { path: '/joi0160', component: () => import('pages/JOI/JOI_0160.vue') }, // 가입 완료
       { path: '/joi0170', component: () => import('pages/JOI/JOI_0170.vue') }, // 가입 완료
       { path: '/joi0180', component: () => import('pages/JOI/JOI_0180.vue') }, // 가입 완료
+    ]
+  },
+  {
+    path: '/cus',
+    component: () => import('layouts/ContentFooterLayout.vue'),
+    children: [
+      { path: '/cus0000', component: () => import('pages/CUS/CUS_0000.vue')}
     ]
   },
   // 본인인증 페이지

@@ -10,7 +10,7 @@
     </div>
     <!-- 썸네일 -->
     <skeleton-card v-if="isLoading" :lines="1"></skeleton-card>
-    <img v-else class="thumbnail-image-style" :src="'data:image/jpeg;base64,' + article.thumbnail">
+    <img v-if="article.thumbnail" class="thumbnail-image-style" :src="'data:image/jpeg;base64,' + article.thumbnail">
     <!-- 본문 -->
     <section class="article-content">
       <skeleton-line v-if="isLoading" :lines="4"></skeleton-line>
@@ -79,12 +79,10 @@ export default {
   },
   methods: {
     likesCount(count) {
-      this.counts.likes = count;
-      console.log('like', this.counts.likes)
+      this.counts.likes = Number(count);
     },
     commentsCount(count) {
-      this.counts.comments = count;
-      console.log('comment', this.counts.comments)
+      this.counts.comments = Number(count);
     },
     setFontSize() {
       this.articleFontSize = parseInt(localStorage.getItem('articleFontSize')) || 2;
@@ -105,7 +103,7 @@ export default {
           }
         }
         const res = await this.$api.post(config.url, config.body, config.etc)
-        this.isLoading = false
+        this.isLoading = false;
         const content = res.data.response.view
 
         this.article.articleType = content.bc_foreign_key;
@@ -117,16 +115,17 @@ export default {
           this.article.articleType = '지애픽'
         }
 
-        this.article.title = content.bc_title
-        this.article.viewCount = content.bc_count
-        this.article.content = content.bc_content.body.replace(/(?:\r\n|\r|\n)/g, '<br/>')
-        this.article.thumbnailKey = content.bc_content.thumbnailKey
-        this.article.createrKey = content.bc_writer_name
+        this.article.title = content.bc_title;
+        this.article.viewCount = content.bc_count;
+        this.article.content = content.bc_content.body.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+        this.article.thumbnailKey = content.bc_content.thumbnailKey;
+        this.article.createrKey = content.bc_writer_name;
         this.article.createdAt = content.bc_regdate;
         this.getCreaterInfo();
         this.getThumbnail();
       } catch (e) {
         console.error('게시글이 유효하지 않습니다.', e);
+        this.isLoading = false;
       }
     },
     async getThumbnail() {
@@ -145,13 +144,13 @@ export default {
             }
           }
         }
-        const result = await this.$api.post(config.url, config.body, config.etc)
-        this.article.thumbnail = result.data.response.view.bc_content
-        this.thumbnailImageSource = `data:image/jpeg;base64,${this.article.thumbnail}`;
+        const result = await this.$api.post(config.url, config.body, config.etc);
         this.isLoading = false;
+        this.article.thumbnail = result.data.response.view.bc_content;
+        this.thumbnailImageSource = `data:image/jpeg;base64,${this.article.thumbnail}`;
       } catch (e) {
         console.error('썸네일이 없는 게시글입니다.', e);
-
+        this.isLoading = false;
       }
     },
     async getCreaterInfo() {
@@ -176,6 +175,7 @@ export default {
 
       } catch (e) {
         console.error('사용자 정보가 유효하지 않습니다.', e);
+        this.isLoading = false
       }
     },
   },
@@ -216,11 +216,6 @@ export default {
 </script>
 
 <style scoped>
-.article-content {
-  padding: 0rem 1rem 1.25rem 1rem;
-  min-height: 200px;
-}
-
 .article-overview {
   display: flex;
   align-items: center;

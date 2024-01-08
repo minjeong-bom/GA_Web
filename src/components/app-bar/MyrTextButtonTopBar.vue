@@ -3,7 +3,6 @@ export default {
 	props: {
 		buttonName: String,
 		titleText: String,
-    backCallName: 'closeModal',
     backPath: String,
 	},
   methods: {

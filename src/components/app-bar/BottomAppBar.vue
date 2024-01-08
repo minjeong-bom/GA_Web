@@ -69,6 +69,7 @@ export default {
   display: flex;
   padding: 0rem 0.5rem;
   align-items: flex-start;
+  width: 100%;
 
   background: #FFF;
   box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25);

@@ -1,9 +1,6 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
-html {
-}
-
 * {
   font-family: Pretendard;
 }
@@ -79,6 +76,13 @@ h1, h2, h3, h4, h5, h6, p {
   line-height: normal;
 }
 
+.ask-card-title {
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
 .tag-group-title {
   font-size: 0.875rem;
   font-style: normal;
@@ -94,7 +98,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .caption-1 {
-  color: #938F96;
+  color: #999;
   font-size: 0.75rem;
   font-style: normal;
   font-weight: 400;
@@ -223,4 +227,36 @@ h1, h2, h3, h4, h5, h6, p {
   font-style: normal;
   font-weight: 400;
   line-height: 150%; /* 24px */
+}
+
+.article-card-headline {
+  margin-block-end: 0;
+  margin-block-start: 0;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.comment-text {
+  width: 100%;
+  border-radius: 20px;
+  background: var(--fills-quartternary);
+  padding: 16px;
+
+  color: #000;
+  font-family: Pretendard;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.4375rem; /* 135.294% */
+}
+
+.article-content {
+  padding: 0rem 1rem 1.25rem 1rem;
+  min-height: 200px;
+}
+
+.q-checkbox__label {
+  color: black;
 }

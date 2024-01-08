@@ -92,7 +92,7 @@ export default {
   methods: {
     async save() {
       if (this.thumbnail) {
-        const data_title = 'articleImage'
+        const data_title = 'articleImage';
         const data_writer_name = this.userKey
         const data_foreign_key = 'FHGBWGLF' // 아티클 이미지 업로드 카테고리 키
         try {

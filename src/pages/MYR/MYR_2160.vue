@@ -1,9 +1,11 @@
 <script>
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
+import MyrTextButtonTopBar from "components/app-bar/MyrTextButtonTopBar.vue";
 
 export default {
   name: "MYR_2160",
   components: {
+    MyrTextButtonTopBar,
     TextButtonTopBar
   },
   props: {
@@ -46,13 +48,19 @@ export default {
     }
   },
   mounted() {
-    if (this.savedLicenseName) {
+    if (this.savedEduName.length === 0 && this.savedLicenseName.length === 0) {
+      return
+    }
+    if (this.savedLicenseName || this.savedEduName) {
+      this.licenseGroupCount = this.savedLicenseName.length;
       this.licenseName = this.savedLicenseName;
       this.licenseInst = this.savedLicenseInst;
       this.licenseDate = this.savedLicenseDate;
 
+      this.eduGroupCount = this.savedEduName.length;
       this.eduName = this.savedEduName;
       this.eduInst = this.savedEduInst;
+      console.log('this.savedEduDate', this.savedEduDate)
       this.savedEduDate.forEach(item => {
         this.eduDateStart.push(item.start);
         this.eduDateEnd.push(item.end);
@@ -78,6 +86,9 @@ export default {
         this.eduDateEnd,
       );
     },
+    closeModal(closePath) {
+      this.$emit('closeModal', closePath);
+    }
   },
   computed: {
     doneInput() {
@@ -97,7 +108,7 @@ export default {
 
 <template>
   <div class="myr-page">
-    <text-button-top-bar :title-text="'자격 및 기타 교육'"></text-button-top-bar>
+    <myr-text-button-top-bar title-text="이력서 작성" back-path="myr2160" @closeModal="closeModal"/>
     <section class="sub-myr-view">
       <!-- 자격증 *선택사항 -->
       <div class="full-width">

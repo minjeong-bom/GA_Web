@@ -52,10 +52,11 @@ export default {
 			const parser = new DOMParser();
 
 			// 각 객체에 대해 bc_content의 innerText를 추출하여 description 키에 추가
-			dataArray.forEach(item => {
-				const doc = parser.parseFromString(item.bc_content, 'text/html');
-				item.description = doc.body.textContent || "";
-			});
+      dataArray.forEach(item => {
+        const doc = parser.parseFromString(item.bc_content.content, 'text/html');
+        let textContent = doc.body.textContent || "";
+        item.description = textContent.length > 42 ? textContent.substring(0, 42) + '...' : textContent;
+      });
 		},
 		goToDetailView(id) {
 			this.$router.push({ path: '/not0100', query: { key: id } });

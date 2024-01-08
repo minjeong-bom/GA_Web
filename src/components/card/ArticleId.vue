@@ -3,21 +3,25 @@ import timeAgo from '/src/script/timeData/timeAgo'
 import IconAlart from "components/modal/iconAlart.vue";
 import {useQuasar} from "quasar";
 import ConfilrmDialog from "components/modal/confilrmDialog.vue";
+
 export default {
   name: "ArticleId",
-  components: {ConfilrmDialog, IconAlart},
-	props: {
+  components: {
+    ConfilrmDialog,
+    IconAlart
+  },
+  props: {
     articleKey: String,
     articleType: String,
     viewCount: String,
-	  createrName: String,
+    createrName: String,
     jobTitle: String,
     createdAt: String,
-	  controlUi: {
-			type: Boolean,
-		  default: true,
-	  },
-	  userProfile: String,
+    controlUi: {
+      type: Boolean,
+      default: true,
+    },
+    userProfile: String,
     createrKey: String, // 작성자의 키값
     userKey: String, // 사용자의 키값
   },
@@ -40,14 +44,13 @@ export default {
   },
   computed: {
     createdAtTimeShow() {
-			if (this.createdAt) {
-				return timeAgo.timeAgo(this.createdAt);
-			} else {
-				return false;
-			}
+      if (this.createdAt) {
+        return timeAgo.timeAgo(this.createdAt);
+      } else {
+        return false;
+      }
     },
     isMyPost() {
-      console.log(this.createrKey, this.userKey);
       return this.createrKey === this.userKey;
     }
   }
@@ -58,8 +61,8 @@ export default {
   <div class="card-id-wrap">
     <!-- User Profile Image -->
     <div
-	    class="profile-wrap"
-	    :style="`background-image: url(${this.userProfile});`"
+      class="profile-wrap"
+      :style="`background-image: url(${this.userProfile});`"
     ></div>
     <!-- Creater & Created Time -->
     <div class="l-column" style="width: 100%">
@@ -69,7 +72,7 @@ export default {
           <span>{{ createrName ? createrName : "비공개 회원" }}님이</span>
           <span>
             <span class="high-light">{{ articleType }}</span>
-            {{ articleType === '스토리'? '를' : '을' }} 올렸어요
+            {{ articleType === '스토리' ? '를' : '을' }} 올렸어요
           </span>
           <div v-if="articleType" class="cartegory2-lable">
             <span>{{ articleType }}</span>
@@ -85,14 +88,33 @@ export default {
       </div>
     </div>
     <!-- More Button -->
-    <q-btn flat round icon="more_vert" v-if="controlUi" >
+    <q-btn flat round icon="more_vert" v-if="controlUi">
       <q-menu v-if="isMyPost">
         <q-list style="min-width: 100px">
-          <q-item clickable v-close-popup @click="editArticle()">
-            <q-item-section>수정하기</q-item-section>
+          <q-item clickable v-close-popup>
+            <div class="item-section">
+              <q-icon name="share" size="1rem"/> 공유
+            </div>
           </q-item>
           <q-item clickable v-close-popup @click="deleteModal = true">
-            <q-item-section>삭제하기</q-item-section>
+            <div class="item-section">
+              <q-icon name="bookmark" size="1rem"/> 북마크
+            </div>
+          </q-item>
+          <q-item clickable v-close-popup @click="editArticle()">
+            <div class="item-section">
+              <q-icon name="edit" size="1rem"/> 수정
+            </div>
+          </q-item>
+          <q-item clickable v-close-popup @click="deleteModal = true">
+            <div class="item-section">
+              <q-icon name="delete" size="1rem"/> 삭제
+            </div>
+          </q-item>
+          <q-item clickable v-close-popup>
+            <div class="item-section">
+              <q-icon name="report" size="1rem"/> 신고
+            </div>
           </q-item>
         </q-list>
       </q-menu>
@@ -120,7 +142,7 @@ export default {
   width: 48px;
   height: 48px;
   flex-shrink: 0;
-	background-color: var(--grays-gray-2);
+  background-color: var(--grays-gray-2);
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 30px;
@@ -130,7 +152,7 @@ export default {
   gap: 0.625rem;
 }
 
-.created-user-info-wrap>span {
+.created-user-info-wrap > span {
   margin-right: 0.1875rem;
 }
 
@@ -161,4 +183,10 @@ export default {
   background: var(--grays-gray-7);
 }
 
+.item-section {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  font-size: 1rem;
+}
 </style>

@@ -38,10 +38,9 @@ export default {
 				const response = await this.$api.post(config.url, config.body, config.etc);
 				const res = response.data.response.view;
 				this.article.title = res.bc_title;
-				this.article.content = res.bc_content;
+				this.article.content = res.bc_content.content;
 				this.article.createrName = res.bc_writer_name;
 				this.article.createdAt = res.bc_regdate;
-				console.log(res);
 			} catch (e) {
 				console.error(e);
 			}

@@ -2,7 +2,7 @@
   <div>
     <div class="tab">
       <!-- 탭 -->
-      <div class="tab-item" v-for="tab in tabs" :key="tab.id" @click="selectTab(tab.id)" :class="{ 'tab-focus' : tab.id === activeTab }">
+      <div class="tab-item" v-for="tab in tabs" :key="tab.id" @click="selectTab(tab.id)" :class="{ 'tab-focus' : tab.id == activeTab }">
         {{ tab.title }}
       </div>
     </div>
@@ -13,15 +13,23 @@
 export default {
   name: "Tab",
   props: {
-    tabs: Array,
+    tabs: {
+      type: Array,
+      default: [],
+    },
+    defaultTab: {
+      type: Number,
+      default: 0,
+    }
   },
   data() {
     return {
-      activeTab: 1,
+      activeTab: 0,
     }
   },
   mounted() {
-    this.selectTab(this.activeTab);
+    this.activeTab = this.defaultTab || 0;
+    this.selectTab(this.defaultTab);
   },
   methods: {
     selectTab(tabId) {

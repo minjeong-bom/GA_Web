@@ -7,20 +7,21 @@ https://www.goodafternoon.life/
 - 편리한 글 작성 기능을 지원합니다.
 - 이력서 작성 기능을 지원합니다.
 
-## 라이브러리 다운로드
+## Dev & Build
+### 1. 라이브러리 다운로드
 ```bash
 yarn
 # or
 npm install
 ```
 
-### 개발 시작하기
+### 2. 개발 시작하기
 ```bash
 quasar dev
 ```
 
 
-### 개발용으로 빌드하기
+### 3. 개발용으로 빌드하기
 ```bash
 quasar build
 ```

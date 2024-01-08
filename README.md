@@ -1,4 +1,6 @@
-# GoodAfternoon.life
+# GoodAfternoon
+
+https://www.goodafternoon.life/
 
 - Quasar.js로 개발되었습니다.
 - 다양한 커뮤니티 기능을 지원합니다.

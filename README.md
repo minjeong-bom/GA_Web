@@ -7,7 +7,7 @@ https://www.goodafternoon.life/
 - 편리한 글 작성 기능을 지원합니다.
 - 이력서 작성 기능을 지원합니다.
 
-## 디펜던시 설치
+## 라이브러리 다운로드
 ```bash
 yarn
 # or

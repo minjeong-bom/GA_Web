@@ -1,21 +1,24 @@
-# GA App (g-project)
+# GoodAfternoon App & Web Site
 
-A Quasar Project
+- Quasar.js로 개발되었습니다.
+- 다양한 커뮤니티 기능을 지원합니다.
+- 편리한 글 작성 기능을 지원합니다.
+- 이력서 작성 기능을 지원합니다.
 
-## Install the dependencies
+## 디펜던시 설치
 ```bash
 yarn
 # or
 npm install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+### 개발 시작하기
 ```bash
 quasar dev
 ```
 
 
-### Build the app for production
+### 개발용으로 빌드하기
 ```bash
 quasar build
 ```

@@ -65,6 +65,7 @@ export default {
 <style scoped>
 .bottom-app-bar {
   position: fixed;
+  left: 0;
   bottom: 0;
   display: flex;
   padding: 0rem 0.5rem;

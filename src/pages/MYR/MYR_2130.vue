@@ -1,9 +1,10 @@
 <script>
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
+import MyrTextButtonTopBar from "components/app-bar/MyrTextButtonTopBar.vue";
 
 export default {
   name: "MYR_2130",
-  components: {TextButtonTopBar},
+  components: {MyrTextButtonTopBar, TextButtonTopBar},
   props: {
     profileImage: String,
   },
@@ -57,6 +58,9 @@ export default {
       } else {
         alert('Please select an image to upload.');
       }
+    },
+    closeModal(closePath) {
+      this.$emit('closeModal', closePath);
     }
   },
   computed: {
@@ -69,7 +73,7 @@ export default {
 
 <template>
   <div class="myr-page">
-    <text-button-top-bar :title-text="'이력서 작성'"></text-button-top-bar>
+    <myr-text-button-top-bar title-text="이력서 작성" back-path="myr2130" @closeModal="closeModal"/>
     <section class="sub-myr-view">
       <p class="full-width">
         <span class="sub-title-1">사진</span><br>

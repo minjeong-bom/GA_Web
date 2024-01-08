@@ -1,9 +1,11 @@
 <script>
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
+import MyrTextButtonTopBar from "components/app-bar/MyrTextButtonTopBar.vue";
 
 export default {
   name: "MYR_2160",
   components: {
+    MyrTextButtonTopBar,
     TextButtonTopBar
   },
   props: {
@@ -84,6 +86,9 @@ export default {
         this.eduDateEnd,
       );
     },
+    closeModal(closePath) {
+      this.$emit('closeModal', closePath);
+    }
   },
   computed: {
     doneInput() {
@@ -103,7 +108,7 @@ export default {
 
 <template>
   <div class="myr-page">
-    <text-button-top-bar :title-text="'자격 및 기타 교육'"></text-button-top-bar>
+    <myr-text-button-top-bar title-text="이력서 작성" back-path="myr2160" @closeModal="closeModal"/>
     <section class="sub-myr-view">
       <!-- 자격증 *선택사항 -->
       <div class="full-width">

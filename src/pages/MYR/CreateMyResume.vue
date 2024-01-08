@@ -491,12 +491,14 @@ export default {
       :goal-area="goalArea"
       :goal-company="goalCompany"
       @saveGoalSetting="saveGoalSetting"
+      @closeModal="closeModal"
       class="popup-modal"
     />
     <MYR_2130
       v-if="showModal.myr2130"
       :profile-image="mrpPhoto"
       @saveProfileImage="saveProfileImage"
+      @closeModal="closeModal"
       class="popup-modal"
     />
     <MYR_2140
@@ -505,12 +507,12 @@ export default {
       :range="myHistory.resm_cp_range"
       :performances="myHistory.resm_cp_performance"
       :filed="myHistory.resm_cp_field"
-      class="popup-modal"
       @saveHistory="saveHistory"
+      @closeModal="closeModal"
+      class="popup-modal"
     />
     <MYR_2150
       v-if="showModal.myr2150"
-      class="popup-modal"
       :saved-school-name="mySchool.resm_sc_title"
       :saved-school-range="mySchool.resm_sc_range"
       :saved-school-majors="mySchool.resm_sc_major"
@@ -519,10 +521,11 @@ export default {
       :saved-laguage-w-level="myLanguage.resm_fl_write"
       :saved-langeage-l-levels="myLanguage.resm_fl_speak"
       @saveSchoolAndLang="saveSchoolAndLang"
+      @closeModal="closeModal"
+      class="popup-modal"
     />
     <MYR_2160
       v-if="showModal.myr2160"
-      class="popup-modal"
       :saved-license-name="myLisence.resm_ct_title"
       :saved-license-inst="myLisence.resm_ct_inst"
       :saved-license-date="myLisence.resm_ct_date"
@@ -530,6 +533,8 @@ export default {
       :saved-edu-inst="myEducation.resm_ed_inst"
       :saved-edu-date="myEducation.resm_ed_range"
       @saveLicenseAndEdu="saveLicenseAndEdu"
+      @closeModal="closeModal"
+      class="popup-modal"
     />
   </div>
 </template>

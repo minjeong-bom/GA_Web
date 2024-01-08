@@ -77,22 +77,21 @@ export default {
     addSchoolGroup() {
       this.schoolGroupCount = this.schoolGroupCount + 1;
     },
-    saveSchoolAndLang(status) {
-      if (status === 'cancel') {
-        this.$emit('saveSchoolAndLang');
-      } else {
-        this.$emit(
-          'saveSchoolAndLang',
-          this.schoolNames,
-          this.schoolRangesStart,
-          this.schoolRangesEnd,
-          this.schoolMajors,
-          this.languageNames,
-          this.languageReadingLevels,
-          this.languageWriteLevels,
-          this.languageLeadingLevels,
-        )
-      }
+    saveSchoolAndLang() {
+      this.$emit(
+        'saveSchoolAndLang',
+        this.schoolNames,
+        this.schoolRangesStart,
+        this.schoolRangesEnd,
+        this.schoolMajors,
+        this.languageNames,
+        this.languageReadingLevels,
+        this.languageWriteLevels,
+        this.languageLeadingLevels,
+      )
+    },
+    closeModal(closePath) {
+      this.$emit('closeModal', closePath);
     }
   },
   computed: {
@@ -110,7 +109,7 @@ export default {
 
 <template>
   <div class="myr-page">
-    <MyrTextButtonTopBar :title-text="'학력 및 외국어'" :back-path="saveSchoolAndLang('cancel')"/>
+    <myr-text-button-top-bar title-text="이력서 작성" back-path="myr2150" @closeModal="closeModal"/>
     <section class="sub-myr-view">
       <!-- 학력 사항 -->
       <div class="full-width">

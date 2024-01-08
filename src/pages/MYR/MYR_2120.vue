@@ -1,9 +1,10 @@
 <script>
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
+import MyrTextButtonTopBar from "components/app-bar/MyrTextButtonTopBar.vue";
 
 export default {
   name: "MYR_2120",
-  components: {TextButtonTopBar},
+  components: {MyrTextButtonTopBar, TextButtonTopBar},
   props: {
     goalArea: {
       type: String,
@@ -50,15 +51,18 @@ export default {
   },
   methods: {
     save() {
-      this.$emit('saveGoalSetting', this.inputGoalArea, this.inputGoalCompany, );
+      this.$emit('saveGoalSetting', this.inputGoalArea, this.inputGoalCompany);
     },
+    closeModal(closePath) {
+      this.$emit('closeModal', closePath);
+    }
   },
 }
 </script>
 
 <template>
   <div class="myr-page">
-    <text-button-top-bar :title-text="'이력서 작성'"></text-button-top-bar>
+    <myr-text-button-top-bar title-text="이력서 작성" back-path="myr2120" @closeModal="closeModal"/>
     <section class="sub-myr-view">
       <q-select
         v-model="inputGoalArea"

@@ -1,10 +1,11 @@
 <script>
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
 import { extractCityOrCounty } from '../../script/text/cityExtractor';
+import ProfileImageEditor from "components/modal/profileImageEditor.vue";
 
 export default {
 	name: "MYP0000",
-	components: {TextButtonTopBar},
+	components: {ProfileImageEditor, TextButtonTopBar},
 	data() {
 		return {
 			interesting: '',
@@ -21,6 +22,11 @@ export default {
 				searchGoal: '', // 구직 활동 목표
 			},
       file: null, // 이미지 데이터
+      thumbnailInfo: {
+        type: '',
+        imageKey: null,
+        chatactor: null,
+      },
 		}
 	},
   watch: {
@@ -43,7 +49,8 @@ export default {
 					body : {
 						"prefix": "mem",
 						"alias": "mem",
-						"scopes": "mem_key,mem_address,mem_status,mem_id,mem_class,mem_title,mem_foreign_key,mem_regdate,mem_phone,mem_email,mem_regis_num,mem_category,mem_career,mem_field,mem_job,mem_current_biz,mem_job_srch,mem_job_srch_goal,mem_user_profile,mem_job_srch_goal,mem_pro_field,mem_pro_career,mem_enterprise_field,mem_experience"
+						"scopes": "mem_key,mem_address,mem_status,mem_id,mem_class,mem_title,mem_foreign_key,mem_regdate,mem_phone,mem_email,mem_regis_num,mem_category,mem_career,mem_field,mem_job," +
+              "mem_current_biz,mem_job_srch,mem_job_srch_goal,mem_user_profile,mem_job_srch_goal,mem_pro_field,mem_pro_career,mem_enterprise_field,mem_experience"
 					},
 					etc: {
 						headers: {
@@ -144,8 +151,9 @@ export default {
 
 		<section class="user-info-wrap">
 			<div class="user-thumbnail-wrap">
-				<img class="user-thumbnail" style="background-image: url('src/assets/graphic/user-profile-thumb-sample.jpeg')"/>
-				<q-btn
+        <img :src="'data:image/jpeg;base64,' + articleThumb" @click="goToArticle(articleKey)"/>
+
+        <q-btn
           dense round size="sm" flat
           class="upload-photo"
           icon="photo_camera"
@@ -245,6 +253,7 @@ export default {
 				<q-btn dense flat size="xs" icon="chevron_right"></q-btn>
 			</div>
 		</section>
+    <profile-image-editor/>
 	</div>
 </template>
 

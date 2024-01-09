@@ -8,14 +8,18 @@ export default {
 </script>
 
 <template>
-  <div class="flex-sb full-width">
-    <div class="persent"></div>
-    <span class="guage-value">16<span class="unit">%</span></span>
-    <span class="guage-value">33<span class="unit">%</span></span>
-    <span class="guage-value">50<span class="unit">%</span></span>
-    <span class="guage-value">66<span class="unit">%</span></span>
-    <span class="guage-value">83<span class="unit">%</span></span>
-    <span class="guage-value">100<span class="unit">%</span></span>
+  <div class="full-width">
+    <div v-if="value" class="persent full-width flex-sb">
+      <span class="guage-value">16<span class="unit">%</span></span>
+      <span class="guage-value">33<span class="unit">%</span></span>
+      <span class="guage-value">50<span class="unit">%</span></span>
+      <span class="guage-value">66<span class="unit">%</span></span>
+      <span class="guage-value">83<span class="unit">%</span></span>
+      <span class="guage-value">100<span class="unit">%</span></span>
+    </div>
+    <p v-else class="footnote">
+      생각 정리와 함께 이력서 작성을 시작해 보세요.
+    </p>
   </div>
   <div class="quage-wrap">
     <div class="quage-fill" :style="`width: ${value}%;`"></div>

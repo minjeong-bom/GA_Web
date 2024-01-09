@@ -31,7 +31,7 @@ export default {
       goalArea: '', // 목표 업종,
       goalCompany: '', // 목표 회사,
       mrpPhoto: '', // 사진,
-      mrpPhotoKey: '', // 사진,
+      resm_profile_image: '', // 사진,
       myHistory: {
         resm_cp_depart: [], // 회사 이름, 소속 부서
         resm_cp_field: [], // 회사 주요 담당 업무
@@ -79,52 +79,82 @@ export default {
         const config = {
           url: '/api/crud/create',
           body: {
-            // 이력서
-            resm_title: this.myrTitle ? this.myrTitle : '제목없는 이력서', // 이력서 제목
-            resm_mem_key: this.localUserKey, // 작성자 키
-            // 목표
             data_prefix: 'resm',
-            resm_type: this.goalCompany, // 목표 기업명
-            resm_category: this.goalArea, // 목표 분야
+
+            // 이력서
+            data_title: this.myrTitle ? this.myrTitle : '제목없는 이력서', // 이력서 제목
+            data_mem_key: this.localUserKey, // 작성자 키
+            // 목표
+            data_type: this.goalCompany, // 목표 기업명
+            data_category: this.goalArea, // 목표 분야
             // 프로필
-            resm_profile_image: '', // 이력서 프로필 이미지
+            data_profile_image: this.resm_profile_image, // 이력서 프로필 이미지
             // 경력 사항
-            resm_cp_depart: this.myHistory.resm_cp_depart, // 회사 이름, 소속 부서
-            resm_cp_field: this.myHistory.resm_cp_field, // 회사 주요 담당 업무
-            resm_cp_range: this.myHistory.resm_cp_range, // 회사 근무기간
-            resm_cp_performance: this.myHistory.resm_cp_performance, // 회사 성과
+            data_cp_depart: JSON.stringify(this.myHistory.resm_cp_depart), // 회사 이름, 소속 부서
+            data_cp_field: JSON.stringify(this.myHistory.resm_cp_field), // 회사 주요 담당 업무
+            data_cp_range: JSON.stringify(this.myHistory.resm_cp_range), // 회사 근무기간
+            data_cp_performance: JSON.stringify(this.myHistory.resm_cp_performance), // 회사 성과
             // 학력
-            resm_sc_title: this.mySchool.resm_sc_title, // 학력 학교명
-            resm_sc_major: this.mySchool.resm_sc_major, // 학력 전공
-            resm_sc_range: this.mySchool.resm_sc_range, // 학력 재학기간
+            data_sc_title: JSON.stringify(this.mySchool.resm_sc_title), // 학력 학교명
+            data_sc_major: JSON.stringify(this.mySchool.resm_sc_major), // 학력 전공
+            data_sc_range: JSON.stringify(this.mySchool.resm_sc_range), // 학력 재학기간
             // 외국어
-            resm_fl_category: this.myLanguage.resm_fl_category, // 외국어 종류
-            resm_fl_write: this.myLanguage.resm_fl_write, // 외국어 수준 쓰기
-            resm_fl_read: this.myLanguage.resm_fl_read, // 외국어 수준 읽기
-            resm_fl_speak: this.myLanguage.resm_fl_speak, // 외국어 수준 말하기
+            data_fl_category: JSON.stringify(this.myLanguage.resm_fl_category), // 외국어 종류
+            data_fl_write: JSON.stringify(this.myLanguage.resm_fl_write), // 외국어 수준 쓰기
+            data_fl_read: JSON.stringify(this.myLanguage.resm_fl_read), // 외국어 수준 읽기
+            data_fl_speak: JSON.stringify(this.myLanguage.resm_fl_speak), // 외국어 수준 말하기
             // 자격증
-            resm_ct_title: this.myLisence.resm_ct_title, // 자격증 명
-            resm_ct_inst: this.myLisence.resm_ct_inst, // 자격증 발급기관
-            resm_ct_date: this.myLisence.resm_ct_date, // 자격증 취득년도
+            data_ct_title: JSON.stringify(this.myLisence.resm_ct_title), // 자격증 명
+            data_ct_inst: JSON.stringify(this.myLisence.resm_ct_inst), // 자격증 발급기관
+            data_ct_date: JSON.stringify(this.myLisence.resm_ct_date), // 자격증 취득년도
             // 교육
-            resm_ed_title: this.myEducation.resm_ed_title, // 교육 명
-            resm_ed_inst: this.myEducation.resm_ed_inst, // 교육 기관
-            resm_ed_range: this.myEducation.resm_ed_range, // 교육 기간
+            data_ed_title: JSON.stringify(this.myEducation.resm_ed_title), // 교육 명
+            data_ed_inst: JSON.stringify(this.myEducation.resm_ed_inst), // 교육 기관
+            data_ed_range: JSON.stringify(this.myEducation.resm_ed_range), // 교육 기간
             // 인적 사항
-            resm_spouse: this.married, // 배우자 여부
-            resm_kids: this.familys, // 자녀수
+            data_spouse: this.married, // 배우자 여부
+            data_kids: this.familys, // 자녀수
             // 해외 연수
-            resm_oc_title: '', // 해외 연수 명
-            resm_oc_country: '', // 해외 연수 국가
-            resm_oc_inst: '', // 해외 연수 기관
-            resm_oc_range: '', // 해외 연수 교육 기간
+            data_oc_title: '', // 해외 연수 명
+            data_oc_country: '', // 해외 연수 국가
+            data_oc_inst: '', // 해외 연수 기관
+            data_oc_range: '', // 해외 연수 교육 기간
             // 수상 내역
-            resm_aw_title: '', // 수상 내역 명
-            resm_aw_inst: '', // 수상 내역 발급 기관
-            resm_aw_date: '', // 수상 내역 수상연도
+            data_aw_title: '', // 수상 내역 명
+            data_aw_inst: '', // 수상 내역 발급 기관
+            data_aw_date: '', // 수상 내역 수상연도
             // ???
-            resm_career_summary: '', // 경력 요약
-            resm_strategy: '' // 핵심 역량
+            data_career_summary: '', // 경력 요약
+            data_strategy: '' // 핵심 역량
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprinttest',
+            }
+          }
+        }
+        const result = await this.$api.post(config.url, config.body, config.etc)
+        const resumeKey = result.data.response.result.data_key;
+        this.createdResumeResult(resumeKey);
+      } catch (e) {
+        console.error('이력서 등록 실패', e)
+      }
+    },
+    async createdResumeResult(resumeKey) {
+      try {
+        const config = {
+          url: '/api/crud/create',
+          body: {
+            data_prefix : "bc",
+            data_title: this.localUserKey,
+            data_foreign_key : "IUSHLIAS",
+            data_foreign_key2 : "WPHNTUFK",
+            data_content: JSON.stringify({
+              resumeTitle: this.myrTitle,
+              resumeKey: resumeKey,
+              resumePersent: this.donePersent,
+            }),
+            data_writer_name: this.localUserKey
           },
           etc: {
             headers: {
@@ -134,7 +164,7 @@ export default {
         }
         const result = await this.$api.post(config.url, config.body, config.etc)
       } catch (e) {
-        console.error(e)
+        console.error('목록 등록 실패', e)
       }
     },
     saveGoalSetting(goalArea, goalCompany) {
@@ -144,7 +174,7 @@ export default {
     },
     async saveProfileImage(key) {
       this.closeModal('myr2130')
-      this.mrpPhotoKey = key
+      this.resm_profile_image = key
       // 아래는 저장된 이미지 재 조회
       try {
         const config = {
@@ -163,7 +193,6 @@ export default {
         const result = await this.$api.post(config.url, config.body, config.etc)
         console.log(result)
         this.mrpPhoto = result.data.response.view.bc_content
-        console.log(this.mrpPhoto)
       } catch (e) {
         console.error(e)
       }
@@ -212,7 +241,7 @@ export default {
     },
     saveLicenseAndEdu(licenseName, licenseInst, licenseDate, eduName, eduInst, eduDateStart, eduDateEnd) {
       this.myLisence.resm_ct_title = licenseName
-      this.myLisence.resm_ct_inst = eduInst
+      this.myLisence.resm_ct_inst = licenseInst
       this.myLisence.resm_ct_date = licenseDate
       this.myEducation.resm_ed_title = eduName
       this.myEducation.resm_ed_inst = eduInst
@@ -284,10 +313,11 @@ export default {
       let value = 0
 
       value += this.goalArea ? 16 : 0
-      value += this.mrpPhotoKey ? 16 : 0
+      value += this.resm_profile_image ? 20 : 0
       value += this.myHistory.resm_cp_depart.length > 0 ? 16 : 0
       value += this.mySchool.resm_sc_title.length > 0 ? 16 : 0
-      value += this.myLanguage.resm_fl_category.length > 0 ? 32 : 0
+      value += this.myLanguage.resm_fl_category.length > 0 ? 16 : 0
+      value += this.married ? 16 : 0
 
       return value
     },

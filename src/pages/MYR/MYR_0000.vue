@@ -14,6 +14,9 @@ export default {
   methods: {
     navigateToNewMyr() {
       this.$router.push('/myr0000/create');
+    },
+    async getResumeList() {
+
     }
   }
 }

@@ -124,7 +124,7 @@ export default {
             data_aw_inst: '', // 수상 내역 발급 기관
             data_aw_date: '', // 수상 내역 수상연도
             // ???
-            data_career_summary: '', // 경력 요약
+            data_career_summary: this.userGoal, // 경력 요약
             data_strategy: '' // 핵심 역량
           },
           etc: {

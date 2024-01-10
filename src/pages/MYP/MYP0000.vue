@@ -2,10 +2,11 @@
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
 import { extractCityOrCounty } from '../../script/text/cityExtractor';
 import ProfileImageEditor from "components/modal/profileImageEditor.vue";
+import UserProfileThumb from "components/profile/userProfileTumb.vue";
 
 export default {
 	name: "MYP0000",
-	components: {ProfileImageEditor, TextButtonTopBar},
+	components: {UserProfileThumb, ProfileImageEditor, TextButtonTopBar},
 	data() {
 		return {
 			interesting: '',
@@ -27,6 +28,7 @@ export default {
         imageKey: null,
         chatactor: null,
       },
+      openModal: false,
 		}
 	},
   watch: {
@@ -39,9 +41,16 @@ export default {
     }
   },
 	mounted() {
-		this.getMyInfo()
+		this.getMyInfo();
 	},
 	methods: {
+    setThumbnail() {
+      this.openModal = true;
+    },
+    closeModal() {
+      this.openModal = false;
+      this.$router.go(0);
+    },
 		async getMyInfo() {
 			try {
 				const config = {
@@ -151,20 +160,18 @@ export default {
 
 		<section class="user-info-wrap">
 			<div class="user-thumbnail-wrap">
-        <img :src="'data:image/jpeg;base64,' + articleThumb" @click="goToArticle(articleKey)"/>
-
+<!--        <img :src="'data:image/jpeg;base64,' + articleThumb" @click="goToArticle(articleKey)"/>-->
+        <div>
+          <user-profile-thumb :user-key="localUserKey"/>
+        </div>
         <q-btn
           dense round size="sm" flat
           class="upload-photo"
           icon="photo_camera"
           style="background: #fff"
-          @click="triggerFileInput"
+          @click="setThumbnail"
         />
-        <q-file
-          v-model="file"
-          style="display: none"
-          ref="fileInput"
-        />
+        <profile-image-editor v-if="openModal" @closeModal="closeModal"/>
 			</div>
 			<div class="l-column user-detail-info text-align-center">
 				<h2 class="user-name-text">{{ localUserName }}</h2>
@@ -253,7 +260,6 @@ export default {
 				<q-btn dense flat size="xs" icon="chevron_right"></q-btn>
 			</div>
 		</section>
-    <profile-image-editor/>
 	</div>
 </template>
 

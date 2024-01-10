@@ -9,7 +9,7 @@
 export default {
 	methods: {
 		openMenu() {
-			this.$router.push('/menu');
+			this.$router.replace('/menu');
 		}
 	}
 }

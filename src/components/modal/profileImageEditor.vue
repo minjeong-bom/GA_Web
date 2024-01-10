@@ -122,8 +122,11 @@ export default {
         }
         console.log(profileConfig)
         const result = await this.$api.post(profileConfig.url, profileConfig.body, profileConfig.etc);
+        this.$q.notify('프로필 사진이 변경되었습니다.');
+        this.$emit('closeModal');
       } catch (e) {
         console.error(e);
+        this.$q.notify('프로필 사진 변경 실패');
       }
     },
     async convertObjectFile() {
@@ -142,7 +145,8 @@ export default {
 
 <template>
   <div class="modal-background">
-    <div>
+    <div class="shadow" @click="this.$emit('closeModal')"></div>
+    <div class="flex-center absolute-bottom">
       <div class="modal-surface">
         <p class="headline-3">
           {{ userName }}님, <br>
@@ -212,6 +216,7 @@ export default {
 
 <style scoped>
 .modal-background {
+  z-index: 999;
   position: fixed;
   left: 0;
   top: 0;
@@ -225,7 +230,7 @@ export default {
   height: 100%;
 }
 
-.modal-background>div {
+.modal-background .shadow {
   position: absolute;
   left: 0;
   top: 0;

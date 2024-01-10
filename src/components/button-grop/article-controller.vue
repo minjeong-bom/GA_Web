@@ -9,16 +9,101 @@ export default {
   },
   data() {
     return {
-      bookmarked: false,
-      bookmarkData: '',
+      isMarked: false,
+      bookmarkKey: false,
+      bookmarkedKey: '',
       sharedURL: '',
       fontSize: 2,
     }
   },
   mounted() {
     this.getLocalFontSize();
+    this.checkBookmarkedPage();
   },
   methods: {
+    async checkBookmarkedPage() {
+      const config = {
+        url: '/api/crud/lists/',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_title,bc_content',
+          columns_opts: {
+            bc_foreign_key2: 'SWMUCCYD',
+            bc_foreign_key: 'LBUSDDGP',
+          },
+          limit: 100
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
+        }
+      }
+      const result = await this.$api.post(config.url, config.body, config.etc);
+      const res = result.data.response.lists;
+
+      if (res) {
+        const isMarked = res.some(item => item.bc_content === this.articleKey);
+        this.isMarked = isMarked;
+      }
+
+      if (this.isMarked) {
+        const marked = res.find(item => item.bc_content === this.articleKey);
+        this.bookmarkKey = marked.bc_key;
+        console.log(this.bookmarkKey)
+      }
+    },
+    async addBookmark() {
+      try {
+        if (this.bookmarked) {
+          return
+        }
+        const config = {
+          url: '/api/crud/create',
+          body: {
+            data_prefix: 'bc',
+            data_title: this.userKey,
+            data_foreign_key2: 'SWMUCCYD', // 게시판 키
+            data_foreign_key: 'LBUSDDGP', // 카테고리 키
+            data_content: this.articleKey,
+            data_writer_name: this.userKey,
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprinttest',
+            },
+          }
+        }
+        const result = this.$api.post(config.url, config.body, config.etc);
+        this.$q.notify('북마크에 추가되었습니다');
+        this.isMarked = true;
+      } catch (e) {
+        this.$q.notify('네트워크 에러');
+      }
+    },
+    async removeBookmark() {
+      try {
+        const delConfig = {
+          url: '/api/crud/delete',
+          body: {
+            columns_opts : {
+              data_key : this.bookmarkKey,
+            }
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom'
+            }
+          },
+        }
+        const res = await this.$api.post(delConfig.url, delConfig.body, delConfig.etc);
+        this.$q.notify('북마크가 삭제되었습니다');
+        this.isMarked = false;
+      } catch (e) {
+        this.$q.notify('네트워크 에러');
+      }
+    },
     share() {
       const currentURL = window.location.href;
       this.sharedURL = currentURL;
@@ -94,7 +179,7 @@ export default {
         </q-menu>
       </q-btn>
     </div>
-    <q-btn v-if="bookmarked" flat dense round icon="bookmark" @click="removeBookmark()" style="color: var(--ga-red)"/>
+    <q-btn v-if="isMarked" flat dense round icon="bookmark" @click="removeBookmark()" style="color: var(--ga-red)"/>
     <q-btn v-else flat dense round icon="bookmark" @click="addBookmark()" style="opacity: 0.3"/>
     <q-btn flat dense round icon="share" @click="share" style="opacity: 0.3"/>
   </div>

@@ -107,6 +107,7 @@ export default {
 
       try {
         const contentData = {
+          title: this.title,
           body: this.content.body,
           tags: this.content.tags,
           thumbnailKey: this.content.thumbnailKey,
@@ -116,7 +117,7 @@ export default {
           url: '/api/crud/create',
           body: {
             data_prefix: 'bc',
-            data_title: this.title,
+            data_title: this.userKey,
             data_foreign_key: 'DPORHCPV', // '스토리' 카테고리 키
             data_foreign_key2: 'SNXKQEZS', // 게시판 키
             data_content: JSON.stringify(contentData),

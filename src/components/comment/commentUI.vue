@@ -1,9 +1,11 @@
 <script>
 import CommentId from "components/comment/commentId.vue";
+import UserProfileThumb from "components/profile/userProfileTumb.vue";
 
 export default {
   name: "commentUI",
   components: {
+    UserProfileThumb,
     CommentId
   },
   props: {
@@ -84,9 +86,7 @@ export default {
     <!-- 댓글 추가 영역 -->
     <div class="comment-input-area">
       <!-- profile image -->
-      <q-avatar size="40px">
-        <img src="https://cdn.quasar.dev/img/avatar.png">
-      </q-avatar>
+      <user-profile-thumb :user-key="storageUserKey" size="48px"></user-profile-thumb>
       <!-- comment input -->
       <q-input dense rounded outlined v-model="addComment" :placeholder="commentInputPlaceholder" style="width: 100%;">
         <template v-slot:append>
@@ -99,7 +99,7 @@ export default {
     <!-- 댓글 목록 -->
     <section class="l-column comment-list">
       <div class="comment" v-for="item in comments">
-        <comment-id :writer="item.user_title" :user-position="item.user_data.job" :created-at="item.comment_regdate"/>
+        <comment-id :writer="item.user_title" :user-position="item.user_data.job" :created-at="item.comment_regdate" :user-key="item.user_key"/>
         <div class="comment-text">{{ item.comment_content }}</div>
       </div>
     </section>

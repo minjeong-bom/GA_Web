@@ -3,10 +3,12 @@ import timeAgo from '/src/script/timeData/timeAgo'
 import IconAlart from "components/modal/iconAlart.vue";
 import {useQuasar} from "quasar";
 import ConfilrmDialog from "components/modal/confilrmDialog.vue";
+import UserProfileThumb from "components/profile/userProfileTumb.vue";
 
 export default {
   name: "ArticleId",
   components: {
+    UserProfileThumb,
     ConfilrmDialog,
     IconAlart
   },
@@ -31,8 +33,21 @@ export default {
     }
   },
   methods: {
+    share() {
+      const currentURL = 'www.goodafternoon.life/#/article?key=' + this.articleKey;
+
+      const inputElement = document.createElement('input');
+      inputElement.value = currentURL;
+      document.body.appendChild(inputElement);
+      inputElement.select();
+      document.execCommand('copy');
+      document.body.removeChild(inputElement);
+
+      this.$q.notify('클립보드에 복사되었습니다');
+    },
     editArticle() {
       console.log(this.articleKey, 'Edit');
+
     },
     deleteArticle() {
       this.deleteModal = false;
@@ -60,10 +75,7 @@ export default {
 <template>
   <div class="card-id-wrap">
     <!-- User Profile Image -->
-    <div
-      class="profile-wrap"
-      :style="`background-image: url(${this.userProfile});`"
-    ></div>
+    <user-profile-thumb :user-key="this.userKey" :size="'48px'"/>
     <!-- Creater & Created Time -->
     <div class="l-column" style="width: 100%">
       <!-- 00님이 000을 올렸어요 (하위메뉴) -->
@@ -91,30 +103,20 @@ export default {
     <q-btn flat round icon="more_vert" v-if="controlUi">
       <q-menu v-if="isMyPost">
         <q-list style="min-width: 100px">
-          <q-item clickable v-close-popup>
-            <div class="item-section">
-              <q-icon name="share" size="1rem"/> 공유
-            </div>
+          <q-item clickable v-close-popup @click="share()">
+            <div class="item-section">공유</div>
           </q-item>
-          <q-item clickable v-close-popup @click="deleteModal = true">
-            <div class="item-section">
-              <q-icon name="bookmark" size="1rem"/> 북마크
-            </div>
+          <q-item clickable v-close-popup>
+            <div class="item-section">북마크</div>
           </q-item>
           <q-item clickable v-close-popup @click="editArticle()">
-            <div class="item-section">
-              <q-icon name="edit" size="1rem"/> 수정
-            </div>
+            <div class="item-section">수정</div>
           </q-item>
           <q-item clickable v-close-popup @click="deleteModal = true">
-            <div class="item-section">
-              <q-icon name="delete" size="1rem"/> 삭제
-            </div>
+            <div class="item-section">삭제</div>
           </q-item>
           <q-item clickable v-close-popup>
-            <div class="item-section">
-              <q-icon name="report" size="1rem"/> 신고
-            </div>
+            <div class="item-section">신고</div>
           </q-item>
         </q-list>
       </q-menu>

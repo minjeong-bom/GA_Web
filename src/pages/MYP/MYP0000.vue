@@ -162,7 +162,7 @@ export default {
 			<div class="user-thumbnail-wrap">
 <!--        <img :src="'data:image/jpeg;base64,' + articleThumb" @click="goToArticle(articleKey)"/>-->
         <div>
-          <user-profile-thumb :user-key="localUserKey"/>
+          <user-profile-thumb :user-key="localUserKey" size="6rem"/>
         </div>
         <q-btn
           dense round size="sm" flat

@@ -4,6 +4,10 @@ export default {
   name: "userProfileThumb",
   props: {
     userKey: String,
+    size: {
+      type: String,
+      default: '32px'
+    }
   },
   data() {
     return {
@@ -14,6 +18,7 @@ export default {
         color: '',
       },
       fileObject64: null,
+      isLoading: true,
     }
   },
   mounted() {
@@ -47,27 +52,42 @@ export default {
         this.imageInfo.type = result.bc_content.type;
         if (this.imageInfo.type === 'none') {
           this.imageInfo.color = result.bc_content.color;
+          this.isLoading = false;
         }
         if (this.imageInfo.type === 'avatar') {
           this.imageInfo.avatarName = result.bc_content.avatarName;
+          this.isLoading = false;
         }
         if (this.imageInfo.type === 'custom') {
           this.imageInfo.imageKey = result.bc_content.imageKey;
+          this.getThumbnail();
         }
       } catch (e) {
         console.error('등록된 프로필 정보가 없었습니다.', e);
-        await this.removeAvatar();
-        await this.saveProfile();
+        this.imageInfo.type = 'none';
+        this.imageInfo.color = 'gray';
       }
     },
-    setAvatar(avatar) {
-      this.imageInfo.type = 'avatar';
-      this.imageInfo.avatarName = avatar + '_' + this.profileBackground;
-      this.fileObject = null;
+    async getThumbnail() {
+      const config = {
+        url: '/api/crud/single/' + this.imageInfo.imageKey,
+        body: {
+          prefix : 'bc',
+          alias : 'bc',
+          scopes : 'bc_content'
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
+        }
+      }
+
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      const response = res.data.response.view.bc_content;
+      this.fileObject64 = response;
+      this.isLoading = false;
     },
-    async convertObjectFile() {
-      this.fileObject64 = await convertToBase64(this.fileObject);
-    }
   },
 }
 </script>
@@ -75,13 +95,16 @@ export default {
 <template>
   <div>
     <section class="profile-image-section">
-      <div class="profile-preview-wrap">
+      <div v-if="isLoading" class="profile-preview-wrap">
+        <q-skeleton type="circle" :style="'width:' + size + ';' + 'height:' + size + ';'" />
+      </div>
+      <div v-else class="profile-preview-wrap" :style="'width:' + size + ';' + 'height:' + size + ';'">
         <!-- 아바타 썸네일 -->
         <img v-if="imageInfo.type === 'avatar'" class="avatar-preview" :src="'../../src/assets/graphic/profile/' + imageInfo.avatarName + '.png'">
         <!-- 업로드 이미지 썸네일 -->
-        <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64" class="profile-preview" :src="fileObject64">
+        <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64" class="profile-preview" :src="'data:image/jpeg;base64,' + fileObject64">
         <!-- 설정된 이미지 없을 때 -->
-        <q-avatar v-else icon="person" :color="imageInfo.color" size="6rem"/>
+        <q-avatar v-else icon="person" :color="imageInfo.color" :size="size"/>
       </div>
     </section>
   </div>
@@ -94,8 +117,6 @@ export default {
 }
 
 .profile-preview-wrap {
-  width: 6.25rem;
-  height: 6.25rem;
   border-radius: 100px;
   overflow: hidden;
 

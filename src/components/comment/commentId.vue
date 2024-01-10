@@ -1,10 +1,20 @@
 <script>
+import UserProfileThumb from "components/profile/userProfileTumb.vue";
+import timeAgo from "src/script/timeData/timeAgo";
+
 export default {
   name: "commentId",
+  components: {UserProfileThumb},
   props: {
     writer: String,
 	  userPosition: String,
 	  createdAt: String,
+    userKey: String,
+  },
+  computed: {
+    createdTimeAgo() {
+      return timeAgo.timeAgo(this.createdAt);
+    }
   }
 }
 </script>
@@ -12,7 +22,7 @@ export default {
 <template>
   <div class="card-id-wrap">
     <!-- User Profile Image -->
-    <div class="profile-wrap"></div>
+    <user-profile-thumb :user-key="userKey" size="48px"></user-profile-thumb>
     <!-- Creater & Created Time -->
     <div class="l-column" style="width: 100%">
       <!-- 00님이 -->
@@ -26,7 +36,7 @@ export default {
         <img class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>
         <span class="card-caption-1">{{ userPosition? userPosition : "OO전문가" }}</span>
         <span class="card-caption-2">|</span>
-	      <span class="card-caption-1">{{ createdAt? createdAt : "0000.00.00 10:00" }}</span>
+	      <span class="card-caption-1">{{ createdTimeAgo }}</span>
       </div>
     </div>
 	  <q-btn flat round icon="more_vert" style="opacity: 0.5"/>

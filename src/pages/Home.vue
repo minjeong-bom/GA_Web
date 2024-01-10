@@ -13,7 +13,7 @@
           <skeleton-card v-if="isLoading" :lines="10"/>
           <article-card v-else
             :article-key="item.bc_key"
-            :title="item.bc_title"
+            :title="item.bc_content.title ? item.bc_content.title : item.bc_title"
             :article-thumb="item.bc_thumb"
             :article-type="item.category_name"
             :article-type2="item.category_name"

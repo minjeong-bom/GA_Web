@@ -149,7 +149,6 @@ export default {
 
 <style scoped>
 .category-select {
-  font-family: Pretendard;
   font-size: 1rem;
   font-style: normal;
   font-weight: 600 !important;
@@ -158,7 +157,6 @@ export default {
 }
 
 .title-input {
-  font-family: Pretendard;
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;

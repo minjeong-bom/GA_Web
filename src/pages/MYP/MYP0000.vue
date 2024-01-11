@@ -238,7 +238,7 @@ export default {
 				</p>
 				<q-btn dense flat size="xs" icon="chevron_right"></q-btn>
 			</div>
-			<div class="my-menu flex-sb" @click="navigateTo('/my-bookmark')">
+			<div class="my-menu flex-sb" @click="navigateTo('/myp3000')">
 				<p style="display: flex; gap: 0.625rem; align-items: center;">
 					<i class="fa-solid fa-bookmark"></i>
 					<span class="user-title"> 내 북마크</span>

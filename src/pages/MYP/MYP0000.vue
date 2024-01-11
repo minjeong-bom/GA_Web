@@ -224,21 +224,21 @@ export default {
 			</div>
 		</section>
 		<section class="my-menu-list">
-			<div class="my-menu flex-sb" @click="navigateTo('/myr0000')">
+			<div class="my-menu flex-sb" @click="navigateTo('/my-articles')">
 				<p style="display: flex; gap: 0.625rem; align-items: center;">
 					<i class="fa-solid fa-book"></i>
 					<span class="user-title"> 내 게시글</span>
 				</p>
 				<q-btn dense flat size="xs" icon="chevron_right"></q-btn>
 			</div>
-			<div class="my-menu flex-sb">
+			<div class="my-menu flex-sb" @click="navigateTo('/myr0000')">
 				<p style="display: flex; gap: 0.625rem; align-items: center;">
 					<i class="fa-solid fa-id-card-clip"></i>
 					<span class="user-title"> 내 이력서</span>
 				</p>
 				<q-btn dense flat size="xs" icon="chevron_right"></q-btn>
 			</div>
-			<div class="my-menu flex-sb">
+			<div class="my-menu flex-sb" @click="navigateTo('/my-bookmark')">
 				<p style="display: flex; gap: 0.625rem; align-items: center;">
 					<i class="fa-solid fa-bookmark"></i>
 					<span class="user-title"> 내 북마크</span>

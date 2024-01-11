@@ -21,7 +21,7 @@
       ]"/>
       <!-- 태그 입력 -->
       <q-input
-        v-model="tags"
+        v-model="content.tags"
         borderless
         placeholder="태그 입력"
         maxlength="40"
@@ -57,7 +57,6 @@ export default {
       },
       title: '',
       file: '',
-      tags: '',
       errorText: {
         title: false,
         content: false,

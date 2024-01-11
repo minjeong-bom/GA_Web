@@ -137,7 +137,7 @@ export default defineComponent({
     async getArticleList(category, limit) {
       try {
         const commonConfig = {
-          url: '/api/crud/lists/',
+          url: '/api/crud/lists/?order=desc_bc_regdate',
           data: {
             "alias": "bc",
             "prefix": "bc",

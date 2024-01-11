@@ -30,6 +30,7 @@ const routes = [
       { path: '/myp4110', component: () => import('pages/MYP/MYP4110.vue') }, // 1:1 문의 등록
       { path: '/myp4120', component: () => import('pages/MYP/MYP4120.vue') }, // 1:1 문의 유형 등록
       { path: '/myp4130', component: () => import('pages/MYP/MYP4130.vue') }, // 1:1 문의 완료
+      { path: '/my-articles', component: () => import('pages/MYP/MyArticleList.vue') }, // 나의 게시글
     ]
   },
   {

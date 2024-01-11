@@ -19,7 +19,7 @@ export default {
       <q-page-container>
         <!-- 상단바 -->
         <top-bar-main></top-bar-main>
-        <router-view class="bottom-margin" />
+        <router-view/>
         <!-- 푸터 -->
         <common-footer/>
 	      <!-- 하단바 -->
@@ -28,9 +28,3 @@ export default {
     </q-layout>
   </div>
 </template>
-
-<style>
-.bottom-margin {
-	margin-bottom: 10rem;
-}
-</style>

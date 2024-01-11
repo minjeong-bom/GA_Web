@@ -42,7 +42,7 @@ export default {
               lable: "내 게시글",
               iconClass: 'fa-pen-to-square',
               subLable: '',
-              path: '/myp0000',
+              path: '/my-articles',
             },
             {
               color: '',

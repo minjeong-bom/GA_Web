@@ -1,40 +1,47 @@
 <template>
   <q-page class="home">
-    <section>
-      <!-- Article Cards -->
-      <div>
-        <div v-for="item in articleList">
-          <skeleton-card v-if="isLoading" :lines="10"/>
-          <article-card v-else
-                        :article-key="item.bc_key"
-                        :article-thumb="item.bc_thumb"
-                        :article-type="item.category_name"
-                        :article-type2="item.category_name"
-                        :badge-title="item.badgeTitle"
-                        :created-at="item.bc_regdate"
-                        :creater-key="item.bc_writer_key"
-                        :motivation="item.motivation"
-                        :title="item.bc_content.title ? item.bc_content.title : item.bc_title"
-                        :view-count="item.bc_count"
-                        :writer="item.bc_writer_name"
-                        :writer-thumb="item.writerThumb"
-          />
+    <title-top-bar :title-text="pageTitle"/>
+    <div v-if="articleList">
+      <section>
+        <!-- Article Cards -->
+        <div>
+          <div v-for="item in articleList">
+            <skeleton-card v-if="isLoading" :lines="10"/>
+            <article-card v-else
+                          :article-key="item.bc_key"
+                          :article-type="item.category_name"
+                          :article-type2="item.category_name"
+                          :badge-title="item.badgeTitle"
+                          :created-at="item.bc_regdate"
+                          :creater-key="item.bc_writer_key"
+                          :motivation="item.motivation"
+                          :thumbnail-key="item.bc_content.thumbnailKey"
+                          :title="item.bc_content.title ? item.bc_content.title : item.bc_title"
+                          :view-count="item.bc_count"
+                          :writer="item.bc_writer_name"
+                          :writer-thumb="item.writerThumb"
+            />
+          </div>
         </div>
-      </div>
+      </section>
+      <!-- 아티클 더보기 -->
+      <button class="btn-learn-more" @click="addLoadArticle">더 보기</button>
+    </div>
+    <section v-else>
+      <p>아직 등록된 글이 없습니다.</p>
     </section>
-
-    <!-- 아티클 더보기 -->
-    <button class="btn-learn-more" @click="addLoadArticle">더 보기</button>
   </q-page>
 </template>
 
 <script>
-import {defineComponent} from 'vue'
-import ArticleCard from "components/card/ArticleCard.vue";
+import { defineComponent } from 'vue';
+import ArticleCard from 'components/card/ArticleCard.vue';
+import TitleTopBar from 'components/app-bar/TitleTopBar.vue';
 
 export default defineComponent({
   name: 'IndexPage',
   components: {
+    TitleTopBar,
     'article-card': ArticleCard,
   },
   data() {
@@ -43,12 +50,15 @@ export default defineComponent({
       articleListLength: 5,
       thumbnailList: [],
       isLoading: true,
-    }
+    };
+  },
+  created() {
+    this.getArticleList();
   },
   methods: {
     addLoadArticle() {
-      this.articleListLength = this.articleListLength + 10;
-      this.getArticleList(this.tabCategoryType, this.articleListLength)
+      this.articleListLength += 10;
+      this.getArticleList(this.tabCategoryType, this.articleListLength);
     },
     checkOnboard() {
       if (this.onboard) {
@@ -81,7 +91,7 @@ export default defineComponent({
         this.tabCategoryType = 'skills';
       } else if (tabId == 4) {
         this.getArticleList('gapick');
-        this.tabCategoryType = 'gapick'
+        this.tabCategoryType = 'gapick';
       }
     },
     async getArticleList(category, limit) {
@@ -89,122 +99,83 @@ export default defineComponent({
         const commonConfig = {
           url: '/api/crud/lists/?order=desc_bc_regdate',
           data: {
-            "alias": "bc",
-            "prefix": "bc",
-            "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content",
-            "columns_opts": {
-              "bc_foreign_key2": "SNXKQEZS"
+            alias: 'bc',
+            prefix: 'bc',
+            scopes: 'bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content',
+            columns_opts: {
+              bc_foreign_key2: 'SNXKQEZS',
             },
-            "limit": limit ? limit : 0
+            limit: limit || 0,
           },
           etc: {
             headers: {
               'SPRINT-API-KEY': 'sprinttest',
-            }
-          }
+            },
+          },
         };
-        let config = {...commonConfig};
+        const config = { ...commonConfig };
 
         // 카테고리 별 'bc_foreign_key' 설정
         if (category === 'story') {
-          config.data.columns_opts.bc_foreign_key = "DPORHCPV"; // 스토리
+          config.data.columns_opts.bc_foreign_key = 'DPORHCPV'; // 스토리
         } else if (category === 'skills') {
-          config.data.columns_opts.bc_foreign_key = "KWUOXKGM"; // 스킬
+          config.data.columns_opts.bc_foreign_key = 'KWUOXKGM'; // 스킬
         } else if (category === 'gapick') {
-          config.data.columns_opts.bc_foreign_key = "CEZTXGLJ"; // 스킬
+          config.data.columns_opts.bc_foreign_key = 'CEZTXGLJ'; // 스킬
         }
 
         // API 호출
         const res = await this.$api.post(config.url, config.data, config.etc);
-        let response = res.data.response.lists;
+        const response = res.data.response.lists;
 
         // 카테고리 이름 삽입
         const categoryInfo = {
-          DPORHCPV: "스토리",
-          KWUOXKGM: "취업 스킬",
-          CEZTXGLJ: "지애픽"
-        }
+          DPORHCPV: '스토리',
+          KWUOXKGM: '취업 스킬',
+          CEZTXGLJ: '지애픽',
+        };
 
-        response.forEach(item => {
+        response.forEach((item) => {
           item.category_name = categoryInfo[item.bc_foreign_key] || null;
-        })
+        });
 
         // 작성자명 가공 함수 호출
         this.replaceWriterNames(response);
-        this.getThumbnail();
-
       } catch (e) {
-        console.error('게시글이 존재하지 않습니다.', e)
+        console.error('게시글이 존재하지 않습니다.', e);
       }
-    },
-    async getThumbnail() {
-      const config = {
-        url: '/api/crud/lists/',
-        body: {
-          "alias": "bc",
-          "prefix": "bc",
-          "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content",
-          "columns_opts": {
-            "bc_foreign_key": "FHGBWGLF",
-            "bc_foreign_key2": "UZPWQOWR"
-          },
-          "limit": 100
-        },
-        etc: {
-          headers: {
-            'SPRINT-API-KEY': 'sprinttest',
-          }
-        }
-      }
-
-      const res = await this.$api.post(config.url, config.body, config.etc);
-      let response = res.data.response.lists;
-      this.thumbnailList = response;
-
-      this.addThumbnailsToArticles();
-    },
-    addThumbnailsToArticles() {
-      this.articleList.forEach(article => {
-        const thumbnailKey = article.bc_content?.thumbnailKey;
-        const thumbnail = this.thumbnailList.find(t => t.bc_key === thumbnailKey);
-        if (thumbnail) {
-          article.bc_thumb = thumbnail.bc_content;
-        }
-      })
-
-      this.isLoading = false
     },
     async replaceWriterNames(array) {
-      for (let item of array) {
+      for (const item of array) {
         try {
           const res = await this.$api.post(
             `/api/crud/single/${item.bc_writer_name}`,
             {
-              prefix: "mem",
-              alias: "mem",
-              scopes: "mem_title,mem_job"
+              prefix: 'mem',
+              alias: 'mem',
+              scopes: 'mem_title,mem_job',
             },
             {
               headers: {
                 'SPRINT-API-KEY': 'sprinttest',
-              }
-            }
-          )
+              },
+            },
+          );
           if (res.data.status === 'success') {
             item.bc_writer_key = item.bc_writer_name;
             item.bc_writer_name = res.data.response.view.mem_title;
             if (res.data.response.view.mem_job) {
-              item.badgeTitle = res.data.response.view.mem_job
+              item.badgeTitle = res.data.response.view.mem_job;
             } else {
-              item.badgeTitle = "일반 회원" // job 정보가 등록되지 않은 회원은 일반 회원으로 표시
+              item.badgeTitle = '일반 회원'; // job 정보가 등록되지 않은 회원은 일반 회원으로 표시
             }
           }
         } catch (e) {
-          item.badgeTitle = "비공개 회원" // 삭제된 회원
+          item.badgeTitle = '비공개 회원'; // 삭제된 회원
         }
       }
       this.articleList = array;
-    }
+    },
   },
   computed: {
     userId() {
@@ -212,9 +183,21 @@ export default defineComponent({
     },
     onboard() {
       return localStorage.getItem('isOnboard');
-    }
-  }
-})
+    },
+    pageTitle() {
+      console.log(this.$route.path);
+      if (this.$route.path === '/articles/pick') {
+        return '지애 Pick';
+      }
+      if (this.$route.path === '/articles/skills') {
+        return '취업 스킬';
+      }
+      if (this.$route.path === '/articles/story') {
+        return '스토리';
+      }
+    },
+  },
+});
 </script>
 
 <style scoped>

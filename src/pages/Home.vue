@@ -8,22 +8,23 @@
       <!-- Article Cards -->
       <div>
         <!-- Article Card -->
-        <tab :tabs="tabList" @changeTab="changeTab" :default-tab="defaultTab"></tab>
+        <tab :default-tab="defaultTab" :tabs="tabList" @changeTab="changeTab"></tab>
         <div v-for="item in articleList">
           <skeleton-card v-if="isLoading" :lines="10"/>
           <article-card v-else
-            :article-key="item.bc_key"
-            :title="item.bc_content.title ? item.bc_content.title : item.bc_title"
-            :article-thumb="item.bc_thumb"
-            :article-type="item.category_name"
-            :article-type2="item.category_name"
-            :writer="item.bc_writer_name"
-            :badge-title="item.badgeTitle"
-            :created-at="item.bc_regdate"
-            :writer-thumb="item.writerThumb"
-            :motivation="item.motivation"
-            :view-count="item.bc_count"
-            :creater-key="item.bc_writer_key"
+                        :article-key="item.bc_key"
+                        :article-type="item.category_name"
+                        :article-type2="item.category_name"
+                        :badge-title="item.badgeTitle"
+                        :created-at="item.bc_regdate"
+                        :creater-key="item.bc_writer_key"
+                        :is-loading="isLoading"
+                        :motivation="item.motivation"
+                        :thumbnail-key="item.bc_content.thumbnailKey"
+                        :title="item.bc_content.title ? item.bc_content.title : item.bc_title"
+                        :view-count="item.bc_count"
+                        :writer="item.bc_writer_name"
+                        :writer-thumb="item.writerThumb"
           />
         </div>
       </div>
@@ -41,13 +42,13 @@
 </template>
 
 <script>
-import {defineComponent} from 'vue'
-import ArticleCard from "components/card/ArticleCard.vue";
-import Tab from "components/tab/Tab.vue";
-import EventCard from "components/card/EventCard.vue";
-import NoticeCard from "components/card/NoticeCard.vue";
-import BottomAppBar from "components/app-bar/BottomAppBar.vue";
-import SkeletonCard from "components/loading/SkeletonCard.vue";
+import { defineComponent } from 'vue';
+import ArticleCard from 'components/card/ArticleCard.vue';
+import Tab from 'components/tab/Tab.vue';
+import EventCard from 'components/card/EventCard.vue';
+import NoticeCard from 'components/card/NoticeCard.vue';
+import BottomAppBar from 'components/app-bar/BottomAppBar.vue';
+import SkeletonCard from 'components/loading/SkeletonCard.vue';
 
 export default defineComponent({
   name: 'IndexPage',
@@ -55,7 +56,7 @@ export default defineComponent({
     SkeletonCard,
     BottomAppBar,
     'article-card': ArticleCard,
-    'tab': Tab,
+    tab: Tab,
     'event-card': EventCard,
     'notice-card': NoticeCard,
   },
@@ -64,28 +65,28 @@ export default defineComponent({
       tabList: [
         {
           id: 1,
-          title: '전체'
+          title: '전체',
         },
         {
           id: 2,
-          title: '스토리'
+          title: '스토리',
         },
         {
           id: 3,
-          title: '취업스킬'
+          title: '취업스킬',
         },
         {
           id: 4,
-          title: '지애픽'
+          title: '지애픽',
         },
       ],
-	    tabCategoryType: '',
+      tabCategoryType: '',
       defaultTab: 0,
       articleList: [],
-	    articleListLength: 5,
+      articleListLength: 5,
       thumbnailList: [],
       isLoading: true,
-    }
+    };
   },
   created() {
     this.checkOnboard();
@@ -96,10 +97,10 @@ export default defineComponent({
 
   },
   methods: {
-	  addLoadArticle() {
-			this.articleListLength = this.articleListLength + 10;
-			this.getArticleList(this.tabCategoryType, this.articleListLength)
-	  },
+    addLoadArticle() {
+      this.articleListLength += 10;
+      this.getArticleList(this.tabCategoryType, this.articleListLength);
+    },
     checkOnboard() {
       if (this.onboard) {
         this.checkLogin();
@@ -109,29 +110,29 @@ export default defineComponent({
     },
     checkLogin() {
       if (this.userId) {
-        return
+
       } else {
-	      this.$router.push('/login');
+        this.$router.push('/login');
       }
     },
     changeTab(tabId) {
       this.isLoading = true;
 
-	    this.articleList = [];
-	    this.articleListLength = 5;
+      this.articleList = [];
+      this.articleListLength = 5;
 
-	    if (tabId == 1) {
-				this.getArticleList('');
-				this.tabCategoryType = '';
+      if (tabId == 1) {
+        this.getArticleList('');
+        this.tabCategoryType = '';
       } else if (tabId == 2) {
-	      this.getArticleList('story');
-		    this.tabCategoryType = 'story';
+        this.getArticleList('story');
+        this.tabCategoryType = 'story';
       } else if (tabId == 3) {
-	      this.getArticleList('skills');
-		    this.tabCategoryType = 'skills';
+        this.getArticleList('skills');
+        this.tabCategoryType = 'skills';
       } else if (tabId == 4) {
-	      this.getArticleList('gapick');
-				this.tabCategoryType = 'gapick'
+        this.getArticleList('gapick');
+        this.tabCategoryType = 'gapick';
       }
     },
     async getArticleList(category, limit) {
@@ -139,122 +140,122 @@ export default defineComponent({
         const commonConfig = {
           url: '/api/crud/lists/?order=desc_bc_regdate',
           data: {
-            "alias": "bc",
-            "prefix": "bc",
-            "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content",
-            "columns_opts": {
-              "bc_foreign_key2": "SNXKQEZS"
+            alias: 'bc',
+            prefix: 'bc',
+            scopes: 'bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content',
+            columns_opts: {
+              bc_foreign_key2: 'SNXKQEZS',
             },
-            "limit": limit ? limit : 0
+            limit: limit || 0,
           },
           etc: {
-            headers : {
-              'SPRINT-API-KEY' : 'sprinttest',
-            }
-          }
+            headers: {
+              'SPRINT-API-KEY': 'sprinttest',
+            },
+          },
         };
-        let config = { ...commonConfig };
+        const config = { ...commonConfig };
 
+        console.log('category', category);
         // 카테고리 별 'bc_foreign_key' 설정
         if (category === 'story') {
-          config.data.columns_opts.bc_foreign_key = "DPORHCPV"; // 스토리
+          config.data.columns_opts.bc_foreign_key = 'DPORHCPV'; // 스토리
         } else if (category === 'skills') {
-          config.data.columns_opts.bc_foreign_key = "KWUOXKGM"; // 스킬
+          config.data.columns_opts.bc_foreign_key = 'KWUOXKGM'; // 취업스킬
         } else if (category === 'gapick') {
-          config.data.columns_opts.bc_foreign_key = "CEZTXGLJ"; // 스킬
+          config.data.columns_opts.bc_foreign_key = 'CEZTXGLJ'; // 지애픽
         }
 
         // API 호출
         const res = await this.$api.post(config.url, config.data, config.etc);
-        let response = res.data.response.lists;
+        const response = res.data.response.lists;
 
         // 카테고리 이름 삽입
         const categoryInfo = {
-          DPORHCPV: "스토리",
-          KWUOXKGM: "취업 스킬",
-          CEZTXGLJ: "지애픽"
-        }
+          DPORHCPV: '스토리',
+          KWUOXKGM: '취업 스킬',
+          CEZTXGLJ: '지애픽',
+        };
 
-        response.forEach(item => {
+        response.forEach((item) => {
           item.category_name = categoryInfo[item.bc_foreign_key] || null;
-        })
+        });
 
         // 작성자명 가공 함수 호출
         this.replaceWriterNames(response);
         this.getThumbnail();
-
       } catch (e) {
-        console.error('게시글이 존재하지 않습니다.', e)
+        console.error('게시글이 존재하지 않습니다.', e);
       }
     },
     async getThumbnail() {
       const config = {
         url: '/api/crud/lists/',
         body: {
-          "alias": "bc",
-          "prefix": "bc",
-          "scopes": "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content",
-          "columns_opts" : {
-            "bc_foreign_key": "FHGBWGLF",
-            "bc_foreign_key2": "UZPWQOWR"
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key: 'FHGBWGLF',
+            bc_foreign_key2: 'UZPWQOWR',
           },
-          "limit" : 100
+          limit: 100,
         },
         etc: {
-          headers : {
-            'SPRINT-API-KEY' : 'sprinttest',
-          }
-        }
-      }
+          headers: {
+            'SPRINT-API-KEY': 'sprinttest',
+          },
+        },
+      };
 
       const res = await this.$api.post(config.url, config.body, config.etc);
-      let response = res.data.response.lists;
+      const response = res.data.response.lists;
       this.thumbnailList = response;
 
       this.addThumbnailsToArticles();
     },
     addThumbnailsToArticles() {
-      this.articleList.forEach(article => {
+      this.articleList.forEach((article) => {
         const thumbnailKey = article.bc_content?.thumbnailKey;
-        const thumbnail = this.thumbnailList.find(t => t.bc_key === thumbnailKey);
+        const thumbnail = this.thumbnailList.find((t) => t.bc_key === thumbnailKey);
         if (thumbnail) {
           article.bc_thumb = thumbnail.bc_content;
         }
-      })
+      });
 
-      this.isLoading = false
+      this.isLoading = false;
     },
     async replaceWriterNames(array) {
-      for (let item of array) {
-				try {
-					const res = await this.$api.post(
-						`/api/crud/single/${item.bc_writer_name}`,
-						{
-							prefix: "mem",
-							alias: "mem",
-							scopes: "mem_title,mem_job"
-						},
-						{
-							headers: {
-								'SPRINT-API-KEY' : 'sprinttest',
-							}
-						}
-					)
-					if (res.data.status === 'success') {
-						item.bc_writer_key = item.bc_writer_name;
-						item.bc_writer_name = res.data.response.view.mem_title;
-						if (res.data.response.view.mem_job) {
-							item.badgeTitle = res.data.response.view.mem_job
-						} else {
-							item.badgeTitle = "일반 회원" // job 정보가 등록되지 않은 회원은 일반 회원으로 표시
-						}
-					}
-				} catch (e) {
-					item.badgeTitle = "비공개 회원" // 삭제된 회원
-				}
+      for (const item of array) {
+        try {
+          const res = await this.$api.post(
+            `/api/crud/single/${item.bc_writer_name}`,
+            {
+              prefix: 'mem',
+              alias: 'mem',
+              scopes: 'mem_title,mem_job',
+            },
+            {
+              headers: {
+                'SPRINT-API-KEY': 'sprinttest',
+              },
+            },
+          );
+          if (res.data.status === 'success') {
+            item.bc_writer_key = item.bc_writer_name;
+            item.bc_writer_name = res.data.response.view.mem_title;
+            if (res.data.response.view.mem_job) {
+              item.badgeTitle = res.data.response.view.mem_job;
+            } else {
+              item.badgeTitle = '일반 회원'; // job 정보가 등록되지 않은 회원은 일반 회원으로 표시
+            }
+          }
+        } catch (e) {
+          item.badgeTitle = '비공개 회원'; // 삭제된 회원
+        }
       }
       this.articleList = array;
-    }
+    },
   },
   computed: {
     userId() {
@@ -262,9 +263,9 @@ export default defineComponent({
     },
     onboard() {
       return localStorage.getItem('isOnboard');
-    }
-  }
-})
+    },
+  },
+});
 </script>
 
 <style scoped>

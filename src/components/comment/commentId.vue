@@ -1,22 +1,51 @@
 <script>
-import UserProfileThumb from "components/profile/userProfileTumb.vue";
-import timeAgo from "src/script/timeData/timeAgo";
+import UserProfileThumb from 'components/profile/userProfileTumb.vue';
+import timeAgo from 'src/script/timeData/timeAgo';
+import { itemDelete } from 'src/script/api/deleteCall';
 
 export default {
-  name: "commentId",
-  components: {UserProfileThumb},
+  name: 'commentId',
+  components: { UserProfileThumb },
   props: {
+    commentKey: String,
     writer: String,
-	  userPosition: String,
-	  createdAt: String,
+    userPosition: String,
+    createdAt: String,
     userKey: String,
+    commentContent: String,
+  },
+  data() {
+    return {
+      isMine: false,
+    };
+  },
+  created() {
+    if (this.userKey === this.storageUserKey) {
+      this.isMine = true;
+    }
   },
   computed: {
     createdTimeAgo() {
       return timeAgo.timeAgo(this.createdAt);
-    }
-  }
-}
+    },
+    storageUserKey() {
+      return localStorage.getItem('userKey');
+    },
+  },
+  methods: {
+    async deleteComment() {
+      await itemDelete(this.commentKey);
+      this.$q.notify('댓글이 삭제되었습니다.');
+      this.$emit('reloadList');
+    },
+    editComment() {
+      this.$emit('editComment', this.commentKey, this.userKey, this.commentContent);
+    },
+    reportComment() {
+      this.$q.notify('댓글 신고가 접수되었습니다');
+    },
+  },
+};
 </script>
 
 <template>
@@ -34,38 +63,42 @@ export default {
       <!-- Badge + User Role Caption | Created Time -->
       <div class="user-badge-created-time-wrap">
         <img class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>
-        <span class="card-caption-1">{{ userPosition? userPosition : "OO전문가" }}</span>
-        <span class="card-caption-2">|</span>
-	      <span class="card-caption-1">{{ createdTimeAgo }}</span>
+        <span v-if="userPosition" class="card-caption-1">{{ userPosition }}</span>
+        <span v-if="userPosition" class="card-caption-2">|</span>
+        <span class="card-caption-1">{{ createdTimeAgo }}</span>
       </div>
     </div>
-	  <q-btn flat round icon="more_vert" style="opacity: 0.5"/>
+    <q-btn flat icon="more_vert" round style="opacity: 0.5">
+      <q-menu v-if="isMine" anchor="bottom left" fit self="top right">
+        <q-list class="full-width">
+          <q-item v-close-popup clickable>
+            <div class="item-section" @click="editComment">수정하기</div>
+          </q-item>
+          <q-item v-close-popup clickable @click="deleteComment">
+            <div class="item-section">삭제하기</div>
+          </q-item>
+        </q-list>
+      </q-menu>
+      <q-menu v-else anchor="bottom left" fit self="top right">
+        <q-list class="full-width">
+          <q-item v-close-popup clickable @click="reportComment">
+            <div class="item-section">신고하기</div>
+          </q-item>
+        </q-list>
+      </q-menu>
+    </q-btn>
   </div>
 </template>
 
 <style scoped>
-.profile-wrap {
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-	background-color: var(--grays-gray-2);
-  //background-image: url("../../assets/graphic/user-profile-thumb-sample.jpeg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  border-radius: 30px;
-}
-
 .created-user-and-lable {
   gap: 0.625rem;
 }
 
-.created-user-info-wrap>span {
-  margin-right: 0.1875rem;
-}
-
-.cartegory2-lable span {
-  color: var(--grays-gray-2);
-  font-size: 0.75rem;
+.created-user-info-wrap {
+  span {
+    margin-right: 0.1875rem;
+  }
 }
 
 .user-badge-created-time-wrap {
@@ -75,7 +108,7 @@ export default {
 }
 
 .card-id-wrap {
-	width: 100%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,15 +116,10 @@ export default {
   margin-bottom: 0.5rem;
 }
 
-.cartegory2-lable {
-  display: inline-block;
-  padding: 0.0625rem 0.25rem;
-  justify-content: center;
+.item-section {
+  display: flex;
+  gap: 0.7rem;
   align-items: center;
-  gap: 0.625rem;
-
-  border-radius: 0.25rem;
-  border: 0.33px solid var(--fills-quartternary);
-  background: var(--grays-gray-7);
+  font-size: 1rem;
 }
 </style>

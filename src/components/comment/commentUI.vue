@@ -1,12 +1,12 @@
 <script>
-import CommentId from "components/comment/commentId.vue";
-import UserProfileThumb from "components/profile/userProfileTumb.vue";
+import CommentId from 'components/comment/commentId.vue';
+import UserProfileThumb from 'components/profile/userProfileTumb.vue';
 
 export default {
-  name: "commentUI",
+  name: 'commentUI',
   components: {
     UserProfileThumb,
-    CommentId
+    CommentId,
   },
   props: {
     articleKey: String,
@@ -16,32 +16,50 @@ export default {
     return {
       addComment: '',
       comments: [],
-    }
+      editMode: {
+        status: false,
+        comment_key: null,
+      },
+    };
   },
   mounted() {
     this.getCommentList();
   },
   methods: {
     async createComment() {
-      if (!this.articleKey) {
-        return
-      }
-
       try {
-        const config = {
+        if (!this.articleKey) {
+          return;
+        }
+
+        let config;
+        config = {
           url: '/api/crud/setcomment',
           body: {
-            data_key : this.articleKey,
+            data_key: this.articleKey,
+            comment_key: null,
             comment_content: this.addComment,
             comment_user_key: this.storageUserKey,
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprintcombom'
-            }
-          }
+              'SPRINT-API-KEY': 'sprintcombom',
+            },
+          },
+        };
+
+        console.log(config);
+
+        let res = '';
+        if (this.editMode.status) {
+          config.body.comment_key = this.editMode.comment_key;
+          res = await this.$api.post(config.url, config.body, config.etc);
+
+          this.editMode.status = false;
+          this.editMode.comment_key = null;
+        } else {
+          res = await this.$api.post(config.url, config.body, config.etc);
         }
-        const res = await this.$api.post(config.url, config.body, config.etc);
         if (res.status) {
           this.addComment = '';
           this.getCommentList();
@@ -53,14 +71,14 @@ export default {
     async getCommentList() {
       try {
         const config = {
-          url: '/api/logs/commentlists?foreign_key=' + this.articleKey,
+          url: `/api/logs/commentlists?foreign_key=${this.articleKey}`,
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprintcombom'
-            }
-          }
-        }
-        const res = await this.$api.get(config.url, config.etc)
+              'SPRINT-API-KEY': 'sprintcombom',
+            },
+          },
+        };
+        const res = await this.$api.get(config.url, config.etc);
         this.comments = res.data.response.lists;
         this.$emit('commentsCount', this.comments.length);
       } catch (e) {
@@ -68,17 +86,24 @@ export default {
         console.error('댓글이 없는 게시글 입니다.', e.message);
       }
     },
+    formattedContent(text) {
+      return text.replace(/\n/g, '<br>');
+    },
+    editComment(comment_key, user_key, comment_content) {
+      this.editMode.status = true;
+      this.editMode.comment_key = comment_key;
+      this.addComment = comment_content;
+    },
   },
   computed: {
     commentInputPlaceholder() {
       if (this.comments.length === 0) {
-        return '첫 댓글을 남겨보세요'
-      } else {
-        return '댓글을 남겨보세요'
+        return '첫 댓글을 남겨보세요';
       }
+      return '댓글을 남겨보세요';
     },
-  }
-}
+  },
+};
 </script>
 
 <template>
@@ -88,19 +113,37 @@ export default {
       <!-- profile image -->
       <user-profile-thumb :user-key="storageUserKey" size="48px"></user-profile-thumb>
       <!-- comment input -->
-      <q-input dense rounded outlined v-model="addComment" :placeholder="commentInputPlaceholder" style="width: 100%;">
+      <q-input v-if="editMode.status" v-model="addComment" :placeholder="commentInputPlaceholder"
+               autogrow class="full-width" dense outlined rounded>
         <template v-slot:append>
-          <q-btn flat round @click="createComment" style="right: -10px">
+          <q-btn flat round style="right: -10px" @click="createComment">
+            <img src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
+          </q-btn>
+        </template>
+      </q-input>
+
+      <q-input v-else v-model="addComment" :placeholder="commentInputPlaceholder"
+               autogrow class="full-width" dense outlined rounded>
+        <template v-slot:append>
+          <q-btn flat round style="right: -10px" @click="createComment">
             <img src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
           </q-btn>
         </template>
       </q-input>
     </div>
+
     <!-- 댓글 목록 -->
     <section class="l-column comment-list">
-      <div class="comment" v-for="item in comments">
-        <comment-id :writer="item.user_title" :user-position="item.user_data.job" :created-at="item.comment_regdate" :user-key="item.user_key"/>
-        <div class="comment-text">{{ item.comment_content }}</div>
+      <div v-for="item in comments" class="comment">
+        <comment-id :comment-content="item.comment_content"
+                    :comment-key="item.comment_key"
+                    :created-at="item.comment_regdate"
+                    :user-key="item.user_key"
+                    :user-position="item.user_data.job"
+                    :writer="item.user_title"
+                    @editComment="editComment"
+                    @reloadList="getCommentList"/>
+        <div class="comment-text" v-html="formattedContent(item.comment_content)"></div>
       </div>
     </section>
   </div>
@@ -110,7 +153,7 @@ export default {
 .comment-input-area {
   display: flex;
   padding: 10px 16px;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
 }
 

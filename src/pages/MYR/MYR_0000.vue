@@ -14,6 +14,9 @@ export default {
   methods: {
     navigateToNewMyr() {
       this.$router.push('/myr0000/create');
+    },
+    async getResumeList() {
+
     }
   }
 }
@@ -23,7 +26,14 @@ export default {
   <div>
     <text-button-top-bar title-text="내 이력서" button-name="작성하기" @action="navigateToNewMyr()"/>
     <section v-if="list" class="nomal-page-layout">
-      <p>아직 이력서를 작성하지 않았습니다.</p>
+      <div class="layout-center-1">
+        <p class="caption-1">새 이력서를 만들어 보세요</p>
+        <q-btn outline
+               color="red"
+               label="새 이력서 만들기"
+               @click="navigateToNewMyr()"
+        />
+      </div>
     </section>
     <section v-else>
       <AskCard v-for="item in list" :title="item.resm_title" :created="item.resm_type"/>
@@ -32,5 +42,12 @@ export default {
 </template>
 
 <style scoped>
-
+.layout-center-1 {
+  display: flex;
+  height: 320px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
 </style>

@@ -1,10 +1,12 @@
 <script>
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
 import { extractCityOrCounty } from '../../script/text/cityExtractor';
+import ProfileImageEditor from "components/modal/profileImageEditor.vue";
+import UserProfileThumb from "components/profile/userProfileTumb.vue";
 
 export default {
 	name: "MYP0000",
-	components: {TextButtonTopBar},
+	components: {UserProfileThumb, ProfileImageEditor, TextButtonTopBar},
 	data() {
 		return {
 			interesting: '',
@@ -21,6 +23,12 @@ export default {
 				searchGoal: '', // 구직 활동 목표
 			},
       file: null, // 이미지 데이터
+      thumbnailInfo: {
+        type: '',
+        imageKey: null,
+        chatactor: null,
+      },
+      openModal: false,
 		}
 	},
   watch: {
@@ -33,9 +41,16 @@ export default {
     }
   },
 	mounted() {
-		this.getMyInfo()
+		this.getMyInfo();
 	},
 	methods: {
+    setThumbnail() {
+      this.openModal = true;
+    },
+    closeModal() {
+      this.openModal = false;
+      this.$router.go(0);
+    },
 		async getMyInfo() {
 			try {
 				const config = {
@@ -43,7 +58,8 @@ export default {
 					body : {
 						"prefix": "mem",
 						"alias": "mem",
-						"scopes": "mem_key,mem_address,mem_status,mem_id,mem_class,mem_title,mem_foreign_key,mem_regdate,mem_phone,mem_email,mem_regis_num,mem_category,mem_career,mem_field,mem_job,mem_current_biz,mem_job_srch,mem_job_srch_goal,mem_user_profile,mem_job_srch_goal,mem_pro_field,mem_pro_career,mem_enterprise_field,mem_experience"
+						"scopes": "mem_key,mem_address,mem_status,mem_id,mem_class,mem_title,mem_foreign_key,mem_regdate,mem_phone,mem_email,mem_regis_num,mem_category,mem_career,mem_field,mem_job," +
+              "mem_current_biz,mem_job_srch,mem_job_srch_goal,mem_user_profile,mem_job_srch_goal,mem_pro_field,mem_pro_career,mem_enterprise_field,mem_experience"
 					},
 					etc: {
 						headers: {
@@ -144,19 +160,18 @@ export default {
 
 		<section class="user-info-wrap">
 			<div class="user-thumbnail-wrap">
-				<img class="user-thumbnail" style="background-image: url('src/assets/graphic/user-profile-thumb-sample.jpeg')"/>
-				<q-btn
+<!--        <img :src="'data:image/jpeg;base64,' + articleThumb" @click="goToArticle(articleKey)"/>-->
+        <div>
+          <user-profile-thumb :user-key="localUserKey" size="6rem"/>
+        </div>
+        <q-btn
           dense round size="sm" flat
           class="upload-photo"
           icon="photo_camera"
           style="background: #fff"
-          @click="triggerFileInput"
+          @click="setThumbnail"
         />
-        <q-file
-          v-model="file"
-          style="display: none"
-          ref="fileInput"
-        />
+        <profile-image-editor v-if="openModal" @closeModal="closeModal"/>
 			</div>
 			<div class="l-column user-detail-info text-align-center">
 				<h2 class="user-name-text">{{ localUserName }}</h2>
@@ -209,21 +224,21 @@ export default {
 			</div>
 		</section>
 		<section class="my-menu-list">
-			<div class="my-menu flex-sb" @click="navigateTo('/myr0000')">
+			<div class="my-menu flex-sb" @click="navigateTo('/my-articles')">
 				<p style="display: flex; gap: 0.625rem; align-items: center;">
 					<i class="fa-solid fa-book"></i>
 					<span class="user-title"> 내 게시글</span>
 				</p>
 				<q-btn dense flat size="xs" icon="chevron_right"></q-btn>
 			</div>
-			<div class="my-menu flex-sb">
+			<div class="my-menu flex-sb" @click="navigateTo('/myr0000')">
 				<p style="display: flex; gap: 0.625rem; align-items: center;">
 					<i class="fa-solid fa-id-card-clip"></i>
 					<span class="user-title"> 내 이력서</span>
 				</p>
 				<q-btn dense flat size="xs" icon="chevron_right"></q-btn>
 			</div>
-			<div class="my-menu flex-sb">
+			<div class="my-menu flex-sb" @click="navigateTo('/myp3000')">
 				<p style="display: flex; gap: 0.625rem; align-items: center;">
 					<i class="fa-solid fa-bookmark"></i>
 					<span class="user-title"> 내 북마크</span>

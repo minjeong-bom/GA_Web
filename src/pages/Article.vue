@@ -115,7 +115,7 @@ export default {
           this.article.articleType = '지애픽'
         }
 
-        this.article.title = content.bc_title;
+        this.article.title = content.bc_content.title;
         this.article.viewCount = content.bc_count;
         this.article.content = content.bc_content.body.replace(/(?:\r\n|\r|\n)/g, '<br/>');
         this.article.thumbnailKey = content.bc_content.thumbnailKey;

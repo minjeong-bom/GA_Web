@@ -1,23 +1,112 @@
 <script>
 import TitleTopBar from "components/app-bar/TitleTopBar.vue";
+import MyBookmarkCard from "components/card/myBookmarkCard.vue";
+import MyArticleCard from "components/card/myArticleCard.vue";
+import {itemDelete} from "src/script/api/deleteCall";
 
 export default {
   name: "MYP3000",
-  components: {TitleTopBar},
+  components: {MyArticleCard, MyBookmarkCard, TitleTopBar},
+  data() {
+    return {
+      bookmarks: [],
+      articles: [],
+    }
+  },
+  mounted() {
+    this.getBookmarkPage();
+  },
   computed: {
     userName() {
       return localStorage.getItem('userName')
+    },
+    userKey() {
+      return localStorage.getItem('userKey')
     }
   },
   methods: {
     navigateToHome(queryKey) {
       this.$router.push({
-          path: '/',
-          query: {
-            tab: queryKey
+        path: '/',
+        query: {
+          tab: queryKey
+        }
+      });
+    },
+    resetList() {
+      this.getBookmarkPage();
+    },
+    async getBookmarkPage() {
+     try {
+       const config = {
+         url: '/api/crud/lists/',
+         body: {
+           alias: 'bc',
+           prefix: 'bc',
+           scopes: 'bc_key,bc_title,bc_content',
+           columns_opts: {
+             bc_foreign_key2: 'SWMUCCYD',
+             bc_foreign_key: 'LBUSDDGP',
+             bc_title: this.userKey,
+           },
+           limit: 100
+         },
+         etc: {
+           headers: {
+             'SPRINT-API-KEY': 'sprintcombom'
+           }
+         }
+       }
+       const result = await this.$api.post(config.url, config.body, config.etc);
+       const res = result.data.response.lists;
+       this.bookmarks = res;
+
+       for (let i = 0; this.bookmarks.length > i; i++) {
+         await this.getArticleContent(this.bookmarks[i].bc_key, this.bookmarks[i].bc_content);
+       }
+     } catch (e) {
+       this.articles = [];
+     }
+    },
+    async getArticleContent(bookmarkKey, articleKey) {
+      this.isLoading = true;
+      try {
+        const config = {
+          url: '/api/crud/single/' + articleKey,
+          body: {
+            "prefix": "bc",
+            "alias": "bc",
+            "scopes": "bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content"
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom'
+            }
           }
-        });
-    }
+        }
+        const res = await this.$api.post(config.url, config.body, config.etc)
+        this.isLoading = false;
+        if (res) {
+          const content = res.data.response.view
+          if (content.bc_foreign_key === 'DPORHCPV') {
+            content.category_name = '스토리'
+          } else if (content.bc_foreign_key === 'KWUOXKGM') {
+            content.category_name = '취업 스킬'
+          } else if (content.bc_foreign_key === 'CEZTXGLJ') {
+            content.category_name = '지애픽'
+          }
+          content.bookmark_key = bookmarkKey;
+
+          this.articles.push(content);
+          this.isLoading = false;
+        }
+
+      } catch (e) {
+        // 404 등 에러일 경우
+        await itemDelete(bookmarkKey);
+        this.isLoading = false;
+      }
+    },
   }
 }
 </script>
@@ -25,7 +114,22 @@ export default {
 <template>
   <div>
     <title-top-bar title-text="내 북마크"/>
-    <section class="mb-64">
+    <section v-if="articles.length > 0" class="nomal-page-layout">
+      <div v-for="article in articles">
+        <my-bookmark-card
+          :bookmark-key="article.bookmark_key"
+          :articke-key="article.bc_key"
+          :created-at="article.bc_regdate"
+          :category-name="article.category_name"
+          :title-text="article.bc_content.title"
+          :is-loading="isLoading"
+          :thumbnail-key="article.bc_content.thumbnailKey"
+          :count-number="article.bc_count"
+          @resetList="resetList"
+        />
+      </div>
+    </section>
+    <section v-else class="mb-64">
       <div class="center-graphic-layout">
         <!-- 이미지 -->
         <img src="../../assets/graphic/graphic-bookmark.png">

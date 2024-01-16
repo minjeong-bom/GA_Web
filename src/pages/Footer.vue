@@ -2,17 +2,15 @@
   <div class="footer iphone-x-ui-bottom">
     <div class="footer-menu-wrap">
       <div class="footer-menu">
-        <span>회사 소개</span>
+        <q-btn dense flat label="회사 소개" @click="linkTo('http://companybb.com/')"/>
         <span>∙</span>
-        <span>서비스 소개</span>
+        <q-btn dense flat label="서비스 소개" @click="navigateTo('/ser0000')"/>
         <span>∙</span>
-      </div>
-      <div class="footer-menu">
-        <span>이용약관</span>
+        <q-btn dense flat label="아용약관"/>
         <span>∙</span>
-        <span>개인정보처리방침</span>
+        <q-btn dense flat label="개인정보처리방침"/>
         <span>∙</span>
-        <span>고객센터</span>
+        <q-btn dense flat label="고객센터" @click="navigateTo('/cus0000')"/>
       </div>
     </div>
 
@@ -37,7 +35,16 @@
 </template>
 
 <script>
-
+export default {
+  methods: {
+    linkTo(path) {
+      window.open(path);
+    },
+    navigateTo(path) {
+      this.$router.push(path);
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -50,7 +57,7 @@
 
   width: 100%;
   padding: 30px 24px;
-  padding-bottom: 100px;
+  padding-bottom: 100px !important;
 
   color: #938F96;
   font-size: 12px;
@@ -60,13 +67,14 @@
 }
 
 .footer-menu {
-  display: inline-flex;
+  display: block;
   align-items: center;
   justify-content: center;
   gap: 5px;
 }
 
-.footer-menu span {
+.footer-menu button {
+  display: inline-block;
   color: #938F96;
   font-size: 12px;
   font-style: normal;

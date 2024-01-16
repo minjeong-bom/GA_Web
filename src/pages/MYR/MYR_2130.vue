@@ -36,7 +36,7 @@ export default {
               data_foreign_key: "QAACWXSQ",
               data_foreign_key2: "UZPWQOWR",
               data_content: imageData,
-              data_writer_name: "TJXPOWQA"
+              data_writer_name: this.localUserKey
             },
             etc: {
               headers: {

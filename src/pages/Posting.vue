@@ -21,7 +21,7 @@
       ]"/>
       <!-- 태그 입력 -->
       <q-input
-        v-model="tags"
+        v-model="content.tags"
         borderless
         placeholder="태그 입력"
         maxlength="40"
@@ -57,7 +57,6 @@ export default {
       },
       title: '',
       file: '',
-      tags: '',
       errorText: {
         title: false,
         content: false,
@@ -107,6 +106,7 @@ export default {
 
       try {
         const contentData = {
+          title: this.title,
           body: this.content.body,
           tags: this.content.tags,
           thumbnailKey: this.content.thumbnailKey,
@@ -116,7 +116,7 @@ export default {
           url: '/api/crud/create',
           body: {
             data_prefix: 'bc',
-            data_title: this.title,
+            data_title: this.userKey,
             data_foreign_key: 'DPORHCPV', // '스토리' 카테고리 키
             data_foreign_key2: 'SNXKQEZS', // 게시판 키
             data_content: JSON.stringify(contentData),
@@ -149,7 +149,6 @@ export default {
 
 <style scoped>
 .category-select {
-  font-family: Pretendard;
   font-size: 1rem;
   font-style: normal;
   font-weight: 600 !important;
@@ -158,7 +157,6 @@ export default {
 }
 
 .title-input {
-  font-family: Pretendard;
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;

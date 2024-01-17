@@ -29,3 +29,13 @@ quasar build
 
 ### Customize the configuration
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+
+## API
+### HTTP
+[GoodAfternoon🌘 포스트맨](https://www.postman.com/sansikenzo/workspace/bb/collection/24708275-8ff3d67e-9fc0-4640-b9fc-c37045b47694?action=share&creator=24708275)
+
+## Mobile App
+### Android
+[안드로이드 프로젝트 바로가기](https://github.com/minjeong-bom/GA_Android)
+### iOS
+[iOS 프로젝트 바로가기]

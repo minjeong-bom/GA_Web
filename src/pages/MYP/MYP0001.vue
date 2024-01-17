@@ -173,9 +173,9 @@ export default {
   },
 };
 </script>
-
 <template>
   <div class="gray-background">
+    <!-- 테스트 -->
     <text-button-top-bar title-text="회원 정보 수정"/>
     <section class="nomal-page-layout">
       <h3 class="headline-3">기본 정보를 알려 주세요.</h3>

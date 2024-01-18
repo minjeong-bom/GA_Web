@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 import ArticleCard from 'components/card/ArticleCard.vue';
 import Tab from 'components/tab/Tab.vue';
 import EventCard from 'components/card/EventCard.vue';
@@ -150,11 +150,11 @@ export default defineComponent({
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprinttest',
+              'SPRINT-API-KEY': 'sprintcombom',
             },
           },
         };
-        const config = { ...commonConfig };
+        const config = {...commonConfig};
 
         console.log('category', category);
         // 카테고리 별 'bc_foreign_key' 설정
@@ -203,7 +203,7 @@ export default defineComponent({
         },
         etc: {
           headers: {
-            'SPRINT-API-KEY': 'sprinttest',
+            'SPRINT-API-KEY': 'sprintcombom',
           },
         },
       };
@@ -237,7 +237,7 @@ export default defineComponent({
             },
             {
               headers: {
-                'SPRINT-API-KEY': 'sprinttest',
+                'SPRINT-API-KEY': 'sprintcombom',
               },
             },
           );

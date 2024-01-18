@@ -26,8 +26,10 @@ const routes = [
     path: '/myp',
     component: () => import('layouts/FullPageLayout.vue'),
     children: [
-      {path: '/myp0000', component: () => import('pages/MYP/MYP0000.vue')}, // 마이페이지
-      {path: '/myp0000/edit', component: () => import('pages/MYP/MYP0001.vue')}, // 마이페이지
+      {path: '/mypage/nomal', component: () => import('pages/MYP/MYP0000.vue')}, // 마이페이지
+      {path: '/mypage/pro', component: () => import('pages/MYP/ProMypage.vue')}, // 전문가용 마이페이지
+      {path: '/mypage/nomal/edit', component: () => import('pages/MYP/MYP0001.vue')}, // 마이페이지 수정
+      {path: '/mypage/pro/edit', component: () => import('pages/MYP/ProMypageEdit.vue')}, // 전문가용 마이페이지 수정
       {path: '/myp3000', component: () => import('pages/MYP/MYP3000.vue')}, // 북마크 목록
       {path: '/myp4001', component: () => import('pages/MYP/MYP4001.vue')}, // 1:1 문의 사항 목록
       {path: '/myp4100', component: () => import('pages/MYP/MYP4100.vue')}, // 1:1 문의 사항 상세
@@ -120,9 +122,11 @@ const routes = [
       {path: '/joi0110', component: () => import('pages/JOI/JOI_0110.vue')}, // 이메일 설정
       {path: '/joi0140', component: () => import('pages/JOI/JOI_0140.vue')}, // 약관 동의
       {path: '/joi0150', component: () => import('pages/JOI/JOI_0150.vue')}, // 가입 완료
-      {path: '/joi0160', component: () => import('pages/JOI/JOI_0160.vue')}, // 가입 완료
-      {path: '/joi0170', component: () => import('pages/JOI/JOI_0170.vue')}, // 가입 완료
-      {path: '/joi0180', component: () => import('pages/JOI/JOI_0180.vue')}, // 가입 완료
+      {path: '/joi0160', component: () => import('pages/JOI/JOI_0160.vue')}, // 프로필 설정
+      {path: '/joi0170', component: () => import('pages/JOI/JOI_0170.vue')}, // 프로필 설정 2
+      {path: '/joi0200', component: () => import('pages/JOI/JOI_0200.vue')}, // 프로필 설정 2
+      {path: '/joi0201', component: () => import('pages/JOI/enterpriseUserForm.vue')}, // 프로필 설정 (기업)
+      {path: '/joi0180', component: () => import('pages/JOI/JOI_0180.vue')}, // 프로필 설정 3
     ],
   },
   {

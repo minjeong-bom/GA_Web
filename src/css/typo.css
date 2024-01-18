@@ -54,6 +54,13 @@ h1, h2, h3, h4, h5, h6, p {
   line-height: 1.5625rem; /* 156.25% */
 }
 
+.sub-title-2 {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5625rem; /* 156.25% */
+}
+
 .menu-lable {
   font-size: 1.25rem;
   font-style: normal;

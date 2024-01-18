@@ -9,6 +9,7 @@ export default {
   components: {UserProfileThumb, ProfileImageEditor, TextButtonTopBar},
   data() {
     return {
+      detailProfileKey: '',
       options: [
         {
           label: '소통',
@@ -52,6 +53,12 @@ export default {
         "고객상담·TM"
       ],
       edit: {
+        user_info: {
+          nickname: '',
+          interesting: [],
+          email: '',
+          about: '',
+        },
         job: {
           working: '네',
           searching: '네',
@@ -60,89 +67,62 @@ export default {
           career_name: '',
           job_title: '',
         },
-        user_info: {
-          nickname: '',
-          interesting: '',
-          email: '',
-          about: '',
-        },
-        userName: '',
-        userEmail: '',
-        userInteresting: [],
-      },
-      interesting: '',
-      email: '',
-      address: '',
-      cityName: '',
-      intro: '',
-      job: {
-        cureer: '', // 경력
-        filed: '', // 업무 분야
-        jobTitle: '', // 직업
-        jobSearch: '', // 구직 활동 여부
-        currentBiz: '', // 현업 종사 여부
-        searchGoal: '', // 구직 활동 목표
       },
       nickNameList,
     };
   },
-  watch: {
-    // 'file' 데이터 속성을 감시합니다.
-    file(newFile, oldFile) {
-      // 파일이 변경되었을 때 실행할 로직
-      if (newFile !== oldFile) {
-        this.uploadFile();
-      }
-    },
-  },
   mounted() {
-    this.getMyInfo();
+    this.getDetailUserInfo();
   },
   methods: {
-    async getMyInfo() {
-      try {
-        const config = {
-          url: `/api/crud/single/${this.localUserKey}`,
-          body: {
-            prefix: 'mem',
-            alias: 'mem',
-            scopes: 'mem_key,mem_address,mem_status,mem_id,mem_class,mem_title,mem_foreign_key,mem_regdate,mem_phone,mem_email,mem_regis_num,mem_category,mem_career,mem_field,mem_job,'
-              + 'mem_current_biz,mem_job_srch,mem_job_srch_goal,mem_user_profile,mem_job_srch_goal,mem_pro_field,mem_pro_career,mem_enterprise_field,mem_experience',
+    async save() {
+      const config = {
+        url: '/api/crud/create',
+        body: {
+          data_key: this.detailProfileKey ? this.detailProfileKey : '',
+          data_prefix: 'bc',
+          data_foreign_key2: 'IYETRHFC',
+          data_foreign_key: 'AYZXHRWS',
+          data_writer_name: this.localUserKey,
+          data_title: this.localUserKey,
+          data_content: JSON.stringify(this.edit)
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom',
           },
-          etc: {
-            headers: {
-              'SPRINT-API-KEY': 'sprinttest',
-            },
-          },
-        };
-        const response = await this.$api.post(config.url, config.body, config.etc);
-        const res = response.data.response.view;
+        },
+      }
 
-        this.interesting = res.mem_category;
-        this.email = res.mem_email;
-        this.job.cureer = '';
-        this.job.jobTitle = res.mem_job;
-        this.job.filed = res.mem_field;
-        this.address = res.mem_address;
-        console.log(res);
-        this.job.searchGoal = res.mem_job_srch_goal;
-        if (res.mem_job_srch === 'Y') {
-          this.job.jobSearch = true;
-        } else {
-          this.job.jobSearch = false;
+      await this.$api.post(config.url, config.body, config.etc);
+      this.$q.notify('저장이 완료되었습니다');
+      this.navigateTo('/myp0000');
+    },
+    async getDetailUserInfo() {
+      const config = {
+        url: '/api/crud/lists/',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key: 'AYZXHRWS',
+            bc_foreign_key2: 'IYETRHFC',
+            bc_title: this.localUserKey,
+          },
+          limit: 1
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
         }
-        if (res.mem_job_srch_goal === 'Y') {
-          this.job.searchGoal = true;
-        } else {
-          this.job.searchGoal = false;
-        }
-        if (res.mem_current_biz === 'Y') {
-          this.job.currentBiz = true;
-        } else {
-          this.job.currentBiz = false;
-        }
-      } catch (e) {
-        console.error(e);
+      }
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      if (res) {
+        const result = res.data.response.lists[0];
+        this.edit = result.bc_content;
+        this.detailProfileKey = result.bc_key;
       }
     },
     generateNickname() {
@@ -182,7 +162,7 @@ export default {
       <div class="surface-1">
         <div>
           <q-input
-            v-model="edit.userName"
+            v-model="edit.user_info.nickname"
             hint="최대 10글자"
             label="닉네임"
             maxlength="10"
@@ -198,14 +178,14 @@ export default {
         </div>
         <div>
           <q-input
-            v-model="edit.userEmail"
+            v-model="edit.user_info.email"
             label="이메일"
             placeholder="이메일을 입력하세요"
             type="email"/>
         </div>
         <div>
           <p class="sub-title-1">관심사</p>
-          <q-option-group v-model="edit.userInteresting" :options="options" type="checkbox"/>
+          <q-option-group v-model="edit.user_info.interesting" :options="options" type="checkbox"/>
         </div>
         <div>
           <p class="sub-title-1">현업에 종사중이신가요?</p>
@@ -254,6 +234,7 @@ export default {
           v-model="edit.user_info.about"
           autogrow
           label="자기소개"
+          maxlength="100"
           type="textarea"
         />
       </div>
@@ -262,7 +243,7 @@ export default {
     <q-btn
       class="full-width primary-btn"
       flat
-      lable="변경사항 저장"
+      label="변경사항 저장"
       @click="save"
     />
   </div>

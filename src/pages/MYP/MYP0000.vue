@@ -2,25 +2,29 @@
 import TextButtonTopBar from 'components/app-bar/TextButtonTopBar.vue';
 import ProfileImageEditor from 'components/modal/profileImageEditor.vue';
 import UserProfileThumb from 'components/profile/userProfileTumb.vue';
-import { extractCityOrCounty } from '../../script/text/cityExtractor';
+import {extractCityOrCounty} from '../../script/text/cityExtractor';
 
 export default {
   name: 'MYP0000',
-  components: { UserProfileThumb, ProfileImageEditor, TextButtonTopBar },
+  components: {UserProfileThumb, ProfileImageEditor, TextButtonTopBar},
   data() {
     return {
-      interesting: '',
-      email: '',
-      address: '',
       cityName: '',
-      intro: '',
-      job: {
-        cureer: '', // 경력
-        filed: '', // 업무 분야
-        jobTitle: '', // 직업
-        jobSearch: '', // 구직 활동 여부
-        currentBiz: '', // 현업 종사 여부
-        searchGoal: '', // 구직 활동 목표
+      userDetailInfo: {
+        user_info: {
+          nickname: '',
+          interesting: [],
+          email: '',
+          about: '',
+        },
+        job: {
+          working: '',
+          searching: '',
+          searching_type: '',
+          total_career: '',
+          career_name: '',
+          job_title: '',
+        },
       },
       file: null, // 이미지 데이터
       thumbnailInfo: {
@@ -28,27 +32,42 @@ export default {
         imageKey: null,
         chatactor: null,
       },
-      openModal: false,
+      openProfileEditModal: false,
+      myMenuList: [
+        {
+          lable: '내 게시글',
+          linkTo: '/my-articles',
+          iconClass: 'fa-book',
+        },
+        {
+          lable: '내 이력서',
+          linkTo: '/myr0000',
+          iconClass: 'fa-id-card-clip',
+        },
+        {
+          lable: '내 북마크',
+          linkTo: '/myp3000',
+          iconClass: 'fa-bookmark',
+        },
+        {
+          lable: '1:1문의 사항',
+          linkTo: '/myp4001',
+          iconClass: 'fa-headset',
+        },
+
+      ]
     };
   },
-  watch: {
-    // 'file' 데이터 속성을 감시합니다.
-    file(newFile, oldFile) {
-      // 파일이 변경되었을 때 실행할 로직
-      if (newFile !== oldFile) {
-        this.uploadFile();
-      }
-    },
-  },
-  mounted() {
+  created() {
     this.getMyInfo();
+    this.getDetailUserInfo();
   },
   methods: {
     setThumbnail() {
-      this.openModal = true;
+      this.openProfileEditModal = true;
     },
     closeModal() {
-      this.openModal = false;
+      this.openProfileEditModal = false;
       this.$router.go(0);
     },
     async getMyInfo() {
@@ -58,35 +77,48 @@ export default {
           body: {
             prefix: 'mem',
             alias: 'mem',
-            scopes: 'mem_key,mem_address,mem_status,mem_id,mem_class,mem_title,mem_foreign_key,mem_regdate,mem_phone,mem_email,mem_regis_num,mem_category,mem_career,mem_field,mem_job,'
-              + 'mem_current_biz,mem_job_srch,mem_job_srch_goal,mem_user_profile,mem_job_srch_goal,mem_pro_field,mem_pro_career,mem_enterprise_field,mem_experience',
+            scopes: 'mem_address',
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprinttest',
+              'SPRINT-API-KEY': 'sprintcombom',
             },
           },
         };
         const response = await this.$api.post(config.url, config.body, config.etc);
         const res = response.data.response.view;
 
-        this.interesting = res.mem_category;
-        this.email = res.mem_email;
-        this.job.cureer = '';
-        this.job.jobTitle = res.mem_job;
-        this.job.filed = res.mem_field;
         this.address = res.mem_address;
-        console.log(res);
-        this.job.searchGoal = res.mem_job_srch_goal;
-        res.mem_job_srch === 'Y' ? this.job.jobSearch = true : this.job.jobSearch = false;
-        res.mem_job_srch_goal === 'Y' ? this.job.searchGoal = true : this.job.searchGoal = false;
-        res.mem_current_biz === 'Y' ? this.job.currentBiz = true : this.job.currentBiz = false;
         this.extractCityOrCounty();
       } catch (e) {
-        console.error(e);
+        this.$q.notify('정보를 불러오는데 실패했습니다.')
       }
     },
-    uploadFile() {
+    async getDetailUserInfo() {
+      const config = {
+        url: '/api/crud/lists/',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key: 'AYZXHRWS',
+            bc_foreign_key2: 'IYETRHFC',
+            bc_title: this.localUserKey,
+          },
+          limit: 1
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
+        }
+      }
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      const result = res.data.response.lists[0].bc_content;
+      this.userDetailInfo = result;
+    },
+    uploadProfileImage() {
       if (this.file) {
         const reader = new FileReader();
 
@@ -112,16 +144,15 @@ export default {
 
           try {
             const result = await this.$api.post(config.url, config.body, config.etc);
-            console.log('Upload successful', result);
             this.$emit('saveProfileImage', result.data.response.result.data_key);
           } catch (error) {
-            console.error('Error uploading file', error);
+            this.$q.notify('이미지 저장 실패');
           }
         };
 
         reader.readAsDataURL(this.file);
       } else {
-        alert('Please select an image to upload.');
+        alert('이미지를 선택해 주세요');
       }
     },
     extractCityOrCounty() {
@@ -133,6 +164,9 @@ export default {
     triggerFileInput() {
       this.$refs.fileInput.pickFiles();
     },
+    formattedContent(text) {
+      return text.replace(/\n/g, '<br>');
+    },
   },
   computed: {
     localUserKey() {
@@ -142,14 +176,21 @@ export default {
       return localStorage.getItem('userName');
     },
     userJobStatus() {
-      const firstStaus = this.job.currentBiz ? '현업 종사' : '';
-      const secondStatus = this.job.searchGoal === 'Y' ? '이직 준비중' : '전직 준비중';
+      const firstStaus = this.userDetailInfo.job.working === '네' ? '현업 종사' : '';
+      const secondStatus = this.userDetailInfo.job.searching === '네' ? '이직 준비중' : '전직 준비중';
       if (firstStaus && secondStatus) {
         return `${firstStaus} 및 ${secondStatus}`;
       }
       return firstStaus + secondStatus;
     },
   },
+  watch: {
+    file(newFile, oldFile) {
+      if (newFile !== oldFile) {
+        this.uploadProfileImage();
+      }
+    },
+  }
 };
 </script>
 
@@ -173,16 +214,14 @@ export default {
           style="background: #fff"
           @click="setThumbnail"
         />
-        <profile-image-editor v-if="openModal" @closeModal="closeModal"/>
+        <profile-image-editor v-if="openProfileEditModal" @closeModal="closeModal"/>
       </div>
       <div class="l-column user-detail-info text-align-center">
         <h2 class="user-name-text">{{ localUserName }}</h2>
-        <p class="user-title">{{ job.jobTitle }}</p>
+        <p class="sub-title-2">{{ userDetailInfo.job.job_title }}</p>
         <p class="user-personal-info">
-          {{ userJobStatus }}
-          <span v-if="cityName"> | </span>
-          {{ cityName }}</p>
-        <p class="user-personal-info">{{ email }}</p>
+          {{ userJobStatus }}<span v-if="cityName"> | {{ cityName }}</span></p>
+        <p class="user-personal-info">{{ userDetailInfo.user_info.email }}</p>
       </div>
     </section>
     <section class="point-section">
@@ -205,92 +244,45 @@ export default {
       </div>
     </section>
     <section class="point-section">
-      <p v-if="!intro">
+      <p v-if="!userDetailInfo.user_info.about">
         아직 {{ localUserName }}의 소개글이 없습니다.<br>
         100자 이내의 간단한 소개로 자신을 알려 보세요.
       </p>
+      <p v-else class="footnote" v-html="formattedContent(userDetailInfo.user_info.about)"></p>
     </section>
     <section class="point-section">
       <p>주요 경력과 역량</p>
-      <div class="my-propose-text sub-title-1">
-        전기로 운영 18년<br>
-        탁월한 관찰<br>
-        시간관리 잘해요<br>
-        <q-btn dense flat size="md" style="color: var(--k-40)">더보기</q-btn>
+      <div class="my-propose-text-area l-column sub-title-1">
+        {{ userDetailInfo.job.job_title }}(으)로 {{ userDetailInfo.job.total_career }}년 <br>
+        {{ userDetailInfo.job.career_name }}
+        <q-btn dense disable flat size="md" style="color: var(--k-40)">더보기</q-btn>
       </div>
     </section>
     <section class="point-section">
       <p>관심사</p>
-      <div class="sub-title-1" style="display: flex; gap: 0.75rem">
-        <span>소통</span>
-        <span>업무 관련 스킬</span>
-        <span>구인 정보</span>
-        <span>유용한 정보</span>
+      <div class="sub-title-1 flex">
+        <span v-for="item in userDetailInfo.user_info.interesting">
+          {{ item }}
+        </span>
       </div>
     </section>
     <section class="my-menu-list">
-      <div class="my-menu flex-sb" @click="navigateTo('/my-articles')">
-        <p style="display: flex; gap: 0.625rem; align-items: center;">
-          <i class="fa-solid fa-book"></i>
-          <span class="user-title"> 내 게시글</span>
+      <div v-for="menu in myMenuList" class="my-menu flex-sb">
+        <p class="flex-center">
+          <p class="icon-wrapper">
+            <i :class="'fa-solid' + ' ' + menu.iconClass"></i>
+          </p>
+          <span class="sub-title-2">{{ menu.lable }}</span>
         </p>
-        <q-btn dense flat icon="chevron_right" size="xs"></q-btn>
-      </div>
-      <div class="my-menu flex-sb" @click="navigateTo('/myr0000')">
-        <p style="display: flex; gap: 0.625rem; align-items: center;">
-          <i class="fa-solid fa-id-card-clip"></i>
-          <span class="user-title"> 내 이력서</span>
-        </p>
-        <q-btn dense flat icon="chevron_right" size="xs"></q-btn>
-      </div>
-      <div class="my-menu flex-sb" @click="navigateTo('/myp3000')">
-        <p style="display: flex; gap: 0.625rem; align-items: center;">
-          <i class="fa-solid fa-bookmark"></i>
-          <span class="user-title"> 내 북마크</span>
-        </p>
-        <q-btn dense flat icon="chevron_right" size="xs"></q-btn>
-      </div>
-      <div class="my-menu flex-sb">
-        <p style="display: flex; gap: 0.625rem; align-items: center;">
-          <i class="fa-solid fa-mug-hot"></i>
-          <span class="user-title"> 커피챗 내역</span>
-        </p>
-        <q-btn dense flat icon="chevron_right" size="xs"></q-btn>
-      </div>
-      <div class="my-menu flex-sb">
-        <p style="display: flex; gap: 0.625rem; align-items: center;">
-          <i class="fa-solid fa-headset"></i>
-          <span class="user-title"> 1:1문의 사항</span>
-        </p>
-        <q-btn dense flat icon="chevron_right" size="xs"></q-btn>
+        <q-btn dense flat icon="chevron_right" size="xs" @click="navigateTo(menu.linkTo)"/>
       </div>
     </section>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 html, body, div, .q-layout {
   background: #F2F2F7 !important;
-}
-
-.user-thumbnail-wrap {
-  position: relative;
-  width: 6.25rem;
-  height: 6.25rem;
-}
-
-.user-thumbnail {
-  width: 6.25rem;
-  height: 6.25rem;
-  flex-shrink: 0;
-  background-size: cover;
-  border-radius: 10rem;
-}
-
-.upload-photo {
-  position: absolute;
-  right: 0;
-  bottom: 0;
 }
 
 .user-info-wrap {
@@ -298,26 +290,51 @@ html, body, div, .q-layout {
   flex-direction: column;
   align-items: center;
   padding-top: 2.4rem;
+
+  .user-name-text {
+    font-size: 1.3125rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
 }
 
-.user-name-text {
-  font-size: 1.3125rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+.user-thumbnail-wrap {
+  position: relative;
+  width: 6.25rem;
+  height: 6.25rem;
+
+  .upload-photo {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
 }
 
-.user-title {
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 500;
+.my-propose-text-area {
+  padding: 0.625rem 0.75rem;
+  align-items: flex-start;
+  background: #fff !important;
+  border-radius: 0.75rem;
 }
+
+.point-section {
+  //.sub-title-1 {
+  //  gap: 0.75rem;
+  //}
+
+  .footnote {
+    color: #999;
+    font-weight: 500;
+  }
+}
+
 
 .user-personal-info {
   color: #999;
   font-size: 0.75rem;
   font-style: normal;
-  font-weight: 250;
+  font-weight: bold;
   line-height: normal;
 }
 
@@ -341,13 +358,6 @@ html, body, div, .q-layout {
   border-radius: 0.625rem;
 }
 
-.caption-1 {
-  font-size: 0.75rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 0.875rem; /* 116.667% */
-}
-
 .card-headline-1 {
   color: var(--ga-red);
 }
@@ -357,20 +367,24 @@ html, body, div, .q-layout {
   display: flex;
   flex-direction: column;
   gap: 0.62rem;
-}
 
-.my-propose-text {
-  display: flex;
-  padding: 0.625rem 0.75rem;
-  flex-direction: column;
-  align-items: flex-start;
-  background: #fff !important;
-  border-radius: 0.75rem;
-}
+  .flex-center {
+    gap: 0.625rem;
+  }
 
-.my-menu {
-  background: #fff !important;
-  border-radius: 0.625rem;
-  padding: 0.5625rem 1rem;
+  .icon-wrapper {
+    width: 1rem;
+    text-align: center;
+  }
+
+  .my-menu {
+    background: #fff !important;
+    border-radius: 0.625rem;
+    padding: 0.5625rem 1rem;
+  }
+
+  .sub-title-2 {
+    color: #1C1C1C;
+  }
 }
 </style>

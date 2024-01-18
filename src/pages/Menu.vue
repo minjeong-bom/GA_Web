@@ -102,6 +102,7 @@ export default {
           lable: '설정',
           iconClass: 'fa-sliders',
           subLable: '',
+          path: 'set0000',
           sub: [
             {
               color: '',
@@ -123,6 +124,7 @@ export default {
               lable: '로그 아웃',
               iconClass: 'fa-arrow-right-from-bracket',
               subLable: '',
+              action: 'logout',
               path: '/set/logout',
             },
           ],
@@ -163,6 +165,18 @@ export default {
       }
       // 작성자명 가공 함수 호출
     },
+    buttonEvent(action) {
+      if (action === 'logout') {
+        this.logout();
+      }
+    },
+    logout() {
+      localStorage.setItem('userKey', '');
+      localStorage.setItem('userName', '');
+      localStorage.setItem('userId', '');
+
+      this.$router.push('/login');
+    },
     closeMenu() {
       this.$router.push('/');
     },
@@ -198,7 +212,7 @@ export default {
             class="full-width"
             dense
             flat
-            @click="this.$router.push(sub.path)"
+            @click="sub.action ? this.buttonEvent(sub.action) : this.$router.push(sub.path)"
           >
             <div class="menu-item">
               <div class="icon-lable-wrap">

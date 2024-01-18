@@ -54,6 +54,7 @@ export default {
       ],
       edit: {
         user_info: {
+          user_type: '',
           nickname: '',
           interesting: [],
           email: '',
@@ -76,27 +77,30 @@ export default {
   },
   methods: {
     async save() {
-      const config = {
-        url: '/api/crud/create',
-        body: {
-          data_key: this.detailProfileKey ? this.detailProfileKey : '',
-          data_prefix: 'bc',
-          data_foreign_key2: 'IYETRHFC',
-          data_foreign_key: 'AYZXHRWS',
-          data_writer_name: this.localUserKey,
-          data_title: this.localUserKey,
-          data_content: JSON.stringify(this.edit)
-        },
-        etc: {
-          headers: {
-            'SPRINT-API-KEY': 'sprintcombom',
+      try {
+        const config = {
+          url: '/api/crud/create',
+          body: {
+            data_key: this.detailProfileKey ? this.detailProfileKey : '',
+            data_prefix: 'bc',
+            data_foreign_key2: 'IYETRHFC',
+            data_foreign_key: 'AYZXHRWS',
+            data_writer_name: this.localUserKey,
+            data_title: this.localUserKey,
+            data_content: JSON.stringify(this.edit)
           },
-        },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom',
+            },
+          },
+        }
+        await this.$api.post(config.url, config.body, config.etc);
+        this.$q.notify('저장이 완료되었습니다');
+        this.navigateTo('/myp0000');
+      } catch (e) {
+        this.$q.notify('저장할 수 없습니다. 관리자에게 문의해 주세요.');
       }
-
-      await this.$api.post(config.url, config.body, config.etc);
-      this.$q.notify('저장이 완료되었습니다');
-      this.navigateTo('/myp0000');
     },
     async getDetailUserInfo() {
       const config = {

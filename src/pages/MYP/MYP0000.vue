@@ -217,7 +217,7 @@ export default {
         <profile-image-editor v-if="openProfileEditModal" @closeModal="closeModal"/>
       </div>
       <div class="l-column user-detail-info text-align-center">
-        <h2 class="user-name-text">{{ localUserName }}</h2>
+        <h2 class="user-name-text">{{ userDetailInfo.user_info.nickname }}</h2>
         <p class="sub-title-2">{{ userDetailInfo.job.job_title }}</p>
         <p class="user-personal-info">
           {{ userJobStatus }}<span v-if="cityName"> | {{ cityName }}</span></p>

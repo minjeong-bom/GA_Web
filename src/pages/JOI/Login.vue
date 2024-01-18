@@ -6,7 +6,7 @@
       <!-- 아이디 & 비밀번호 입력 -->
       <div class="login-form">
         <q-input v-model="userId" label="아이디" outlined/>
-        <q-input v-model="userPw" :hint="loginFailMassage? loginFailMassage : loginErrorMessage" :type="isPwd? 'password' : 'text'" label="비밀번호"
+        <q-input v-model="userPw" :type="isPwd? 'password' : 'text'" label="비밀번호"
                  outlined>
           <template v-slot:append>
             <q-icon
@@ -16,6 +16,10 @@
             />
           </template>
         </q-input>
+        <div v-show="loginFailMassage" class="error-msg">
+          <q-icon color="red" name="error" size="16px"/>
+          <p>{{ loginFailMassage ? loginFailMassage : loginErrorMessage }}</p>
+        </div>
       </div>
       <!-- 로그인 버튼 -->
       <q-btn class="login-button" flat rounded size="lg" style="background: #000;" @click="login">
@@ -186,5 +190,13 @@ export default {
 
 .help-btn-wrap * {
   color: #666;
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-weight: 500;
 }
 </style>

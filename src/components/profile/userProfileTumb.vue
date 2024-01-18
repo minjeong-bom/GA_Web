@@ -47,24 +47,26 @@ export default {
         };
         const res = await this.$api.post(config.url, config.body, config.etc);
         const result = res.data.response.lists[0];
-
-        this.imageInfo.type = result.bc_content.type;
-        if (this.imageInfo.type === 'none') {
-          this.imageInfo.color = result.bc_content.color;
-          this.isLoading = false;
-        }
-        if (this.imageInfo.type === 'avatar') {
-          this.imageInfo.avatarName = result.bc_content.avatarName;
-          this.isLoading = false;
-        }
-        if (this.imageInfo.type === 'custom') {
-          this.imageInfo.imageKey = result.bc_content.imageKey;
-          this.getThumbnail();
+        if (res) {
+          this.imageInfo.type = result.bc_content.type;
+          if (this.imageInfo.type === 'none') {
+            this.imageInfo.color = result.bc_content.color;
+            this.isLoading = false;
+          }
+          if (this.imageInfo.type === 'avatar') {
+            this.imageInfo.avatarName = result.bc_content.avatarName;
+            this.isLoading = false;
+          }
+          if (this.imageInfo.type === 'custom') {
+            this.imageInfo.imageKey = result.bc_content.imageKey;
+            this.getThumbnail();
+          }
         }
       } catch (e) {
         console.error('등록된 프로필 정보가 없었습니다.', e);
         this.imageInfo.type = 'none';
-        this.imageInfo.color = 'gray';
+        this.imageInfo.color = 'pink-4';
+        this.isLoading = false;
       }
     },
     async getThumbnail() {
@@ -99,10 +101,12 @@ export default {
       </div>
       <div v-else :style="'width:' + size + ';' + 'height:' + size + ';'" class="profile-preview-wrap">
         <!-- 아바타 썸네일 -->
-        <img v-if="imageInfo.type === 'avatar'" :src="'../../src/assets/graphic/profile/' + imageInfo.avatarName + '.png'"
+        <img v-if="imageInfo.type === 'avatar'"
+             :src="'../../src/assets/graphic/profile/' + imageInfo.avatarName + '.png'"
              class="avatar-preview">
         <!-- 업로드 이미지 썸네일 -->
-        <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64" :src="'data:image/jpeg;base64,' + fileObject64"
+        <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64"
+             :src="'data:image/jpeg;base64,' + fileObject64"
              class="profile-preview">
         <!-- 설정된 이미지 없을 때 -->
         <q-avatar v-else :color="imageInfo.color" :size="size" icon="person"/>

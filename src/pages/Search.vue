@@ -103,11 +103,11 @@ export default {
         },
         etc: {
           headers: {
-            'SPRINT-API-KEY': 'sprinttest',
+            'SPRINT-API-KEY': 'sprintcombom',
           },
         },
       };
-      const config = { ...commonConfig };
+      const config = {...commonConfig};
 
       // API 호출
       const res = await this.$api.post(config.url, config.data, config.etc);
@@ -138,7 +138,7 @@ export default {
             },
             {
               headers: {
-                'SPRINT-API-KEY': 'sprinttest',
+                'SPRINT-API-KEY': 'sprintcombom',
               },
             },
           );

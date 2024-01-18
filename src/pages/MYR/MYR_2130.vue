@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      uploadImage : '',
+      uploadImage: '',
       selectedFile: '',
     }
   },
@@ -40,7 +40,7 @@ export default {
             },
             etc: {
               headers: {
-                'SPRINT-API-KEY': 'sprinttest',
+                'SPRINT-API-KEY': 'sprintcombom',
               }
             }
           };
@@ -73,7 +73,7 @@ export default {
 
 <template>
   <div class="myr-page">
-    <myr-text-button-top-bar title-text="이력서 작성" back-path="myr2130" @closeModal="closeModal"/>
+    <myr-text-button-top-bar back-path="myr2130" title-text="이력서 작성" @closeModal="closeModal"/>
     <section class="sub-myr-view">
       <p class="full-width">
         <span class="sub-title-1">사진</span><br>
@@ -85,12 +85,12 @@ export default {
         </span>
       </p>
 
-      <q-file filled bottom-slots class="full-width" v-model="selectedFile" label="프로필 사진" counter>
+      <q-file v-model="selectedFile" bottom-slots class="full-width" counter filled label="프로필 사진">
         <template v-slot:prepend>
           <q-icon name="add_a_photo"/>
         </template>
-        <template v-slot:append >
-          <q-icon v-if="selectedFile" name="close" @click.stop.prevent="selectedFile = null" class="cursor-pointer"/>
+        <template v-slot:append>
+          <q-icon v-if="selectedFile" class="cursor-pointer" name="close" @click.stop.prevent="selectedFile = null"/>
         </template>
         <template v-slot:hint>
           png, jpeg만 가능
@@ -98,13 +98,13 @@ export default {
       </q-file>
 
       <q-btn
+        :disable="!selectedFile"
+        class="full-width myr-modal-save-button nomal-text-3"
         flat
+        label="저장"
         rounded
         size="lg"
-        @click="save()"
-        :disable="!selectedFile"
-        label="저장"
-        class="full-width myr-modal-save-button nomal-text-3"/>
+        @click="save()"/>
     </section>
 
 

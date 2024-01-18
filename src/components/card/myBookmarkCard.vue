@@ -1,6 +1,7 @@
 <script>
 import timeAgo from "../../script/timeData/timeAgo";
 import {itemDelete} from "src/script/api/deleteCall";
+
 export default {
   name: "myBookmarkCard",
   props: {
@@ -44,8 +45,8 @@ export default {
           scopes: 'bc_content',
         },
         etc: {
-          headers : {
-            'SPRINT-API-KEY' : 'sprinttest',
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom',
           }
         }
       }
@@ -76,10 +77,10 @@ export default {
         <span class="caption-2 opacity50"> | </span>
         <span class="caption-2">{{ categoryName }}</span>
       </div>
-      <q-btn dense flat round icon="bookmark" color="red" @click="removeListItem();"/>
+      <q-btn color="red" dense flat icon="bookmark" round @click="removeListItem();"/>
     </div>
     <!-- content : 제목, 태그, 썸네일 -->
-    <div class="content-wrap"  @click="goToArticle(artickeKey)">
+    <div class="content-wrap" @click="goToArticle(artickeKey)">
       <div class="title-and-tag-wrap">
         <h3 class="ask-card-title">{{ titleText }}</h3>
         <span class="tag-text">{{ tagsList }}</span>
@@ -99,6 +100,7 @@ export default {
 .my-article-card {
   gap: 4px;
 }
+
 .row-1 {
   gap: 4px;
   align-items: center;
@@ -136,7 +138,7 @@ export default {
   border-radius: 0.5rem;
 }
 
-.article-thumbnail>img {
+.article-thumbnail > img {
   width: 100%; /* 너비를 컨테이너에 맞춥니다 */
   height: 100%; /* 높이도 컨테이너에 맞춥니다 */
   object-fit: cover; /* 이미지가 컨테이너를 가득 채우도록 조정하면서 종횡비를 유지합니다 */

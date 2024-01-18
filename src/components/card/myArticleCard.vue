@@ -1,5 +1,6 @@
 <script>
 import timeAgo from "../../script/timeData/timeAgo";
+
 export default {
   name: "myArticleCard",
   props: {
@@ -37,8 +38,8 @@ export default {
           scopes: 'bc_content',
         },
         etc: {
-          headers : {
-            'SPRINT-API-KEY' : 'sprinttest',
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom',
           }
         }
       }
@@ -75,13 +76,13 @@ export default {
         <span class="caption-2 opacity50"> | </span>
         <span class="caption-2">{{ categoryName }}</span>
       </div>
-      <q-btn dense flat round icon="more_vert" color="grey">
+      <q-btn color="grey" dense flat icon="more_vert" round>
         <q-menu>
           <q-list style="min-width: 100px">
-            <q-item clickable v-close-popup @click="editArticle()">
+            <q-item v-close-popup clickable @click="editArticle()">
               <div class="item-section">수정</div>
             </q-item>
-            <q-item clickable v-close-popup @click="deleteItem()">
+            <q-item v-close-popup clickable @click="deleteItem()">
               <div class="item-section">삭제</div>
             </q-item>
           </q-list>
@@ -89,13 +90,13 @@ export default {
       </q-btn>
     </div>
     <!-- content : 제목, 태그, 썸네일 -->
-    <div class="content-wrap"  @click="goToArticle()">
+    <div class="content-wrap" @click="goToArticle()">
       <div class="title-and-tag-wrap">
         <h3 class="ask-card-title">{{ titleText }}</h3>
         <span class="tag-text">{{ tagsList }}</span>
       </div>
       <div v-if="thumbnailKey" class="article-thumbnail">
-        <q-skeleton v-if="thumbLoading" type="rect" size="4rem"/>
+        <q-skeleton v-if="thumbLoading" size="4rem" type="rect"/>
         <img v-else-if="thumbnailFile" :src="'data:image/jpeg;base64,' + thumbnailFile"/>
       </div>
     </div>
@@ -110,6 +111,7 @@ export default {
 .my-article-card {
   gap: 4px;
 }
+
 .row-1 {
   gap: 4px;
   align-items: center;
@@ -147,7 +149,7 @@ export default {
   border-radius: 0.5rem;
 }
 
-.article-thumbnail>img {
+.article-thumbnail > img {
   width: 100%; /* 너비를 컨테이너에 맞춥니다 */
   height: 100%; /* 높이도 컨테이너에 맞춥니다 */
   object-fit: cover; /* 이미지가 컨테이너를 가득 채우도록 조정하면서 종횡비를 유지합니다 */

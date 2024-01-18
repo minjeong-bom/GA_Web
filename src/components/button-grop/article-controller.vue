@@ -71,7 +71,7 @@ export default {
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprinttest',
+              'SPRINT-API-KEY': 'sprintcombom',
             },
           }
         }
@@ -87,8 +87,8 @@ export default {
         const delConfig = {
           url: '/api/crud/delete',
           body: {
-            columns_opts : {
-              data_key : this.bookmarkKey,
+            columns_opts: {
+              data_key: this.bookmarkKey,
             }
           },
           etc: {
@@ -132,45 +132,45 @@ export default {
 <template>
   <div class="article-controller-wrap">
     <div>
-      <q-btn flat dense round icon="text_fields" style="opacity: 0.3" id="fontSizeSetButton">
-        <q-menu max-width="500px" class="font-size-menu">
+      <q-btn id="fontSizeSetButton" dense flat icon="text_fields" round style="opacity: 0.3">
+        <q-menu class="font-size-menu" max-width="500px">
           <q-list class="font-size-option-list">
             <q-item
-              clickable v-close-popup
+              v-close-popup :class="{'focus': fontSize === 1}"
               class="font-size-option"
-              :class="{'focus': fontSize === 1}"
+              clickable
               @click="setFontSize(1)">
               <div class="font-size-symbol font-size-1">가</div>
               <p class="comment-card-text">크기1</p>
             </q-item>
             <q-item
-              clickable v-close-popup
+              v-close-popup :class="{'focus': fontSize === 2}"
               class="font-size-option"
-              :class="{'focus': fontSize === 2}"
+              clickable
               @click="setFontSize(2)">
               <div class="font-size-symbol font-size-2">가</div>
               <p class="comment-card-text">크기2</p>
             </q-item>
             <q-item
-              clickable v-close-popup
+              v-close-popup :class="{'focus': fontSize === 3}"
               class="font-size-option"
-              :class="{'focus': fontSize === 3}"
+              clickable
               @click="setFontSize(3)">
               <div class="font-size-symbol font-size-3">가</div>
               <p class="comment-card-text">크기3</p>
             </q-item>
             <q-item
-              clickable v-close-popup
+              v-close-popup :class="{'focus': fontSize === 4}"
               class="font-size-option"
-              :class="{'focus': fontSize === 4}"
+              clickable
               @click="setFontSize(4)">
               <div class="font-size-symbol font-size-4">가</div>
               <p class="comment-card-text">크기4</p>
             </q-item>
             <q-item
-              clickable v-close-popup
+              v-close-popup :class="{'focus': fontSize === 5}"
               class="font-size-option"
-              :class="{'focus': fontSize === 5}"
+              clickable
               @click="setFontSize(5)">
               <div class="font-size-symbol font-size-5">가</div>
               <p class="comment-card-text">크기5</p>
@@ -179,9 +179,9 @@ export default {
         </q-menu>
       </q-btn>
     </div>
-    <q-btn v-if="isMarked" flat dense round icon="bookmark" @click="removeBookmark()" style="color: var(--ga-red)"/>
-    <q-btn v-else flat dense round icon="bookmark" @click="addBookmark()" style="opacity: 0.3"/>
-    <q-btn flat dense round icon="share" @click="share" style="opacity: 0.3"/>
+    <q-btn v-if="isMarked" dense flat icon="bookmark" round style="color: var(--ga-red)" @click="removeBookmark()"/>
+    <q-btn v-else dense flat icon="bookmark" round style="opacity: 0.3" @click="addBookmark()"/>
+    <q-btn dense flat icon="share" round style="opacity: 0.3" @click="share"/>
   </div>
 </template>
 

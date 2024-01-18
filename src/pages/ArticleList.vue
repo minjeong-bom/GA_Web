@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 import ArticleCard from 'components/card/ArticleCard.vue';
 import TitleTopBar from 'components/app-bar/TitleTopBar.vue';
 
@@ -109,11 +109,11 @@ export default defineComponent({
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprinttest',
+              'SPRINT-API-KEY': 'sprintcombom',
             },
           },
         };
-        const config = { ...commonConfig };
+        const config = {...commonConfig};
 
         // 카테고리 별 'bc_foreign_key' 설정
         if (category === 'story') {
@@ -157,7 +157,7 @@ export default defineComponent({
             },
             {
               headers: {
-                'SPRINT-API-KEY': 'sprinttest',
+                'SPRINT-API-KEY': 'sprintcombom',
               },
             },
           );

@@ -1,13 +1,12 @@
 <script>
-import {convertToBase64} from "src/script/base64/fileToBase64";
 export default {
-  name: "userProfileThumb",
+  name: 'userProfileThumb',
   props: {
     userKey: String,
     size: {
       type: String,
-      default: '32px'
-    }
+      default: '32px',
+    },
   },
   data() {
     return {
@@ -19,7 +18,7 @@ export default {
       },
       fileObject64: null,
       isLoading: true,
-    }
+    };
   },
   mounted() {
     this.getProfileInfo();
@@ -30,22 +29,22 @@ export default {
         const config = {
           url: '/api/crud/lists/',
           body: {
-            alias: "bc",
-            prefix: "bc",
-            scopes: "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content",
-            columns_opts : {
-              bc_foreign_key2 : 'XSKEQNCO',
-              bc_foreign_key : 'DZVBYFPW',
-              bc_title : this.userKey
+            alias: 'bc',
+            prefix: 'bc',
+            scopes: 'bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content',
+            columns_opts: {
+              bc_foreign_key2: 'XSKEQNCO',
+              bc_foreign_key: 'DZVBYFPW',
+              bc_title: this.userKey,
             },
-            "limit" : 1
+            limit: 1,
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprintcombom'
-            }
-          }
-        }
+              'SPRINT-API-KEY': 'sprintcombom',
+            },
+          },
+        };
         const res = await this.$api.post(config.url, config.body, config.etc);
         const result = res.data.response.lists[0];
 
@@ -70,18 +69,18 @@ export default {
     },
     async getThumbnail() {
       const config = {
-        url: '/api/crud/single/' + this.imageInfo.imageKey,
+        url: `/api/crud/single/${this.imageInfo.imageKey}`,
         body: {
-          prefix : 'bc',
-          alias : 'bc',
-          scopes : 'bc_content'
+          prefix: 'bc',
+          alias: 'bc',
+          scopes: 'bc_content',
         },
         etc: {
           headers: {
-            'SPRINT-API-KEY': 'sprintcombom'
-          }
-        }
-      }
+            'SPRINT-API-KEY': 'sprintcombom',
+          },
+        },
+      };
 
       const res = await this.$api.post(config.url, config.body, config.etc);
       const response = res.data.response.view.bc_content;
@@ -89,22 +88,24 @@ export default {
       this.isLoading = false;
     },
   },
-}
+};
 </script>
 
 <template>
   <div>
     <section class="profile-image-section">
       <div v-if="isLoading" class="profile-preview-wrap">
-        <q-skeleton type="circle" :style="'width:' + size + ';' + 'height:' + size + ';'" />
+        <q-skeleton :style="'width:' + size + ';' + 'height:' + size + ';'" type="circle"/>
       </div>
-      <div v-else class="profile-preview-wrap" :style="'width:' + size + ';' + 'height:' + size + ';'">
+      <div v-else :style="'width:' + size + ';' + 'height:' + size + ';'" class="profile-preview-wrap">
         <!-- 아바타 썸네일 -->
-        <img v-if="imageInfo.type === 'avatar'" class="avatar-preview" :src="'../../src/assets/graphic/profile/' + imageInfo.avatarName + '.png'">
+        <img v-if="imageInfo.type === 'avatar'" :src="'../../src/assets/graphic/profile/' + imageInfo.avatarName + '.png'"
+             class="avatar-preview">
         <!-- 업로드 이미지 썸네일 -->
-        <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64" class="profile-preview" :src="'data:image/jpeg;base64,' + fileObject64">
+        <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64" :src="'data:image/jpeg;base64,' + fileObject64"
+             class="profile-preview">
         <!-- 설정된 이미지 없을 때 -->
-        <q-avatar v-else icon="person" :color="imageInfo.color" :size="size"/>
+        <q-avatar v-else :color="imageInfo.color" :size="size" icon="person"/>
       </div>
     </section>
   </div>

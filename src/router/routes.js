@@ -27,6 +27,7 @@ const routes = [
     component: () => import('layouts/FullPageLayout.vue'),
     children: [
       { path: '/myp0000', component: () => import('pages/MYP/MYP0000.vue') }, // 마이페이지
+      { path: '/myp0000/edit', component: () => import('pages/MYP/MYP0001.vue') }, // 마이페이지
       { path: '/myp3000', component: () => import('pages/MYP/MYP3000.vue') }, // 북마크 목록
       { path: '/myp4001', component: () => import('pages/MYP/MYP4001.vue') }, // 1:1 문의 사항 목록
       { path: '/myp4100', component: () => import('pages/MYP/MYP4100.vue') }, // 1:1 문의 사항 상세

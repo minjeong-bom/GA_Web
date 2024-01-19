@@ -22,6 +22,7 @@ export default {
     },
     goToMypage() {
       const userType = localStorage.getItem('user_mode');
+      this.navigateTo('/mypage' + '/' + userType);
     },
     navigateTo(path) {
       this.$router.push(path)

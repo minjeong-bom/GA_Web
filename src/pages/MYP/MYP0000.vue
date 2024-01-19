@@ -103,7 +103,7 @@ export default {
           prefix: 'bc',
           scopes: 'bc_key,bc_content',
           columns_opts: {
-            bc_foreign_key: '',
+            bc_foreign_key: 'AYZXHRWS',
             bc_foreign_key2: 'IYETRHFC',
             bc_title: this.localUserKey,
           },

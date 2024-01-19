@@ -97,11 +97,47 @@ export default {
         localStorage.setItem('userName', res.data.response.name);
         localStorage.setItem('userId', res.data.response.id);
 
-        this.navigateTo('/');
+        this.getDetailUserInfo(res.data.response.key);
         res.data.response
       } catch (error) {
         this.loginFailMassage = '아이디/비밀번호를 다시 확인해주세요'
         console.error(error);
+      }
+    },
+    async getDetailUserInfo(userKey) {
+      try {
+        const config = {
+          url: '/api/crud/lists/?order=desc_bc_regdate',
+          body: {
+            alias: 'bc',
+            prefix: 'bc',
+            scopes: 'bc_content,bc_key',
+            columns_opts: {
+              bc_foreign_key2: 'IYETRHFC',
+              bc_title: userKey,
+            },
+            limit: 1
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom'
+            }
+          }
+        }
+        const res = await this.$api.post(config.url, config.body, config.etc);
+        console.log(res)
+        if (res) {
+          const result = res.data.response.lists[0];
+          const bc_content = result.bc_content;
+          console.log(bc_content)
+          console.log('user mode set')
+          localStorage.setItem('user_mode', bc_content.user_info.type);
+        }
+
+        this.navigateTo('/');
+      } catch (e) {
+        localStorage.setItem('user_mode', 'nomal');
+        this.navigateTo('/');
       }
     },
     navigateTo(path) {

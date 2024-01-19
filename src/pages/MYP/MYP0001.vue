@@ -54,7 +54,7 @@ export default {
       ],
       edit: {
         user_info: {
-          user_type: '',
+          user_type: 'nomal',
           nickname: '',
           interesting: [],
           email: '',
@@ -78,6 +78,8 @@ export default {
   methods: {
     async save() {
       try {
+        this.edit.user_info.user_type = 'nomal';
+
         const config = {
           url: '/api/crud/create',
           body: {
@@ -97,7 +99,7 @@ export default {
         }
         await this.$api.post(config.url, config.body, config.etc);
         this.$q.notify('저장이 완료되었습니다');
-        this.navigateTo('/myp0000');
+        this.navigateTo('/mypage/nomal');
       } catch (e) {
         this.$q.notify('저장할 수 없습니다. 관리자에게 문의해 주세요.');
       }

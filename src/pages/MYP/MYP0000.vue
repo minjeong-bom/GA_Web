@@ -124,8 +124,7 @@ export default {
         config.body.columns_opts.bc_foreign_key = 'ELOSTRGM';
       }
       const res = await this.$api.post(config.url, config.body, config.etc);
-      const result = res.data.response.lists[0].bc_content;
-      this.userDetailInfo = result;
+      this.userDetailInfo = res.data.response.lists[0].bc_content;
     },
     uploadProfileImage() {
       if (this.file) {

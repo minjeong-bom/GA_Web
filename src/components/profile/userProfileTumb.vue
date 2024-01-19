@@ -63,7 +63,7 @@ export default {
           }
         }
       } catch (e) {
-        console.error('등록된 프로필 정보가 없었습니다.', e);
+        console.error('등록된 프로필 정보가 없었습니다.', this.userKey);
         this.imageInfo.type = 'none';
         this.imageInfo.color = 'pink-4';
         this.isLoading = false;

@@ -74,7 +74,7 @@ export default {
 <template>
   <div class="card-id-wrap">
     <!-- User Profile Image -->
-    <user-profile-thumb :user-key="this.createrKey" size="48px"/>
+    <user-profile-thumb :user-key="createrKey" size="48px"/>
     <!-- Creater & Created Time -->
     <div class="l-column" style="width: 100%">
       <!-- 00님이 000을 올렸어요 (하위메뉴) -->

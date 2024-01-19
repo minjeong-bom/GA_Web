@@ -3,10 +3,11 @@ import TextButtonTopBar from 'components/app-bar/TextButtonTopBar.vue';
 import ProfileImageEditor from 'components/modal/profileImageEditor.vue';
 import UserProfileThumb from 'components/profile/userProfileTumb.vue';
 import {extractCityOrCounty} from '../../script/text/cityExtractor';
+import ProBadge from "components/data-visual/ProBadge.vue";
 
 export default {
   name: 'ProMypage',
-  components: {UserProfileThumb, ProfileImageEditor, TextButtonTopBar},
+  components: {ProBadge, UserProfileThumb, ProfileImageEditor, TextButtonTopBar},
   data() {
     return {
       cityName: '',
@@ -198,22 +199,27 @@ export default {
     />
 
     <section class="user-info-wrap">
-      <div class="user-thumbnail-wrap">
-        <div>
-          <user-profile-thumb :user-key="localUserKey" size="6rem"/>
+      <div class="flex-center">
+        <!-- 프로필 사진 -->
+        <div class="user-thumbnail-wrap">
+          <div>
+            <user-profile-thumb :user-key="localUserKey" size="6rem"/>
+          </div>
+          <q-btn
+            class="upload-photo" dense flat icon="photo_camera"
+            round
+            size="sm"
+            style="background: #fff"
+            @click="setThumbnail"
+          />
+          <profile-image-editor v-if="openProfileEditModal" @closeModal="closeModal"/>
         </div>
-        <q-btn
-          class="upload-photo" dense flat icon="photo_camera"
-          round
-          size="sm"
-          style="background: #fff"
-          @click="setThumbnail"
-        />
-        <profile-image-editor v-if="openProfileEditModal" @closeModal="closeModal"/>
+        <!-- 뱃지 -->
+        <pro-badge :color="'red'" :text1="userDetailInfo.pro.total_career" :text2="userDetailInfo.pro.area"/>
       </div>
       <div class="l-column user-detail-info text-align-center">
         <h2 class="user-name-text">{{ userDetailInfo.user_info.nickname }}</h2>
-        <p class="sub-title-2">{{ userDetailInfo.pro.pro_title }}</p>
+        <p class="sub-title-2">{{ userDetailInfo.pro.area }} 전문가</p>
         <p class="user-personal-info">
           <span v-if="cityName"> | {{ cityName }}</span></p>
         <p class="user-personal-info">{{ userDetailInfo.user_info.email }}</p>

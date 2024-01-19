@@ -1,7 +1,6 @@
 <script>
 import timeAgo from '/src/script/timeData/timeAgo'
 import IconAlart from "components/modal/iconAlart.vue";
-import {useQuasar} from "quasar";
 import ConfilrmDialog from "components/modal/confilrmDialog.vue";
 import UserProfileThumb from "components/profile/userProfileTumb.vue";
 
@@ -75,7 +74,7 @@ export default {
 <template>
   <div class="card-id-wrap">
     <!-- User Profile Image -->
-    <user-profile-thumb :user-key="this.userKey" :size="'48px'"/>
+    <user-profile-thumb :user-key="this.createrKey" size="48px"/>
     <!-- Creater & Created Time -->
     <div class="l-column" style="width: 100%">
       <!-- 00님이 000을 올렸어요 (하위메뉴) -->
@@ -95,34 +94,34 @@ export default {
       <div class="user-badge-created-time-wrap">
         <img class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>
         <span class="card-caption-1">{{ jobTitle }}</span>
-        <span class="card-caption-2" v-show="createdAtTimeShow">|</span>
-        <span class="card-caption-1" v-show="createdAtTimeShow">{{ createdAtTimeShow }}</span>
+        <span v-show="createdAtTimeShow" class="card-caption-2">|</span>
+        <span v-show="createdAtTimeShow" class="card-caption-1">{{ createdAtTimeShow }}</span>
       </div>
     </div>
     <!-- More Button -->
-    <q-btn flat round icon="more_vert" v-if="controlUi">
+    <q-btn v-if="controlUi" flat icon="more_vert" round>
       <q-menu v-if="isMyPost">
         <q-list style="min-width: 100px">
-          <q-item clickable v-close-popup @click="share()">
+          <q-item v-close-popup clickable @click="share()">
             <div class="item-section">공유</div>
           </q-item>
-          <q-item clickable v-close-popup>
+          <q-item v-close-popup clickable>
             <div class="item-section">북마크</div>
           </q-item>
-          <q-item clickable v-close-popup @click="editArticle()">
+          <q-item v-close-popup clickable @click="editArticle()">
             <div class="item-section">수정</div>
           </q-item>
-          <q-item clickable v-close-popup @click="deleteModal = true">
+          <q-item v-close-popup clickable @click="deleteModal = true">
             <div class="item-section">삭제</div>
           </q-item>
-          <q-item clickable v-close-popup>
+          <q-item v-close-popup clickable>
             <div class="item-section">신고</div>
           </q-item>
         </q-list>
       </q-menu>
       <q-menu v-else>
         <q-list style="min-width: 100px">
-          <q-item clickable v-close-popup @click="reportArticle">
+          <q-item v-close-popup clickable @click="reportArticle">
             <q-item-section>신고하기</q-item-section>
           </q-item>
         </q-list>
@@ -131,8 +130,8 @@ export default {
 
     <confilrm-dialog
       :alert-show="deleteModal"
-      :description="'정말 삭제하시겠습니까?'"
       :confirm-button-text="'삭제'"
+      :description="'정말 삭제하시겠습니까?'"
       @cancel="deleteModal = false"
       @confirm="deleteArticle"
     ></confilrm-dialog>

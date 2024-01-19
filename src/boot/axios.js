@@ -1,4 +1,4 @@
-import { boot } from 'quasar/wrappers'
+import {boot} from 'quasar/wrappers'
 import axios from 'axios'
 
 // Be careful when using SSR for cross-request state pollution
@@ -11,7 +11,7 @@ const api = axios.create({
   baseURL: 'https://combom.dev.go-sprint.co.kr/',
 })
 
-export default boot(({ app }) => {
+export default boot(({app}) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   app.config.globalProperties.$axios = axios
@@ -23,7 +23,7 @@ export default boot(({ app }) => {
   //       so you can easily perform requests against your app's API
 })
 
-export { api }
+export {api}
 
 
 // createArticle() {
@@ -36,7 +36,7 @@ export { api }
 //     },
 //     {
 //       headers: {
-//         'SPRINT-API-KEY': 'sprinttest',
+//         'SPRINT-API-KEY': 'sprintcombom',
 //         'Content-Type': 'application/json', // JSON 형식의 본문을 보내는 경우에 필요,
 //       }
 //     }
@@ -48,7 +48,7 @@ export { api }
 //       'alias': 'mem',
 //     },
 //     headers: {
-//       'SPRINT-API-KEY': 'sprinttest',
+//       'SPRINT-API-KEY': 'sprintcombom',
 //     },
 //   })
 //     .then(response => {

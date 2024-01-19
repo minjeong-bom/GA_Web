@@ -38,7 +38,7 @@ export default {
           lable: '마이페이지',
           iconClass: 'fa-user',
           subLable: '',
-          path: '/myp0000',
+          path: '/mypage' + '/' + localStorage.getItem('user_mode'),
           sub: [
             {
               color: '',
@@ -102,6 +102,7 @@ export default {
           lable: '설정',
           iconClass: 'fa-sliders',
           subLable: '',
+          path: 'set0000',
           sub: [
             {
               color: '',
@@ -123,6 +124,7 @@ export default {
               lable: '로그 아웃',
               iconClass: 'fa-arrow-right-from-bracket',
               subLable: '',
+              action: 'logout',
               path: '/set/logout',
             },
           ],
@@ -150,7 +152,7 @@ export default {
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprinttest',
+              'SPRINT-API-KEY': 'sprintcombom',
             },
           },
         };
@@ -162,6 +164,18 @@ export default {
         console.error(e);
       }
       // 작성자명 가공 함수 호출
+    },
+    buttonEvent(action) {
+      if (action === 'logout') {
+        this.logout();
+      }
+    },
+    logout() {
+      localStorage.setItem('userKey', '');
+      localStorage.setItem('userName', '');
+      localStorage.setItem('userId', '');
+
+      this.$router.push('/login');
     },
     closeMenu() {
       this.$router.push('/');
@@ -198,7 +212,7 @@ export default {
             class="full-width"
             dense
             flat
-            @click="this.$router.push(sub.path)"
+            @click="sub.action ? this.buttonEvent(sub.action) : this.$router.push(sub.path)"
           >
             <div class="menu-item">
               <div class="icon-lable-wrap">
@@ -227,7 +241,7 @@ export default {
 
 .close-button-wrap {
   display: flex;
-  padding: 0.5rem 0.5rem 0.5rem 0rem;
+  padding: 0.5rem 0.5rem 0.5rem 0;
   justify-content: flex-end;
   align-items: center;
 }

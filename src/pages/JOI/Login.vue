@@ -27,9 +27,9 @@
       </q-btn>
       <!-- 회원가입 버튼 -->
       <q-btn class="join-us-button" flat style="background: #F5F5F5;" @click="navigateTo('joi0000')">
-        <img src="../../assets/icon/icon-clab.svg">
+        <img alt="icon_clab" src="../../assets/icon/icon-clab.svg">
         <p>1분만에 회원 가입 하기</p>
-        <img src="../../assets/icon/icon-clab.svg">
+        <img alt="icon_clab" src="../../assets/icon/icon-clab.svg">
       </q-btn>
       <section class="help-btn-wrap flex-center">
         <q-btn flat rounded><u>아이디 찾기</u></q-btn>
@@ -43,19 +43,19 @@
       <div class="social-login-button-group flex-center">
         <!-- Apple -->
         <q-avatar size="3.8rem">
-          <img src="../../assets/graphic/btn-sns-login.png">
+          <img alt="btn-sns-login" src="../../assets/graphic/btn-sns-login.png">
         </q-avatar>
         <!-- Google -->
         <q-avatar size="3.8rem">
-          <img src="../../assets/graphic/btn-sns-login-1.png">
+          <img alt="btn-sns-login-1" src="../../assets/graphic/btn-sns-login-1.png">
         </q-avatar>
         <!-- Naver -->
         <q-avatar size="3.8rem">
-          <img src="../../assets/graphic/btn-sns-login-2.png">
+          <img alt="btn-sns-login-2" src="../../assets/graphic/btn-sns-login-2.png">
         </q-avatar>
         <!-- Kakao -->
         <q-avatar size="3.8rem">
-          <img src="../../assets/graphic/btn-sns-login-3.png">
+          <img alt="btn-sns-login-2" src="../../assets/graphic/btn-sns-login-3.png">
         </q-avatar>
       </div>
     </div>
@@ -97,11 +97,47 @@ export default {
         localStorage.setItem('userName', res.data.response.name);
         localStorage.setItem('userId', res.data.response.id);
 
-        this.navigateTo('/');
+        this.getDetailUserInfo(res.data.response.key);
         res.data.response
       } catch (error) {
         this.loginFailMassage = '아이디/비밀번호를 다시 확인해주세요'
         console.error(error);
+      }
+    },
+    async getDetailUserInfo(userKey) {
+      try {
+        const config = {
+          url: '/api/crud/lists/?order=desc_bc_regdate',
+          body: {
+            alias: 'bc',
+            prefix: 'bc',
+            scopes: 'bc_content,bc_key',
+            columns_opts: {
+              bc_foreign_key2: 'IYETRHFC',
+              bc_title: userKey,
+            },
+            limit: 1
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom'
+            }
+          }
+        }
+        const res = await this.$api.post(config.url, config.body, config.etc);
+        console.log(res)
+        if (res) {
+          const result = res.data.response.lists[0];
+          const bc_content = result.bc_content;
+          console.log(bc_content)
+          console.log('user mode set')
+          localStorage.setItem('user_mode', bc_content.user_info.type);
+        }
+
+        this.navigateTo('/');
+      } catch (e) {
+        localStorage.setItem('user_mode', 'nomal');
+        this.navigateTo('/');
       }
     },
     navigateTo(path) {
@@ -151,7 +187,7 @@ export default {
   font-weight: 700;
   line-height: normal;
   letter-spacing: -0.015rem;
-  padding: 1rem 0rem;
+  padding: 1rem 0;
 }
 
 .login-form {

@@ -18,7 +18,7 @@ export async function uploadFile(selectedFile, data_title, data_writer_name, dat
         data_writer_name: data_writer_name
       },
       headers: {
-        'SPRINT-API-KEY': 'sprinttest',
+        'SPRINT-API-KEY': 'sprintcombom',
       }
     };
 

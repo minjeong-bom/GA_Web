@@ -8,12 +8,12 @@ export async function itemDelete(itemKey) {
       method: 'post',
       url: '/api/crud/delete',
       data: {
-        columns_opts : {
-          data_key : itemKey,
+        columns_opts: {
+          data_key: itemKey,
         }
       },
       headers: {
-        'SPRINT-API-KEY' : 'sprinttest'
+        'SPRINT-API-KEY': 'sprintcombom'
       }
     }
     await axios(config);

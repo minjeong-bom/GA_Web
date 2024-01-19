@@ -2,29 +2,29 @@
   <div class="article-layout">
     <text-button-top-bar :title-text="this.categoryName"></text-button-top-bar>
     <!-- 헤더 -->
-    <article-header :articleKey="articleKey" :article="article" :user-key="storageUserKey"/>
+    <article-header :article="article" :articleKey="articleKey" :user-key="storageUserKey"/>
     <!-- 댓글수 & 공감수, 북마크 & 공유 & 폰트크기 설정 -->
     <div class="flex-sb article-overview-wrap">
-      <article-overview-info :likes-length="counts.likes" :comment-length="counts.comments" class="article-overview"/>
+      <article-overview-info :comment-length="counts.comments" :likes-length="counts.likes" class="article-overview"/>
       <article-controller :article-key="articleKey" :user-key="storageUserKey" @setFontSize="setFontSize"/>
     </div>
     <!-- 썸네일 -->
     <skeleton-card v-if="isLoading" :lines="1"></skeleton-card>
-    <img v-if="article.thumbnail" class="thumbnail-image-style" :src="'data:image/jpeg;base64,' + article.thumbnail">
+    <img v-if="article.thumbnail" :src="'data:image/jpeg;base64,' + article.thumbnail" class="thumbnail-image-style">
     <!-- 본문 -->
     <section class="article-content">
       <skeleton-line v-if="isLoading" :lines="4"></skeleton-line>
-      <p v-else v-html="article.content" :class="fontSizeClass"></p>
+      <p v-else :class="fontSizeClass" v-html="article.content"></p>
     </section>
     <!-- 구분선 -->
     <div class="end-line"/>
     <!-- 👍 댓글수 & 공감수, 좋아요 목록 -->
     <div class="article-likes">
-      <article-overview-info :likes-length="counts.likes" :comment-length="counts.comments"/>
+      <article-overview-info :comment-length="counts.comments" :likes-length="counts.likes"/>
       <like-stamp :article-key="articleKey" :user-key="storageUserKey" @likesCount="likesCount"/>
     </div>
     <!-- 댓글 입력, 댓글 목록 -->
-    <comment-u-i :storage-user-key="storageUserKey" :article-key="articleKey"
+    <comment-u-i :article-key="articleKey" :storage-user-key="storageUserKey"
                  @commentsCount="commentsCount"></comment-u-i>
   </div>
 </template>
@@ -140,7 +140,7 @@ export default {
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprinttest',
+              'SPRINT-API-KEY': 'sprintcombom',
             }
           }
         }

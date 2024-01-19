@@ -3,28 +3,27 @@ import TextButtonTopBar from 'components/app-bar/TextButtonTopBar.vue';
 import ProfileImageEditor from 'components/modal/profileImageEditor.vue';
 import UserProfileThumb from 'components/profile/userProfileTumb.vue';
 import {extractCityOrCounty} from 'src/script/text/cityExtractor';
+import ProBadge from "components/data-visual/ProBadge.vue";
 
 export default {
-  name: 'MYP0000',
-  components: {UserProfileThumb, ProfileImageEditor, TextButtonTopBar},
+  name: 'ProMypage',
+  components: {ProBadge, UserProfileThumb, ProfileImageEditor, TextButtonTopBar},
   data() {
     return {
       cityName: '',
       userDetailInfo: {
         user_info: {
+          type: 'pro',
           nickname: '',
           interesting: [],
-          email: '',
-          about: '',
+          about: ''
         },
-        job: {
-          working: '',
-          searching: '',
-          searching_type: '',
+        pro: {
+          area: '',
+          badge_name: '',
+          pro_title: '',
           total_career: '',
-          career_name: '',
-          job_title: '',
-        },
+        }
       },
       file: null, // 이미지 데이터
       thumbnailInfo: {
@@ -103,8 +102,8 @@ export default {
           prefix: 'bc',
           scopes: 'bc_key,bc_content',
           columns_opts: {
-            bc_foreign_key: 'AYZXHRWS',
             bc_foreign_key2: 'IYETRHFC',
+            bc_foreign_key: 'XGYLPKDE',
             bc_title: this.localUserKey,
           },
           limit: 1
@@ -116,13 +115,6 @@ export default {
         }
       }
 
-      if (this.userType === 'nomal') {
-        config.body.columns_opts.bc_foreign_key = 'AYZXHRWS';
-      } else if (this.userType === 'pro') {
-        config.body.columns_opts.bc_foreign_key = 'XGYLPKDE';
-      } else if (this.userType === 'enterprise') {
-        config.body.columns_opts.bc_foreign_key = 'ELOSTRGM';
-      }
       const res = await this.$api.post(config.url, config.body, config.etc);
       this.userDetailInfo = res.data.response.lists[0].bc_content;
     },
@@ -183,14 +175,6 @@ export default {
     localUserName() {
       return localStorage.getItem('userName');
     },
-    userJobStatus() {
-      const firstStaus = this.userDetailInfo.job.working === '네' ? '현업 종사' : '';
-      const secondStatus = this.userDetailInfo.job.searching === '네' ? '이직 준비중' : '전직 준비중';
-      if (firstStaus && secondStatus) {
-        return `${firstStaus} 및 ${secondStatus}`;
-      }
-      return firstStaus + secondStatus;
-    },
     userType() {
       return localStorage.getItem('user_mode')
     }
@@ -210,28 +194,33 @@ export default {
     <text-button-top-bar
       button-name="정보 수정"
       title-text="마이 페이지"
-      @action="navigateTo('/mypage/nomal/edit')"
+      @action="navigateTo('/mypage/pro/edit')"
     />
 
     <section class="user-info-wrap">
-      <div class="user-thumbnail-wrap">
-        <div>
-          <user-profile-thumb :user-key="localUserKey" size="6rem"/>
+      <div class="flex-center">
+        <!-- 프로필 사진 -->
+        <div class="user-thumbnail-wrap">
+          <div>
+            <user-profile-thumb :user-key="localUserKey" size="6rem"/>
+          </div>
+          <q-btn
+            class="upload-photo" dense flat icon="photo_camera"
+            round
+            size="sm"
+            style="background: #fff"
+            @click="setThumbnail"
+          />
+          <profile-image-editor v-if="openProfileEditModal" @closeModal="closeModal"/>
         </div>
-        <q-btn
-          class="upload-photo" dense flat icon="photo_camera"
-          round
-          size="sm"
-          style="background: #fff"
-          @click="setThumbnail"
-        />
-        <profile-image-editor v-if="openProfileEditModal" @closeModal="closeModal"/>
+        <!-- 뱃지 -->
+        <pro-badge :color="'red'" :text1="userDetailInfo.pro.total_career" :text2="userDetailInfo.pro.area"/>
       </div>
       <div class="l-column user-detail-info text-align-center">
         <h2 class="user-name-text">{{ userDetailInfo.user_info.nickname }}</h2>
-        <p class="sub-title-2">{{ userDetailInfo.job.job_title }}</p>
+        <p class="sub-title-2">{{ userDetailInfo.pro.area }} 전문가</p>
         <p class="user-personal-info">
-          {{ userJobStatus }}<span v-if="cityName"> | {{ cityName }}</span></p>
+          <span v-if="cityName"> | {{ cityName }}</span></p>
         <p class="user-personal-info">{{ userDetailInfo.user_info.email }}</p>
       </div>
     </section>
@@ -263,13 +252,10 @@ export default {
     </section>
     <section class="point-section">
       <p>주요 경력과 역량</p>
-      <div v-if="userDetailInfo.job.job_title && userDetailInfo.job.total_career"
+      <div v-if="userDetailInfo.pro.area && userDetailInfo.pro.total_career"
            class="my-propose-text-area l-column sub-title-1">
         <span>
-          {{ userDetailInfo.job.job_title }}(으)로 {{ userDetailInfo.job.total_career }}년 <br>
-        </span>
-        <span>
-        {{ userDetailInfo.job.career_name }}
+          {{ userDetailInfo.pro.area }}(으)로 {{ userDetailInfo.pro.total_career }}년 <br>
         </span>
         <q-btn dense disable flat size="md" style="color: var(--k-40)">더보기</q-btn>
       </div>

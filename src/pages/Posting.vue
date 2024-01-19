@@ -5,7 +5,7 @@
       <!-- 카테고리 -->
       <q-select v-model="category1" :options="options" class="category-select"/>
       <!-- 제목 -->
-      <q-input v-model="title" placeholder="제목 (최대 40자)" class="title-input" maxlength="40"/>
+      <q-input v-model="title" class="title-input" maxlength="40" placeholder="제목 (최대 40자)"/>
       <!-- 본문 -->
       <q-editor
         v-model="content.body"
@@ -23,11 +23,11 @@
       <q-input
         v-model="content.tags"
         borderless
-        placeholder="태그 입력"
+        input-style="font-size: 0.875rem;"
         maxlength="40"
-        input-style="font-size: 0.875rem;"/>
+        placeholder="태그 입력"/>
       <!-- 파일 업로드 -->
-      <q-file outlined v-model="thumbnail" label="썸네일 업로드">
+      <q-file v-model="thumbnail" label="썸네일 업로드" outlined>
         <template v-slot:prepend>
           <q-icon name="image"/>
         </template>
@@ -124,7 +124,7 @@ export default {
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprinttest',
+              'SPRINT-API-KEY': 'sprintcombom',
             },
           }
         }

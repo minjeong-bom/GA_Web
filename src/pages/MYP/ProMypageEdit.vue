@@ -5,7 +5,7 @@ import UserProfileThumb from 'components/profile/userProfileTumb.vue';
 import nickNameList from 'assets/data/nickname-list.json';
 
 export default {
-  name: 'MYP0000',
+  name: 'ProMypageEdit',
   components: {UserProfileThumb, ProfileImageEditor, TextButtonTopBar},
   data() {
     return {
@@ -28,46 +28,20 @@ export default {
           value: '유용한 정보(세미나, 프로그램 등)',
         },
       ],
-      backgroundList: [
-        "건설·건축",
-        "공공·복지",
-        "구매·자재·물류",
-        "교육",
-        "금융·보험",
-        "기획·전략",
-        "디자인",
-        "마케팅·홍보·조사",
-        "미디어·문화·스포츠",
-        "바이오·제약·식품",
-        "상품기획·MD",
-        "서비스",
-        "생산",
-        "연구·R&D",
-        "영업·판매·무역",
-        "운전·운송·배송",
-        "의료",
-        "인사·노무·HRD",
-        "IT개발·데이터",
-        "총무·법무·사무",
-        "회계·세무·재무",
-        "고객상담·TM"
-      ],
       edit: {
         user_info: {
-          user_type: 'nomal',
+          user_type: '',
           nickname: '',
           interesting: [],
           email: '',
           about: '',
         },
-        job: {
-          working: '네',
-          searching: '네',
-          searching_type: '이직',
+        pro: {
+          area: '',
+          badge_name: '',
+          pro_title: '',
           total_career: '',
-          career_name: '',
-          job_title: '',
-        },
+        }
       },
       nickNameList,
     };
@@ -78,15 +52,13 @@ export default {
   methods: {
     async save() {
       try {
-        this.edit.user_info.user_type = 'nomal';
-
         const config = {
           url: '/api/crud/create',
           body: {
             data_key: this.detailProfileKey ? this.detailProfileKey : '',
             data_prefix: 'bc',
             data_foreign_key2: 'IYETRHFC',
-            data_foreign_key: 'AYZXHRWS',
+            data_foreign_key: 'XGYLPKDE',
             data_writer_name: this.localUserKey,
             data_title: this.localUserKey,
             data_content: JSON.stringify(this.edit)
@@ -99,7 +71,7 @@ export default {
         }
         await this.$api.post(config.url, config.body, config.etc);
         this.$q.notify('저장이 완료되었습니다');
-        this.navigateTo('/mypage/nomal');
+        this.navigateTo('/mypage/pro');
       } catch (e) {
         this.$q.notify('저장할 수 없습니다. 관리자에게 문의해 주세요.');
       }
@@ -112,7 +84,7 @@ export default {
           prefix: 'bc',
           scopes: 'bc_key,bc_content',
           columns_opts: {
-            bc_foreign_key: 'AYZXHRWS',
+            bc_foreign_key: 'XGYLPKDE',
             bc_foreign_key2: 'IYETRHFC',
             bc_title: this.localUserKey,
           },
@@ -135,7 +107,7 @@ export default {
       const adjective = this.getRandomItem(this.nickNameList.firstName);
       const animalPlant = this.getRandomItem(this.nickNameList.secondName);
 
-      this.edit.userName = `${adjective} ${animalPlant}`;
+      this.edit.user_info.nickname = `${adjective} ${animalPlant}`;
     },
     getRandomItem(array) {
       return array[Math.floor(Math.random() * array.length)];
@@ -193,45 +165,23 @@ export default {
           <p class="sub-title-1">관심사</p>
           <q-option-group v-model="edit.user_info.interesting" :options="options" type="checkbox"/>
         </div>
-        <div>
-          <p class="sub-title-1">현업에 종사중이신가요?</p>
-          <q-radio v-model="edit.job.working" label="네" val="네"/>
-          <q-radio v-model="edit.job.working" label="아니오" val="아니오"/>
-        </div>
-        <div>
-          <p class="sub-title-1">구직 활동 중이신가요?</p>
-          <q-radio v-model="edit.job.searching" label="네" val="네"/>
-          <q-radio v-model="edit.job.searching" label="아니오" val="아니오"/>
-        </div>
-        <div>
-          <p class="sub-title-1">구직 활동의 종류는 무엇인가요?</p>
-          <q-radio v-model="edit.job.searching_type" label="이직" val="이직"/>
-          <q-radio v-model="edit.job.searching_type" label="전직" val="전직"/>
-        </div>
       </div>
       <h3 class="headline-3">과거 경력을 알려 주세요.</h3>
       <div class="surface-1">
         <div>
           <q-input
-            v-model="edit.job.total_career"
+            v-model="edit.pro.total_career"
             label="총 경력"
             placeholder="총 경력"
             type="tel"/>
         </div>
         <q-select
-          v-model="edit.job.career_name"
+          v-model="edit.pro.area"
           :options="backgroundList"
           behavior="menu"
           label="업무 분야"
           style="font-size: 1.125rem"
         />
-        <div>
-          <q-input
-            v-model="edit.job.job_title"
-            label="직업"
-            placeholder="직업"
-            type="text"/>
-        </div>
       </div>
       <h3 class="headline-3">100자 소개</h3>
       <p class="caption-1">회원 및 일거리를 제공할 수 있는 회원이 보는 글이에요.</p>

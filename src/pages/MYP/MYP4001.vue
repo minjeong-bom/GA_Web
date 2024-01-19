@@ -5,7 +5,7 @@ import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue";
 export default {
   name: "MYP4001",
   components: {TextButtonTopBar, TitleTopBar},
-  data () {
+  data() {
     return {
       askList: [],
     }
@@ -22,18 +22,18 @@ export default {
         const config = {
           url: '/api/crud/lists/',
           body: {
-            alias : 'bc',
-            prefix : 'bc',
-            scopes : 'bc_title,bc_regdate,bc_writer_name,bc_key,bc_content',
-            columns_opts : {
-              bc_foreign_key  : 'IOZOZWFG',
-              bc_foreign_key2  : 'ZRBTGTEX',
-              bc_title : this.storageUserKey,
+            alias: 'bc',
+            prefix: 'bc',
+            scopes: 'bc_title,bc_regdate,bc_writer_name,bc_key,bc_content',
+            columns_opts: {
+              bc_foreign_key: 'IOZOZWFG',
+              bc_foreign_key2: 'ZRBTGTEX',
+              bc_title: this.storageUserKey,
             }
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprinttest',
+              'SPRINT-API-KEY': 'sprintcombom',
             }
           }
         }
@@ -61,7 +61,7 @@ export default {
       }
     },
     navigateToAsk(askKey) {
-      this.$router.push({ path: '/myp4100', query: {key: askKey} });
+      this.$router.push({path: '/myp4100', query: {key: askKey}});
     }
   },
   computed: {
@@ -77,7 +77,7 @@ export default {
 
 <template>
   <div>
-    <text-button-top-bar title-text="1:1 문의 사항" button-name="문의하기" @action="createAsk"/>
+    <text-button-top-bar button-name="문의하기" title-text="1:1 문의 사항" @action="createAsk"/>
 
     <section class="nomal-page-layout">
 

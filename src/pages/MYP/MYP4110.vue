@@ -3,6 +3,7 @@ import TitleTopBar from "components/app-bar/TitleTopBar.vue";
 import ConfilrmDialog from "components/modal/confilrmDialog.vue";
 import IconAlart from "components/modal/iconAlart.vue";
 import {uploadFile} from "../../script/upload/uploadReportFiles";
+
 export default {
   name: "MYP4110",
   components: {IconAlart, ConfilrmDialog, TitleTopBar},
@@ -56,16 +57,16 @@ export default {
           const config = {
             url: '/api/crud/create',
             body: {
-              data_prefix : "bc",
+              data_prefix: 'bc',
               data_title: this.storageUserKey,
-              data_foreign_key: "IOZOZWFG",
-              data_foreign_key2: "ZRBTGTEX",
+              data_foreign_key: 'IOZOZWFG',
+              data_foreign_key2: 'ZRBTGTEX',
               data_content: JSON.stringify(content),
               data_writer_name: this.storageUserKey,
             },
             etc: {
               headers: {
-                'SPRINT-API-KEY': 'sprinttest',
+                'SPRINT-API-KEY': 'sprintcombom',
               }
             }
           }
@@ -74,7 +75,7 @@ export default {
           this.isLoading = false;
           // this.$q.notify('1:1 문의가 등록되었습니다');
 
-          this.$router.push({ path: '/myp4120', query: { key: res.data.response.result.data_key } });
+          this.$router.push({path: '/myp4120', query: {key: res.data.response.result.data_key}});
         } catch (e) {
           this.$q.notify('1:1 문의를 등록할 수 없습니다. 관리자에게 문의해주세요.');
           console.error('1:1 문의글 등록 실패', e);
@@ -115,29 +116,29 @@ export default {
     <section class="nomal-page-layout l-column">
 
       <p class="headline-3">제목</p>
-      <q-input filled
-               v-model="title"
+      <q-input v-model="title"
+               filled
                label="제목"/>
 
       <p class="headline-3">내용</p>
-      <q-input filled
-               type="textarea"
-               v-model="content"
-               label="내용"/>
+      <q-input v-model="content"
+               filled
+               label="내용"
+               type="textarea"/>
 
       <div>
-        <q-btn flat
-               class="mint-file-input"
+        <q-btn class="mint-file-input"
+               flat
                icon="add"
                label="파일 첨부"
                @click="triggerFileInput"
         />
-        <q-file multiple
-                ref="fileInput"
-                standout="bg-teal text-white"
-                style="display: none"
+        <q-file ref="fileInput"
                 v-model="files"
-                label="파일 첨부">
+                label="파일 첨부"
+                multiple
+                standout="bg-teal text-white"
+                style="display: none">
           <template v-slot:prepend>
             <q-icon name="add"/>
           </template>
@@ -153,25 +154,25 @@ export default {
           <div class="file-size-and-del">
             <p class="lable-2">{{ formatFileSize(item.size) }}</p>
             <q-icon
+              name="remove_circle_outline"
               size="24px"
-              @click="deleteFile(index)"
-              name="remove_circle_outline"/>
+              @click="deleteFile(index)"/>
           </div>
         </div>
       </section>
 
       <!-- 다음 버튼 -->
       <q-btn
-        rounded flat
-        class="primary-btn full-width"
+        class="primary-btn full-width" flat
         label="다음"
+        rounded
         @click="save"
       ></q-btn>
 
       <icon-alart
         :alert-show="checkVal"
-        iconName="check_circle"
         :description="checkDescription"
+        iconName="check_circle"
         @confirm="closeModal"
       ></icon-alart>
     </section>

@@ -1,18 +1,31 @@
 <script>
 import TitleTopBar from 'components/app-bar/TitleTopBar.vue';
-import { ref } from 'vue';
 import nickNameList from 'assets/data/nickname-list.json';
 
 export default {
   name: 'JOI_0160',
-  components: { TitleTopBar },
+  components: {TitleTopBar},
   data() {
     return {
       userName: '',
-      userInteresting: [],
-      modelMultiple: ref(['관심사']),
+      interestings: [],
       options: [
-        '소통', '업무 관련 스킬 향상', '구인/구직 정보', '유용한 정보(세미나, 프로그램 등)',
+        {
+          label: '소통',
+          value: '소통',
+        },
+        {
+          label: '업무 관련 스킬 향상',
+          value: '업무 관련 스킬 향상',
+        },
+        {
+          label: '구인/구직 정보',
+          value: '구인/구직 정보',
+        },
+        {
+          label: '유용한 정보(세미나, 프로그램 등)',
+          value: '유용한 정보(세미나, 프로그램 등)',
+        },
       ],
       nickNameList,
     };
@@ -30,41 +43,61 @@ export default {
     getRandomItem(array) {
       return array[Math.floor(Math.random() * array.length)];
     },
-    async setUserInfo() {
-      const storageUserKey = localStorage.getItem('userKey');
+    async save() {
+      const content_data = {
+        user_info: {
+          user_type: this.userType ? this.userType : 'nomal',
+          nickname: this.userName,
+          interesting: this.interestings,
+        },
+      }
       try {
-        const config = {
+        let config = {
           url: '/api/crud/create',
           body: {
-            data_key: storageUserKey,
-            data_prefix: 'mem',
-            data_title: this.userName,
-            data_category: this.userInteresting,
+            data_prefix: 'bc',
+            data_foreign_key2: 'IYETRHFC',
+            data_foreign_key: this.userType === 'pro' ? 'XGYLPKDE' : 'AYZXHRWS',
+            data_title: this.userKey,
+            data_content: JSON.stringify(content_data),
           },
           etc: {
             headers: {
               'SPRINT-API-KEY': 'sprintcombom',
             },
           },
-        };
+        }
+
+        console.log(config)
         await this.$api.post(config.url, config.body, config.etc);
-        this.navigateTo('/joi0170');
+        if (this.userType === 'pro') {
+          this.navigateTo('/joi0200');
+        } else {
+          this.navigateTo('/joi_0170');
+        }
       } catch (e) {
-        console.error(e);
+        this.$q.notify('저장할 수 없습니다. 관리자에게 문의해 주세요.');
       }
     },
   },
   computed: {
     ready() {
-      return this.userName && this.userInteresting;
+      return this.userName && this.interestings;
     },
+    userType() {
+      return localStorage.getItem('user_mode');
+    },
+    userKey() {
+      return localStorage.getItem('userKey');
+    }
   },
 };
 </script>
 
 <template>
   <div class="joi-0100-view">
-    <title-top-bar :back-button="false" :sub-text="'1/3'" :title-text="'프로필 설정'"></title-top-bar>
+    <title-top-bar :back-button="false" :sub-text="userType === 'pro' ? '1/2' : '1/3'"
+                   :title-text="'프로필 설정'"></title-top-bar>
     <section class="inner-layout l-column">
       <!-- 닉네임 입력 -->
       <div class="id-input-wrap">
@@ -80,7 +113,6 @@ export default {
           <!-- 닉네임 랜덤 생성 버튼 -->
           <q-btn class="btn-dd-check"
                  flat
-                 icon="refresh"
                  label="랜덤 생성"
                  style="background: var(--only-g-red-red-10)"
                  @click="generateNickname"
@@ -90,16 +122,8 @@ export default {
       </div>
       <!-- 관심사 입력 -->
       <div>
-        <q-select
-          v-model="userInteresting"
-          :options="options"
-          behavior="menu"
-          label="관심사"
-          multiple
-          outlined
-          stack-label
-          style="font-size: 1.125rem"
-        />
+        <p class="sub-title-1">관심사</p>
+        <q-option-group v-model="interestings" :options="options" type="checkbox"/>
       </div>
     </section>
     <div class="skip-button-wrap flex-center">
@@ -115,26 +139,26 @@ export default {
       flat
       size="lg"
       square
-      @click="setUserInfo()">
+      @click="save()">
       <span style="color: #fff">다음</span>
     </q-btn>
   </div>
 </template>
 
-<style scoped>
-.joi-0100-view {
+<style lang="scss" scoped>
+.sub-title-1 {
+  color: #999;
 }
 
-.joi-0100-view .inner-layout {
-  padding: 1.25rem 16px;
+.joi-0100-view {
+  .inner-layout {
+    padding: 1.25rem 16px;
+    gap: 30px;
+  }
 }
 
 .id-input-wrap {
   position: relative;
-}
-
-.inner-layout {
-  gap: 30px;
 }
 
 .btn-dd-check-wrap {

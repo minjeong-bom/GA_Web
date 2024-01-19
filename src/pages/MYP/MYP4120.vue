@@ -1,6 +1,6 @@
 <script>
 import TitleTopBar from "components/app-bar/TitleTopBar.vue";
-import { ref } from 'vue'
+import {ref} from 'vue'
 import {uploadFile} from "src/script/upload/uploadReportFiles";
 
 export default {
@@ -56,7 +56,7 @@ export default {
         },
         etc: {
           headers: {
-            'SPRINT-API-KEY': 'sprinttest',
+            'SPRINT-API-KEY': 'sprintcombom',
           }
         }
       }
@@ -76,7 +76,7 @@ export default {
           url: '/api/crud/create',
           body: {
             data_key: this.contentKey,
-            data_prefix : 'bc',
+            data_prefix: 'bc',
             data_title: this.title,
             data_foreign_key: 'IOZOZWFG',
             data_foreign_key2: 'ZRBTGTEX',
@@ -85,7 +85,7 @@ export default {
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprinttest',
+              'SPRINT-API-KEY': 'sprintcombom',
             }
           }
         }
@@ -127,9 +127,9 @@ export default {
       <!-- 다음 버튼 -->
       <div class="bottom-fixed-btn">
         <q-btn
-          rounded flat
-          class="primary-btn full-width"
+          class="primary-btn full-width" flat
           label="다음"
+          rounded
           @click="save"
         ></q-btn>
       </div>

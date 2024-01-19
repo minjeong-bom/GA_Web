@@ -241,7 +241,7 @@ export default {
 
 .close-button-wrap {
   display: flex;
-  padding: 0.5rem 0.5rem 0.5rem 0rem;
+  padding: 0.5rem 0.5rem 0.5rem 0;
   justify-content: flex-end;
   align-items: center;
 }

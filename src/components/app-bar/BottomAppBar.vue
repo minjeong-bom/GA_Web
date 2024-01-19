@@ -72,17 +72,17 @@ export default {
   left: 0;
   bottom: 0;
   display: flex;
-  padding: 0rem 0.5rem;
+  padding: 0 0.5rem;
   align-items: flex-start;
   width: 100%;
 
   background: #FFF;
-  box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 -1px 2px 0 rgba(0, 0, 0, 0.25);
 }
 
 .bottom-app-bar-item {
   display: flex;
-  padding: 0.75rem 0rem 1rem 0rem;
+  padding: 0.75rem 0 1rem 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;

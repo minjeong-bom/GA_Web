@@ -2,7 +2,7 @@
 import TextButtonTopBar from 'components/app-bar/TextButtonTopBar.vue';
 import ProfileImageEditor from 'components/modal/profileImageEditor.vue';
 import UserProfileThumb from 'components/profile/userProfileTumb.vue';
-import {extractCityOrCounty} from '../../script/text/cityExtractor';
+import {extractCityOrCounty} from 'src/script/text/cityExtractor';
 import ProBadge from "components/data-visual/ProBadge.vue";
 
 export default {
@@ -116,8 +116,7 @@ export default {
       }
 
       const res = await this.$api.post(config.url, config.body, config.etc);
-      const result = res.data.response.lists[0].bc_content;
-      this.userDetailInfo = result;
+      this.userDetailInfo = res.data.response.lists[0].bc_content;
     },
     uploadProfileImage() {
       if (this.file) {
@@ -272,9 +271,9 @@ export default {
     <section class="my-menu-list">
       <div v-for="menu in myMenuList" class="my-menu flex-sb">
         <p class="flex-center">
-          <p class="icon-wrapper">
+          <span class="icon-wrapper">
             <i :class="'fa-solid' + ' ' + menu.iconClass"></i>
-          </p>
+          </span>
           <span class="sub-title-2">{{ menu.lable }}</span>
         </p>
         <q-btn dense flat icon="chevron_right" size="xs" @click="navigateTo(menu.linkTo)"/>

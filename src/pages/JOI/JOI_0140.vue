@@ -165,7 +165,7 @@ export default {
 }
 
 .inner-layout {
-  gap: 0px;
+  gap: 0;
 }
 
 .bottom-button-fixed {
@@ -183,10 +183,6 @@ export default {
   border-radius: 0.25rem;
   padding: 0.6rem;
   padding-right: 0;
-}
-
-.all-checked {
-  border: 1px solid var(--ga-red);
 }
 
 .checked * {

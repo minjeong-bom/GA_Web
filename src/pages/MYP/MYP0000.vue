@@ -2,7 +2,7 @@
 import TextButtonTopBar from 'components/app-bar/TextButtonTopBar.vue';
 import ProfileImageEditor from 'components/modal/profileImageEditor.vue';
 import UserProfileThumb from 'components/profile/userProfileTumb.vue';
-import {extractCityOrCounty} from '../../script/text/cityExtractor';
+import {extractCityOrCounty} from 'src/script/text/cityExtractor';
 
 export default {
   name: 'MYP0000',
@@ -286,9 +286,9 @@ export default {
     <section class="my-menu-list">
       <div v-for="menu in myMenuList" class="my-menu flex-sb">
         <p class="flex-center">
-          <p class="icon-wrapper">
+          <span class="icon-wrapper">
             <i :class="'fa-solid' + ' ' + menu.iconClass"></i>
-          </p>
+          </span>
           <span class="sub-title-2">{{ menu.lable }}</span>
         </p>
         <q-btn dense flat icon="chevron_right" size="xs" @click="navigateTo(menu.linkTo)"/>

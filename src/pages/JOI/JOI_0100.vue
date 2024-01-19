@@ -134,7 +134,7 @@ export default {
     }
   },
   watch: {
-    userId(newVal, oldVal) {
+    userId() {
       this.idChecked = false;
     }
   }

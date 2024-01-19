@@ -85,7 +85,7 @@ export default {
       return this.userName && this.interestings;
     },
     userType() {
-      return localStorage.getItem('draft_type');
+      return localStorage.getItem('user_mode');
     },
     userKey() {
       return localStorage.getItem('userKey');

@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     userType() {
-      return localStorage.getItem('draft_type')
+      return localStorage.getItem('user_mode')
     }
   }
 }

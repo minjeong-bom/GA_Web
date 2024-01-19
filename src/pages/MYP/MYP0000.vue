@@ -193,7 +193,7 @@ export default {
       return firstStaus + secondStatus;
     },
     userType() {
-      return localStorage.getItem('draft_type')
+      return localStorage.getItem('user_mode')
     }
   },
   watch: {

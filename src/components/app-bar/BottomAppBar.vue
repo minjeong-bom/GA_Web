@@ -20,6 +20,9 @@ export default {
         this.inHome = true
       }
     },
+    goToMypage() {
+      const userType = localStorage.getItem('user_mode');
+    },
     navigateTo(path) {
       this.$router.push(path)
     }
@@ -29,35 +32,35 @@ export default {
 
 <template>
   <div class="bottom-app-bar">
-    <q-btn flat class="bottom-app-bar-item">
-      <div class="icon-wrap" :class="{ 'focused-status' : inHome }">
-        <q-icon name="home" />
+    <q-btn class="bottom-app-bar-item" flat>
+      <div :class="{ 'focused-status' : inHome }" class="icon-wrap">
+        <q-icon name="home"/>
       </div>
-      <p class="lable" :class="{ 'focused-status' : inHome }" @click="navigateTo('/')">홈</p>
+      <p :class="{ 'focused-status' : inHome }" class="lable" @click="navigateTo('/')">홈</p>
     </q-btn>
-    <q-btn flat class="bottom-app-bar-item" @click="navigateTo('/search')">
-      <div class="icon-wrap" :class="{ 'focused-status' : inSearch }">
-        <q-icon name="search" />
+    <q-btn class="bottom-app-bar-item" flat @click="navigateTo('/search')">
+      <div :class="{ 'focused-status' : inSearch }" class="icon-wrap">
+        <q-icon name="search"/>
       </div>
-      <p class="lable" :class="{ 'focused-status' : inSearch }">검색</p>
+      <p :class="{ 'focused-status' : inSearch }" class="lable">검색</p>
     </q-btn>
-    <q-btn flat class="bottom-app-bar-item" @click="navigateTo('/posting')">
-      <div class="icon-wrap" :class="{ 'focused-status' : inPosting }">
-        <q-icon name="add_circle" />
+    <q-btn class="bottom-app-bar-item" flat @click="navigateTo('/posting')">
+      <div :class="{ 'focused-status' : inPosting }" class="icon-wrap">
+        <q-icon name="add_circle"/>
       </div>
-      <p class="lable" :class="{ 'focused-status' : inPosting }">새글작성</p>
+      <p :class="{ 'focused-status' : inPosting }" class="lable">새글작성</p>
     </q-btn>
-    <q-btn flat class="bottom-app-bar-item">
-      <div class="icon-wrap" :class="{ 'focused-status' : inAlarm }">
-        <q-icon name="notifications" />
+    <q-btn class="bottom-app-bar-item" flat>
+      <div :class="{ 'focused-status' : inAlarm }" class="icon-wrap">
+        <q-icon name="notifications"/>
       </div>
-      <p class="lable" :class="{ 'focused-status' : inAlarm }">알림</p>
+      <p :class="{ 'focused-status' : inAlarm }" class="lable">알림</p>
     </q-btn>
-    <q-btn flat class="bottom-app-bar-item" @click="navigateTo('/myp0000')">
-      <div class="icon-wrap" :class="{ 'focused-status' : inMy }">
-        <q-icon name="emoji_emotions" />
+    <q-btn class="bottom-app-bar-item" flat @click="goToMypage()">
+      <div :class="{ 'focused-status' : inMy }" class="icon-wrap">
+        <q-icon name="emoji_emotions"/>
       </div>
-      <p class="lable" :class="{ 'focused-status' : inMy }">마이</p>
+      <p :class="{ 'focused-status' : inMy }" class="lable">마이</p>
     </q-btn>
   </div>
 </template>

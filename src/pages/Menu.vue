@@ -38,7 +38,7 @@ export default {
           lable: '마이페이지',
           iconClass: 'fa-user',
           subLable: '',
-          path: '/mypage' + '/' + localStorage.getItem('draft_type'),
+          path: '/mypage' + '/' + localStorage.getItem('user_mode'),
           sub: [
             {
               color: '',

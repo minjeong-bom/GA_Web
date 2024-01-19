@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     async joinus() {
-      const draftType = localStorage.getItem('draft_type');
+      const draftType = localStorage.getItem('user_mode');
       const draftId = localStorage.getItem('draft_id');
       const draftPw = localStorage.getItem('draft_pw');
       const draftEmail = localStorage.getItem('draft_email');

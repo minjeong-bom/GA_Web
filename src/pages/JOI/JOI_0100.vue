@@ -123,7 +123,7 @@ export default {
     },
     saveUserIdPw() {
       // 로컬 스토리지에 임시 저장
-      localStorage.setItem('draft_type', this.userType ? this.userType : 'nomal');
+      localStorage.setItem('user_mode', this.userType ? this.userType : 'nomal');
       localStorage.setItem('draft_id', this.userId);
       localStorage.setItem('draft_pw', this.userPw);
 

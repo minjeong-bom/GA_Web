@@ -46,7 +46,7 @@ export default {
     async save() {
       const content_data = {
         user_info: {
-          user_type: this.userType ? this.userType : 'nomal',
+          type: this.userType ? this.userType : 'nomal',
           nickname: this.userName,
           interesting: this.interestings,
         },

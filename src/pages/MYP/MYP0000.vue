@@ -116,13 +116,6 @@ export default {
         }
       }
 
-      if (this.userType === 'nomal') {
-        config.body.columns_opts.bc_foreign_key = 'AYZXHRWS';
-      } else if (this.userType === 'pro') {
-        config.body.columns_opts.bc_foreign_key = 'XGYLPKDE';
-      } else if (this.userType === 'enterprise') {
-        config.body.columns_opts.bc_foreign_key = 'ELOSTRGM';
-      }
       const res = await this.$api.post(config.url, config.body, config.etc);
       this.userDetailInfo = res.data.response.lists[0].bc_content;
     },

@@ -25,6 +25,7 @@ export default {
     userProfile: String,
     createrKey: String, // 작성자의 키값
     userKey: String, // 사용자의 키값
+    userMode: String,
   },
   data() {
     return {
@@ -92,7 +93,9 @@ export default {
       </div>
       <!-- Badge + User Role Caption | Created Time -->
       <div class="user-badge-created-time-wrap">
-        <img class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>
+        <img v-if="userMode === 'pro'" class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>
+        <img v-else-if="userMode === 'enterprise'" class="user-badge"
+             src="../../assets/icon/person_assignment_24px.svg"/>
         <span class="card-caption-1">{{ jobTitle }}</span>
         <span v-show="createdAtTimeShow" class="card-caption-2">|</span>
         <span v-show="createdAtTimeShow" class="card-caption-1">{{ createdAtTimeShow }}</span>
@@ -159,7 +162,7 @@ export default {
 
 .user-badge-created-time-wrap {
   display: inline-flex;
-  padding: 0.125rem 0rem;
+  padding: 0.125rem 0;
   align-items: center;
   gap: 0.1875rem;
 }

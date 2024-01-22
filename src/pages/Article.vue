@@ -13,6 +13,8 @@
         :creater-name="article.createrName"
         :job-title="article.createrJob"
         :user-key="storageUserKey"
+        :userMode
+          ="article.createrType"
         :view-count="article.viewCount"
         article-type2=""
         class="full-width"
@@ -87,6 +89,7 @@ export default {
         content: '',
         createdAt: '',
         createrJob: '',
+        createrType: '',
       },
       counts: {
         comments: 0,
@@ -205,6 +208,7 @@ export default {
       const res = await this.$api.post(config.url, config.body, config.etc);
       if (res) {
         const result = res.data.response.lists[0].bc_content;
+        this.article.createrType = result.user_info.type;
         if (result.user_info.type === 'nomal') {
           this.article.createrName = result.user_info.nickname;
           this.article.createrJob = result.job.job_title;

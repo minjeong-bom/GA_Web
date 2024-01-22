@@ -3,6 +3,7 @@
     <div class="card">
       <!-- Card Id -->
       <article-id
+        v-if="createrKey"
         :article-key="articleKey"
         :article-type="articleType2"
         :article-type2="articleType2"
@@ -12,6 +13,7 @@
         :creater-name="writer"
         :job-title="badgeTitle"
         :user-key="storageUserKey"
+        :userMode="userMode"
         :view-count="viewCount"
       />
       <!-- Thumbnail & Title -->
@@ -49,7 +51,7 @@ import ArticleId from 'components/card/ArticleId.vue';
 import article from '../../pages/Article.vue';
 
 export default {
-  components: { ArticleId },
+  components: {ArticleId},
   props: {
     articleKey: String,
     title: String,
@@ -65,6 +67,7 @@ export default {
     motivation: String,
     viewCount: String,
     thumbnailKey: String,
+    userMode: String,
   },
   data() {
     return {
@@ -77,7 +80,7 @@ export default {
   },
   methods: {
     goToArticle(articleId) {
-      this.$router.push({ path: '/article', query: { key: articleId } });
+      this.$router.push({path: '/article', query: {key: articleId}});
     },
     async getThumbnail() {
       if (this.thumbnailKey) {

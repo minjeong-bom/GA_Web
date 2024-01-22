@@ -54,7 +54,7 @@ export default {
       ],
       edit: {
         user_info: {
-          user_type: 'nomal',
+          type: 'nomal',
           nickname: '',
           interesting: [],
           email: '',
@@ -78,7 +78,7 @@ export default {
   methods: {
     async save() {
       try {
-        this.edit.user_info.user_type = 'nomal';
+        this.edit.user_info.type = 'nomal';
 
         const config = {
           url: '/api/crud/create',

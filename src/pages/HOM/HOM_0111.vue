@@ -154,7 +154,7 @@ export default defineComponent({
 
 .user-badge-created-time-wrap {
   display: inline-flex;
-  padding: 0.125rem 0rem;
+  padding: 0.125rem 0;
   align-items: center;
   gap: 0.1875rem;
 }

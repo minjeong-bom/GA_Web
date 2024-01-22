@@ -111,7 +111,7 @@ export default {
     <!-- 댓글 추가 영역 -->
     <div class="comment-input-area">
       <!-- profile image -->
-      <user-profile-thumb :user-key="storageUserKey" size="48px"></user-profile-thumb>
+      <user-profile-thumb :user-key="storageUserKey" size="36px"></user-profile-thumb>
       <!-- comment input -->
       <q-input v-if="editMode.status" v-model="addComment" :placeholder="commentInputPlaceholder"
                autogrow class="full-width" dense outlined rounded>

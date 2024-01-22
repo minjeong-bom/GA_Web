@@ -17,13 +17,14 @@
                         :article-type2="item.category_name"
                         :badge-title="item.badgeTitle"
                         :created-at="item.bc_regdate"
-                        :creater-key="item.bc_writer_key"
+                        :creater-key="item.bc_writer_name"
                         :is-loading="isLoading"
                         :motivation="item.motivation"
                         :thumbnail-key="item.bc_content.thumbnailKey"
                         :title="item.bc_content.title ? item.bc_content.title : item.bc_title"
+                        :user-mode="item.user_mode"
                         :view-count="item.bc_count"
-                        :writer="item.bc_writer_name"
+                        :writer="item.nickname"
                         :writer-thumb="item.writerThumb"
           />
         </div>
@@ -226,35 +227,52 @@ export default defineComponent({
       this.isLoading = false;
     },
     async replaceWriterNames(array) {
-      for (const item of array) {
+      for (let item of array) {
         try {
-          const res = await this.$api.post(
-            `/api/crud/single/${item.bc_writer_name}`,
-            {
-              prefix: 'mem',
-              alias: 'mem',
-              scopes: 'mem_title,mem_job',
-            },
-            {
-              headers: {
-                'SPRINT-API-KEY': 'sprintcombom',
+          let config = {
+            url: '/api/crud/lists/',
+            body: {
+              alias: 'bc',
+              prefix: 'bc',
+              scopes: 'bc_key,bc_content',
+              columns_opts: {
+                bc_foreign_key2: 'IYETRHFC',
+                bc_title: item.bc_writer_name,
               },
+              limit: 1
             },
-          );
-          if (res.data.status === 'success') {
-            item.bc_writer_key = item.bc_writer_name;
-            item.bc_writer_name = res.data.response.view.mem_title;
-            if (res.data.response.view.mem_job) {
-              item.badgeTitle = res.data.response.view.mem_job;
-            } else {
-              item.badgeTitle = '일반 회원'; // job 정보가 등록되지 않은 회원은 일반 회원으로 표시
+            etc: {
+              headers: {
+                'SPRINT-API-KEY': 'sprintcombom'
+              }
             }
           }
+          const res = await this.$api.post(config.url, config.body, config.etc);
+
+          const content = res.data.response.lists[0].bc_content;
+          const userType = content.user_info.type ? content.user_info.type : 'nomal';
+
+          item.user_mode = userType;
+          if (content.user_info.nickname) {
+            item.nickname = content.user_info.nickname;
+          } else {
+            item.nickname = '비공개 회원';
+          }
+          if (userType === 'nomal') {
+            item.badgeTitle = content.job.job_title;
+          } else if (userType === 'pro') {
+            item.badgeTitle = content.pro.area;
+          }
+
+          this.isLoading = false;
         } catch (e) {
-          item.badgeTitle = '비공개 회원'; // 삭제된 회원
+          item.nickname = '비공개 회원';
+          item.badgeTitle = ''; // 삭제된 회원
+          this.isLoading = false;
         }
       }
       this.articleList = array;
+      console.log(this.articleList)
     },
   },
   computed: {
@@ -264,6 +282,9 @@ export default defineComponent({
     onboard() {
       return localStorage.getItem('isOnboard');
     },
+    userType() {
+      return localStorage.getItem('user_mode');
+    }
   },
 });
 </script>

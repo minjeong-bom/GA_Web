@@ -93,8 +93,9 @@ export default {
       </div>
       <!-- Badge + User Role Caption | Created Time -->
       <div class="user-badge-created-time-wrap">
-        <img v-if="userMode === 'pro'" class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>
-        <img v-else-if="userMode === 'enterprise'" class="user-badge"
+        <img v-if="userMode === 'pro'" :alt="`${userMode} 전용 뱃지`" class="user-badge"
+             src="../../assets/icon/person_assignment_24px.svg"/>
+        <img v-else-if="userMode === 'enterprise'" :alt="`${userMode} 전용 뱃지`" class="user-badge"
              src="../../assets/icon/person_assignment_24px.svg"/>
         <span class="card-caption-1">{{ jobTitle }}</span>
         <span v-show="createdAtTimeShow" class="card-caption-2">|</span>
@@ -142,16 +143,6 @@ export default {
 </template>
 
 <style scoped>
-.profile-wrap {
-  width: 48px;
-  height: 48px;
-  flex-shrink: 0;
-  background-color: var(--grays-gray-2);
-  background-size: cover;
-  background-repeat: no-repeat;
-  border-radius: 30px;
-}
-
 .created-user-and-lable {
   gap: 0.625rem;
 }

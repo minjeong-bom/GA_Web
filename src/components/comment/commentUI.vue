@@ -117,7 +117,7 @@ export default {
                autogrow class="full-width" dense outlined rounded>
         <template v-slot:append>
           <q-btn flat round style="right: -10px" @click="createComment">
-            <img src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
+            <img alt="전송 아이콘" src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
           </q-btn>
         </template>
       </q-input>
@@ -126,7 +126,7 @@ export default {
                autogrow class="full-width" dense outlined rounded>
         <template v-slot:append>
           <q-btn flat round style="right: -10px" @click="createComment">
-            <img src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
+            <img alt="전송 아이콘" src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
           </q-btn>
         </template>
       </q-input>
@@ -159,7 +159,7 @@ export default {
 
 .comment {
   display: flex;
-  padding: 10px 16px 0px 16px;
+  padding: 10px 16px 0 16px;
   flex-direction: column;
   align-items: flex-start;
 }

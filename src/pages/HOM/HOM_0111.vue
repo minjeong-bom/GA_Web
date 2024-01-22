@@ -101,14 +101,15 @@ export default defineComponent({
             </div>
             <!-- Badge + User Role Caption | Created Time -->
             <div class="user-badge-created-time-wrap">
-              <img class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>
+              <!--              <img alt="일반 사용자 뱃지" class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>-->
               <span class="card-caption-1">{{ item.badgeTitle }}</span>
               <span v-show="item.createdAt" class="card-caption-2">|</span>
               <span v-show="item.createdAt" class="card-caption-1">{{ item.createdAt }}</span>
             </div>
           </div>
           <!-- Like image -->
-          <img :src="`src/assets/graphic/face-${item.empathy_log_title}.png`" class="imoji">
+          <img :alt="`${item.empathy_log_title} 이모지 이미지`" :src="`src/assets/graphic/face-${item.empathy_log_title}.png`"
+               class="imoji">
         </div>
       </section>
     </div>
@@ -166,17 +167,4 @@ export default defineComponent({
   gap: 0.1875rem;
   margin-bottom: 0.5rem;
 }
-
-.cartegory2-lable {
-  display: inline-block;
-  padding: 0.0625rem 0.25rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
-
-  border-radius: 0.25rem;
-  border: 0.33px solid var(--fills-quartternary);
-  background: var(--grays-gray-7);
-}
-
 </style>

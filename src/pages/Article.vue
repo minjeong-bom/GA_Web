@@ -33,7 +33,8 @@
     </div>
     <!-- 썸네일 -->
     <skeleton-card v-if="isLoading" lines="1"/>
-    <img v-if="article.thumbnail" :src="'data:image/jpeg;base64,' + article.thumbnail" class="thumbnail-image-style">
+    <img v-if="article.thumbnail" :alt="`아티클 썸네일 : ${article.title}`"
+         :src="'data:image/jpeg;base64,' + article.thumbnail" class="thumbnail-image-style">
     <!-- 본문 -->
     <section class="article-content">
       <skeleton-line v-if="isLoading" :lines="4"></skeleton-line>
@@ -134,7 +135,7 @@ export default {
 
         this.article.title = content.bc_content.title;
         this.article.viewCount = content.bc_count;
-        this.article.content = content.bc_content.body.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+        this.article.content = content.bc_content.body.replace(/\r\n|\r|\n/g, '<br/>');
         this.article.thumbnailKey = content.bc_content.thumbnailKey;
         this.article.createrKey = content.bc_writer_name;
         this.article.createdAt = content.bc_regdate;
@@ -305,7 +306,6 @@ export default {
 
   .article-created-at-text {
     color: #999;
-    font-family: Pretendard;
     font-size: 0.75rem;
     font-style: normal;
     font-weight: 600;

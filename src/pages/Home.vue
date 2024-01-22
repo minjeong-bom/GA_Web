@@ -122,16 +122,16 @@ export default defineComponent({
       this.articleList = [];
       this.articleListLength = 5;
 
-      if (tabId == 1) {
+      if (tabId === '1') {
         this.getArticleList('');
         this.tabCategoryType = '';
-      } else if (tabId == 2) {
+      } else if (tabId === '2') {
         this.getArticleList('story');
         this.tabCategoryType = 'story';
-      } else if (tabId == 3) {
+      } else if (tabId === '3') {
         this.getArticleList('skills');
         this.tabCategoryType = 'skills';
-      } else if (tabId == 4) {
+      } else if (tabId === '4') {
         this.getArticleList('gapick');
         this.tabCategoryType = 'gapick';
       }
@@ -210,8 +210,7 @@ export default defineComponent({
       };
 
       const res = await this.$api.post(config.url, config.body, config.etc);
-      const response = res.data.response.lists;
-      this.thumbnailList = response;
+      this.thumbnailList = res.data.response.lists;
 
       this.addThumbnailsToArticles();
     },
@@ -291,7 +290,6 @@ export default defineComponent({
 
 <style scoped>
 .home {
-  //padding: 20px;
   background: linear-gradient(180deg, #FFF 14.1%, #F4F4F4 73.82%);
 }
 
@@ -299,40 +297,11 @@ export default defineComponent({
   padding: 20px;
 }
 
-.tab {
-  display: flex;
-  padding-top: 20px;
-  margin-bottom: 30px;
-  gap: 8px;
-}
-
-.tab-item {
-  font-size: 1.31rem;
-  color: rgba(0, 0, 0, 0.5);
-  font-weight: bold;
-
-  padding: 6px;
-  padding-bottom: 2px;
-  border-bottom: 2px solid #fff;
-  transition: all 0.5s;
-}
-
-.tab-focus {
-  color: #FD384E;
-  border-bottom: 2px solid #FD384E;
-}
-
-.event-card {
-  background: #FD384E;
-  height: 96px;
-  border-radius: 12px;
-}
-
 .btn-learn-more {
   display: flex;
   width: 100%;
   height: 63px;
-  padding: 20px 0px;
+  padding: 20px 0;
   justify-content: center;
   align-items: center;
   color: #FD7F38;

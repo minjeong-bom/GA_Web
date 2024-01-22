@@ -18,7 +18,7 @@
       />
       <!-- Thumbnail & Title -->
       <div v-if="fileObject64" class="article-card-thumbnail flex-center article-white-card">
-        <img :src="'data:image/jpeg;base64,' + fileObject64" @click="goToArticle(articleKey)"/>
+        <img :src="'data:image/jpeg;base64,' + fileObject64" art="Profile Image" @click="goToArticle(articleKey)"/>
         <div class="overlay-headline" @click="goToArticle(articleKey)">
           <div class="article-card-headline-wrap">
             <h4 class="article-card-headline">{{ titleText42 }}</h4>
@@ -98,8 +98,7 @@ export default {
           },
         };
         const res = await this.$api.post(config.url, config.body, config.etc);
-        const response = res.data.response.view.bc_content;
-        this.fileObject64 = response;
+        this.fileObject64 = res.data.response.view.bc_content;
         this.isLoading = false;
       } else {
         this.isLoading = false;
@@ -116,17 +115,6 @@ export default {
         return this.title.substring(0, 42);
       }
       return this.title;
-
-      const testing = {
-        bc_content: '/9j/4AAQSkZJRgABAQEASABIAAD/4gxYSUNDX1BST0ZJTEUAA',
-        bc_count: '0',
-        bc_foreign_key: 'FHGBWGLF',
-        bc_foreign_key2: 'UZPWQOWR',
-        bc_key: 'URQAOBBW',
-        bc_regdate: '2023-12-21 16:31:55',
-        bc_title: 'articleImage',
-        bc_writer_name: 'NKDRTZPV',
-      };
     },
     storageUserKey() {
       return localStorage.getItem('userKey');
@@ -148,10 +136,6 @@ export default {
   border-radius: 0.75rem;
   overflow: hidden;
   background-color: #fff;
-}
-
-.linear-gradient {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 50%, #000 115.35%);
 }
 
 .article-card-headline-wrap {

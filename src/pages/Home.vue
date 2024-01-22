@@ -35,7 +35,7 @@
     <button class="btn-learn-more" @click="addLoadArticle">더 보기</button>
     <!-- 피드백 -->
     <section class="feed-back-section">
-      <img class="sun-animation" src="../assets/graphic/sun-animation.gif">
+      <img alt="작은 웃고있는 해 이미지" class="sun-animation" src="../assets/graphic/sun-animation.gif">
       <p>G@에 알려주고 싶은 이야기가 있나요?</p>
       <button class="btn-primary-small">네, 있어요</button>
     </section>

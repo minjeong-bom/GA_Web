@@ -3,6 +3,7 @@ import timeAgo from '/src/script/timeData/timeAgo'
 import IconAlart from "components/modal/iconAlart.vue";
 import ConfilrmDialog from "components/modal/confilrmDialog.vue";
 import UserProfileThumb from "components/profile/userProfileTumb.vue";
+import {itemDelete} from "src/script/api/deleteCall";
 
 export default {
   name: "ArticleId",
@@ -58,8 +59,7 @@ export default {
       const res = result.data.response.lists;
 
       if (res) {
-        const isMarked = res.some(item => item.bc_content === this.articleKey);
-        this.isMarked = isMarked;
+        this.isMarked = res.some(item => item.bc_content === this.articleKey);
       }
 
       if (this.isMarked) {
@@ -114,9 +114,14 @@ export default {
       console.log(this.articleKey, 'Edit');
 
     },
-    deleteArticle() {
+    async deleteArticle() {
       this.deleteModal = false;
-      console.log(this.articleKey, 'Delete');
+      try {
+        await itemDelete(this.articleKey);
+        this.$q.notify('삭제되었습니다.')
+      } catch (e) {
+        this.$q.notify('삭제할 수 없습니다. 관리자에게 문의해 주세요.')
+      }
     },
     reportArticle() {
       // 신고하기 기능 추가

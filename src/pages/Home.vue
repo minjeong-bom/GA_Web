@@ -82,7 +82,7 @@ export default defineComponent({
         },
       ],
       tabCategoryType: '',
-      defaultTab: 0,
+      defaultTab: '0',
       articleList: [],
       articleListLength: 5,
       thumbnailList: [],
@@ -90,29 +90,19 @@ export default defineComponent({
     };
   },
   created() {
-    this.checkOnboard();
     const routeTab = this.$route.query.tab;
     this.defaultTab = routeTab ? Number(routeTab) : 1;
   },
   mounted() {
-
+    this.checkLogin();
   },
   methods: {
     addLoadArticle() {
       this.articleListLength += 10;
       this.getArticleList(this.tabCategoryType, this.articleListLength);
     },
-    checkOnboard() {
-      if (this.onboard) {
-        this.checkLogin();
-      } else {
-        this.$router.push('/onb0000');
-      }
-    },
     checkLogin() {
-      if (this.userId) {
-
-      } else {
+      if (!this.userId) {
         this.$router.push('/login');
       }
     },
@@ -122,16 +112,16 @@ export default defineComponent({
       this.articleList = [];
       this.articleListLength = 5;
 
-      if (tabId === '1') {
+      if (tabId === '1' || tabId === 1) {
         this.getArticleList('');
         this.tabCategoryType = '';
-      } else if (tabId === '2') {
+      } else if (tabId === '2' || tabId === 2) {
         this.getArticleList('story');
         this.tabCategoryType = 'story';
-      } else if (tabId === '3') {
+      } else if (tabId === '3' || tabId === 3) {
         this.getArticleList('skills');
         this.tabCategoryType = 'skills';
-      } else if (tabId === '4') {
+      } else if (tabId === '4' || tabId === 4) {
         this.getArticleList('gapick');
         this.tabCategoryType = 'gapick';
       }

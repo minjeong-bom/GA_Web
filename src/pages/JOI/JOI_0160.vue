@@ -73,7 +73,7 @@ export default {
         if (this.userType === 'pro') {
           this.navigateTo('/joi0200');
         } else {
-          this.navigateTo('/joi_0170');
+          this.navigateTo('/joi0170');
         }
       } catch (e) {
         this.$q.notify('저장할 수 없습니다. 관리자에게 문의해 주세요.');
@@ -132,16 +132,19 @@ export default {
         <q-icon name="navigate_next"/>
       </q-btn>
     </div>
+
     <q-btn
       :disable="!ready"
       :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'"
-      class="full-width bottom-button-fixed"
+      class="full-width main-bottom-btn"
       flat
+      label="다음"
+      rounded
       size="lg"
-      square
-      @click="save()">
-      <span style="color: #fff">다음</span>
-    </q-btn>
+      style="background: var(--ga-red)"
+      text-color="white"
+      @click="save()"
+    />
   </div>
 </template>
 
@@ -172,13 +175,5 @@ export default {
 .bottom-button-fixed {
   position: fixed;
   bottom: 0;
-}
-
-.skip-button-wrap {
-  width: 100%;
-  position: fixed;
-  bottom: 72px;
-
-  opacity: 0.5;
 }
 </style>

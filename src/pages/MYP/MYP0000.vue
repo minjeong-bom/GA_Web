@@ -97,13 +97,12 @@ export default {
     },
     async getDetailUserInfo() {
       let config = {
-        url: '/api/crud/lists/',
+        url: '/api/crud/lists/?order=desc_bc_regdate',
         body: {
           alias: 'bc',
           prefix: 'bc',
           scopes: 'bc_key,bc_content',
           columns_opts: {
-            bc_foreign_key: 'AYZXHRWS',
             bc_foreign_key2: 'IYETRHFC',
             bc_title: this.localUserKey,
           },

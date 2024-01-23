@@ -176,6 +176,7 @@ export default {
       localStorage.setItem('userId', '');
 
       this.$router.push('/login');
+      this.$q.notify('로그아웃 되었습니다');
     },
     closeMenu() {
       this.$router.push('/');

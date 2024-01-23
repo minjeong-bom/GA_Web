@@ -2,9 +2,11 @@
 
 import {defineComponent} from "vue";
 import TitleTopBar from "components/app-bar/TitleTopBar.vue";
+import UserProfileThumb from "components/profile/userProfileTumb.vue";
+import timeAgo from "src/script/timeData/timeAgo";
 
 export default defineComponent({
-  components: {TitleTopBar},
+  components: {UserProfileThumb, TitleTopBar},
   data() {
     return {
       likes: [],
@@ -17,7 +19,7 @@ export default defineComponent({
     async getLikeList() {
       try {
         const config = {
-          url: '/api/crud/lists/',
+          url: '/api/crud/lists/?order=desc_bc_regdate',
           body: {
             alias: "bc",
             prefix: "bc",
@@ -42,36 +44,58 @@ export default defineComponent({
         console.error(e);
       }
     },
+    createdTimeAgo(time) {
+      return timeAgo.timeAgo(time);
+    },
     async replaceWriterNames(array) {
+      console.log(array)
       for (let item of array) {
         try {
-          const res = await this.$api.post(
-            `/api/crud/single/${item.bc_writer_name}`,
-            {
-              prefix: "mem",
-              alias: "mem",
-              scopes: "mem_title,mem_job"
+          let config = {
+            url: '/api/crud/lists/',
+            body: {
+              alias: 'bc',
+              prefix: 'bc',
+              scopes: 'bc_key,bc_content',
+              columns_opts: {
+                bc_foreign_key2: 'IYETRHFC',
+                bc_title: item.bc_writer_name,
+              },
+              limit: 1
             },
-            {
+            etc: {
               headers: {
-                'SPRINT-API-KEY': 'sprintcombom',
+                'SPRINT-API-KEY': 'sprintcombom'
               }
             }
-          )
-          if (res.data.status === 'success') {
-            item.bc_writer_name = res.data.response.view.mem_title;
-            if (res.data.response.view.mem_job) {
-              item.badgeTitle = res.data.response.view.mem_job
-            } else {
-              item.badgeTitle = "일반 회원" // job 정보가 등록되지 않은 회원은 일반 회원으로 표시
-            }
           }
+          const res = await this.$api.post(config.url, config.body, config.etc);
+
+          const content = res.data.response.lists[0].bc_content;
+          const userType = content.user_info.type ? content.user_info.type : 'nomal';
+
+          item.user_mode = userType;
+          if (content.user_info.nickname) {
+            item.nickname = content.user_info.nickname;
+          } else {
+            item.nickname = '비공개 회원';
+          }
+          if (userType === 'nomal') {
+            item.badgeTitle = content.job.job_title;
+          } else if (userType === 'pro') {
+            item.badgeTitle = content.pro.area;
+          }
+
+          this.isLoading = false;
         } catch (e) {
-          item.badgeTitle = "비공개 회원" // 삭제된 회원
+          item.nickname = '비공개 회원';
+          item.badgeTitle = ''; // 삭제된 회원
+          this.isLoading = false;
         }
       }
       this.likes = array;
-    }
+    },
+
   },
   computed: {
     articleKey() {
@@ -90,25 +114,25 @@ export default defineComponent({
       <section>
         <div v-for="item in likes" class="card-id-wrap">
           <!-- User Profile Image -->
-          <div :style="`background-image: url(${item.profileImg});`" class="profile-wrap"></div>
+          <user-profile-thumb v-if="item.bc_writer_name" :user-key="item.bc_writer_name" size="48px"/>
           <!-- Creater & Created Time -->
           <div class="l-column" style="width: 100%">
             <!-- 00님이 000을 올렸어요 (하위메뉴) -->
             <div class="created-user-and-lable">
               <div class="created-user-info-wrap card-headline-1">
-                <span>{{ item.bc_writer_name }}</span>
+                <span>{{ item.nickname }}</span>
               </div>
             </div>
             <!-- Badge + User Role Caption | Created Time -->
             <div class="user-badge-created-time-wrap">
               <!--              <img alt="일반 사용자 뱃지" class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>-->
               <span class="card-caption-1">{{ item.badgeTitle }}</span>
-              <span v-show="item.createdAt" class="card-caption-2">|</span>
-              <span v-show="item.createdAt" class="card-caption-1">{{ item.createdAt }}</span>
+              <span v-show="item.bc_regdate" class="card-caption-2">|</span>
+              <span v-show="item.bc_regdate" class="card-caption-1">{{ createdTimeAgo(item.bc_regdate) }}</span>
             </div>
           </div>
           <!-- Like image -->
-          <img :alt="`${item.empathy_log_title} 이모지 이미지`" :src="`src/assets/graphic/face-${item.empathy_log_title}.png`"
+          <img :alt="`${item.empathy_log_title} 이모지 이미지`" :src="`src/assets/graphic/face-${item.bc_content}.png`"
                class="imoji">
         </div>
       </section>

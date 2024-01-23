@@ -75,10 +75,17 @@ export default {
         도움이 될 거에요. <br>
       </p>
     </section>
-    <q-btn class="full-width bottom-button-fixed" flat size="lg" square style="background: var(--ga-red);"
-           @click="next()">
-      <span style="color: #fff">다음</span>
-    </q-btn>
+
+    <q-btn
+      class="full-width main-bottom-btn"
+      flat
+      label="다음"
+      rounded
+      size="lg"
+      style="background: var(--ga-red)"
+      text-color="white"
+      @click="next()"
+    />
   </div>
 </template>
 

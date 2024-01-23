@@ -33,6 +33,8 @@ export default {
         "고객상담·TM"
       ],
       userCarrerTitle: '',
+      originInfo: '',
+      profileKey: '',
     }
   },
   computed: {
@@ -40,34 +42,80 @@ export default {
       return this.userBackground && this.userCarrerTitle && this.userCarrer;
     },
   },
+  created() {
+    this.getDetailUserInfo();
+  },
   methods: {
     navigateTo(path) {
       this.$router.push(path);
     },
+    async getDetailUserInfo() {
+      const storageUserKey = localStorage.getItem('userKey');
+
+      const config = {
+        url: '/api/crud/lists/',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key: 'AYZXHRWS',
+            bc_title: storageUserKey,
+          },
+          limit: 100
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
+        }
+      }
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      if (res) {
+        const result = res.data.response.lists[0];
+        this.detailProfileKey = result.bc_key;
+        this.originInfo = result.bc_content;
+      }
+    },
     async setUserInfo() {
       const storageUserKey = localStorage.getItem('userKey');
       try {
-        const config = {
+        if (!this.detailProfileKey) {
+          this.$q.notify('프로필 정보를 입력하는 유효 시간이 지났습니다');
+          this.navigateTo('/');
+          return
+        }
+
+        let bodyContent = this.originInfo;
+        bodyContent.job = {
+          total_career: this.userCarrer,
+          career_name: this.userBackground,
+          job_title: this.userCarrerTitle,
+        }
+
+        let config = {
           url: '/api/crud/create',
           body: {
-            data_key: storageUserKey,
-            data_prefix: 'mem',
-            data_career: this.userCarrer, // 총 경력
-            data_field: this.userBackground, // 업무 분야
-            data_job: this.userCarrerTitle, // 직업
+            data_key: this.detailProfileKey,
+            data_prefix: 'bc',
+            data_foreign_key: 'AYZXHRWS',
+            data_title: storageUserKey,
+            data_content: JSON.stringify(bodyContent),
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprintcombom'
-            }
-          }
+              'SPRINT-API-KEY': 'sprintcombom',
+            },
+          },
         }
+
+        console.log('config', config)
         await this.$api.post(config.url, config.body, config.etc);
         this.navigateTo('/joi0180');
       } catch (e) {
-        console.error(e);
+        this.$q.notify('저장할 수 없습니다. 관리자에게 문의해 주세요.');
       }
-    }
+    },
   }
 }
 </script>
@@ -105,11 +153,18 @@ export default {
         style="font-size: 1.125rem"
       />
     </section>
-    <q-btn :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'" class="full-width bottom-button-fixed"
-           flat size="lg" square
-           @click="setUserInfo">
-      <span style="color: #fff">다음</span>
-    </q-btn>
+    <q-btn
+      :disable="!ready"
+      :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'"
+      class="full-width main-bottom-btn"
+      flat
+      label="다음"
+      rounded
+      size="lg"
+      style="background: var(--ga-red)"
+      text-color="white"
+      @click="setUserInfo()"
+    />
   </div>
 </template>
 

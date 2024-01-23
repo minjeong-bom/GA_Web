@@ -30,9 +30,74 @@ export default {
   data() {
     return {
       deleteModal: false,
+      bookmarks: [],
+      isMarked: false,
     }
   },
   methods: {
+    async checkBookmarkedPage() {
+      const config = {
+        url: '/api/crud/lists/',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_title,bc_content',
+          columns_opts: {
+            bc_foreign_key2: 'SWMUCCYD',
+            bc_foreign_key: 'LBUSDDGP',
+          },
+          limit: 100
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
+        }
+      }
+      const result = await this.$api.post(config.url, config.body, config.etc);
+      const res = result.data.response.lists;
+
+      if (res) {
+        const isMarked = res.some(item => item.bc_content === this.articleKey);
+        this.isMarked = isMarked;
+      }
+
+      if (this.isMarked) {
+        const marked = res.find(item => item.bc_content === this.articleKey);
+        this.bookmarkKey = marked.bc_key;
+        console.log(this.bookmarkKey)
+      }
+    },
+    async addBookmark() {
+      try {
+        await this.checkBookmarkedPage();
+        if (this.bookmarked) {
+          this.$q.notify('이미 북마크에 추가된 게시글입니다.')
+          return
+        }
+        const config = {
+          url: '/api/crud/create',
+          body: {
+            data_prefix: 'bc',
+            data_title: this.userKey,
+            data_foreign_key2: 'SWMUCCYD', // 게시판 키
+            data_foreign_key: 'LBUSDDGP', // 카테고리 키
+            data_content: this.articleKey,
+            data_writer_name: this.userKey,
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom',
+            },
+          }
+        }
+        this.$api.post(config.url, config.body, config.etc);
+        this.$q.notify('북마크에 추가되었습니다');
+        this.isMarked = true;
+      } catch (e) {
+        this.$q.notify('북마크에 추가할 수 없습니다');
+      }
+    },
     share() {
       const currentURL = 'www.goodafternoon.life/#/article?key=' + this.articleKey;
 
@@ -109,22 +174,22 @@ export default {
           <q-item v-close-popup clickable @click="share()">
             <div class="item-section">공유</div>
           </q-item>
-          <q-item v-close-popup clickable>
-            <div class="item-section">북마크</div>
-          </q-item>
           <q-item v-close-popup clickable @click="editArticle()">
             <div class="item-section">수정</div>
           </q-item>
           <q-item v-close-popup clickable @click="deleteModal = true">
             <div class="item-section">삭제</div>
           </q-item>
-          <q-item v-close-popup clickable>
-            <div class="item-section">신고</div>
-          </q-item>
         </q-list>
       </q-menu>
       <q-menu v-else>
         <q-list style="min-width: 100px">
+          <q-item v-close-popup clickable @click="share()">
+            <div class="item-section">공유</div>
+          </q-item>
+          <q-item v-close-popup clickable @click="addBookmark()">
+            <div class="item-section">북마크</div>
+          </q-item>
           <q-item v-close-popup clickable @click="reportArticle">
             <q-item-section>신고하기</q-item-section>
           </q-item>

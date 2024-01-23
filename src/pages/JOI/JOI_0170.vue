@@ -6,7 +6,7 @@ export default {
   components: {TitleTopBar},
   data() {
     return {
-      userCarrer: '',
+      userCareer: '',
       userBackground: '',
       backgroundList: [
         "건설·건축",
@@ -27,19 +27,19 @@ export default {
         "운전·운송·배송",
         "의료",
         "인사·노무·HRD",
-        "IT개발·데이터",
+        "IT 개발·데이터",
         "총무·법무·사무",
         "회계·세무·재무",
         "고객상담·TM"
       ],
-      userCarrerTitle: '',
+      userCareerTitle: '',
       originInfo: '',
       profileKey: '',
     }
   },
   computed: {
     ready() {
-      return this.userBackground && this.userCarrerTitle && this.userCarrer;
+      return this.userBackground && this.userCareerTitle && this.userCareer;
     },
   },
   created() {
@@ -72,7 +72,7 @@ export default {
       }
       const res = await this.$api.post(config.url, config.body, config.etc);
       if (res) {
-        const result = res.data.response.lists[0];
+        const result = res.data.response.result.lists[0];
         this.detailProfileKey = result.bc_key;
         this.originInfo = result.bc_content;
       }
@@ -88,9 +88,9 @@ export default {
 
         let bodyContent = this.originInfo;
         bodyContent.job = {
-          total_career: this.userCarrer,
+          total_career: this.userCareer,
           career_name: this.userBackground,
-          job_title: this.userCarrerTitle,
+          job_title: this.userCareerTitle,
         }
 
         let config = {
@@ -127,7 +127,7 @@ export default {
     <section class="inner-layout l-column">
       <!-- 경력 -->
       <q-input
-        v-model="userCarrer"
+        v-model="userCareer"
         label="총 경력이 몇 년인지 입력하세요"
         maxlength="3"
         outlined
@@ -145,7 +145,7 @@ export default {
       />
       <!-- 분야 상세 -->
       <q-input
-        v-model="userCarrerTitle"
+        v-model="userCareerTitle"
         hint="예) 교사, 기획자, 회계사, 마케터, 디자이너, 개발자 등"
         label="선택한 분야 내 구체적인 직업을 입력하세요"
         maxlength="20"
@@ -173,32 +173,7 @@ export default {
   padding: 1.25rem 16px;
 }
 
-.id-input-wrap {
-  position: relative;
-}
-
 .inner-layout {
   gap: 30px;
-}
-
-.btn-dd-check-wrap {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  padding: 0.6rem;
-}
-
-.bottom-button-fixed {
-  position: fixed;
-  bottom: 0;
-}
-
-.skip-button-wrap {
-  width: 100%;
-  position: fixed;
-  bottom: 72px;
-
-  opacity: 0.5;
 }
 </style>

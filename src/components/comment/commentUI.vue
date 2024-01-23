@@ -48,8 +48,6 @@ export default {
           },
         };
 
-        console.log(config);
-
         let res = '';
         if (this.editMode.status) {
           config.body.comment_key = this.editMode.comment_key;
@@ -62,13 +60,15 @@ export default {
         }
         if (res.status) {
           this.addComment = '';
-          this.getCommentList();
         }
+
+        this.getCommentList();
       } catch (e) {
         console.error('댓글 생성 실패');
       }
     },
     async getCommentList() {
+      this.comments = [];
       try {
         const config = {
           url: `/api/logs/commentlists?foreign_key=${this.articleKey}`,

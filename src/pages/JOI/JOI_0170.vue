@@ -72,15 +72,16 @@ export default {
       }
       const res = await this.$api.post(config.url, config.body, config.etc);
       if (res) {
-        const result = res.data.response.result.lists[0];
-        this.detailProfileKey = result.bc_key;
+        const result = res.data.response.lists[0];
+        this.profileKey = result.bc_key;
         this.originInfo = result.bc_content;
       }
     },
     async setUserInfo() {
       const storageUserKey = localStorage.getItem('userKey');
+      console.log(this.profileKey)
       try {
-        if (!this.detailProfileKey) {
+        if (!this.profileKey) {
           this.$q.notify('프로필 정보를 입력하는 유효 시간이 지났습니다');
           this.navigateTo('/');
           return
@@ -96,7 +97,7 @@ export default {
         let config = {
           url: '/api/crud/create',
           body: {
-            data_key: this.detailProfileKey,
+            data_key: this.profileKey,
             data_prefix: 'bc',
             data_foreign_key: 'AYZXHRWS',
             data_title: storageUserKey,

@@ -5,8 +5,30 @@ import UserProfileThumb from 'components/profile/userProfileTumb.vue';
 import {extractCityOrCounty} from 'src/script/text/cityExtractor';
 
 export default {
-  name: 'MYP0000',
   components: {UserProfileThumb, ProfileImageEditor, TextButtonTopBar},
+  computed: {
+    localUserKey() {
+      return localStorage.getItem('userKey');
+    },
+    localUserName() {
+      return localStorage.getItem('userName');
+    },
+    userJobStatus() {
+      const firstStaus = this.userDetailInfo.job.working === '네' ? '현업 종사' : '';
+      const secondStatus = this.userDetailInfo.job.searching === '네' ? '이직 준비중' : '전직 준비중';
+      if (firstStaus && secondStatus) {
+        return `${firstStaus} 및 ${secondStatus}`;
+      }
+      return firstStaus + secondStatus;
+    },
+    userType() {
+      return localStorage.getItem('user_mode')
+    }
+  },
+  created() {
+    this.getMyInfo();
+    this.getDetailUserInfo();
+  },
   data() {
     return {
       cityName: '',
@@ -58,17 +80,50 @@ export default {
       ]
     };
   },
-  created() {
-    this.getMyInfo();
-    this.getDetailUserInfo();
-  },
   methods: {
-    setThumbnail() {
-      this.openProfileEditModal = true;
-    },
     closeModal() {
       this.openProfileEditModal = false;
       this.$router.go(0);
+    },
+    extractCityOrCounty() {
+      this.cityName = extractCityOrCounty(this.address);
+    },
+    formattedContent(text) {
+      return text.replace(/\n/g, '<br>');
+    },
+    async getDetailUserInfo() {
+      let config = {
+        url: '/api/crud/lists/?order=desc_bc_regdate',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key2: 'IYETRHFC',
+            bc_title: this.localUserKey,
+          },
+          limit: 1
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
+        }
+      }
+
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      const result = res.data.response.lists[0].bc_content;
+      this.userDetailInfo.user_info.nickname = result.user_info.nickname ? result.user_info.nickname : '';
+      this.userDetailInfo.user_info.interesting = result.user_info.interesting ? result.user_info.interesting : '';
+      this.userDetailInfo.user_info.email = result.user_info.email ? result.user_info.email : '';
+      this.userDetailInfo.user_info.about = result.user_info.about ? result.user_info.about : '';
+      this.userDetailInfo.job.working = result.job.working ? result.job.working : '현업 종사';
+      this.userDetailInfo.job.searching = result.job.searching ? result.job.searching : '이직 준비중';
+      this.userDetailInfo.job.searching_type = result.job.searching_type ? result.job.searching_type : '이직';
+      this.userDetailInfo.job.total_career = result.job.total_career ? result.job.total_career : '네';
+      this.userDetailInfo.job.career_name = result.job.career_name ? result.job.career_name : '';
+      this.userDetailInfo.job.job_title = result.job.job_title ? result.job.job_title : ``;
+
     },
     async getMyInfo() {
       try {
@@ -95,28 +150,14 @@ export default {
 
       }
     },
-    async getDetailUserInfo() {
-      let config = {
-        url: '/api/crud/lists/?order=desc_bc_regdate',
-        body: {
-          alias: 'bc',
-          prefix: 'bc',
-          scopes: 'bc_key,bc_content',
-          columns_opts: {
-            bc_foreign_key2: 'IYETRHFC',
-            bc_title: this.localUserKey,
-          },
-          limit: 1
-        },
-        etc: {
-          headers: {
-            'SPRINT-API-KEY': 'sprintcombom'
-          }
-        }
-      }
-
-      const res = await this.$api.post(config.url, config.body, config.etc);
-      this.userDetailInfo = res.data.response.lists[0].bc_content;
+    navigateTo(path) {
+      this.$router.push(path);
+    },
+    setThumbnail() {
+      this.openProfileEditModal = true;
+    },
+    triggerFileInput() {
+      this.$refs.fileInput.pickFiles();
     },
     uploadProfileImage() {
       if (this.file) {
@@ -155,38 +196,8 @@ export default {
         alert('이미지를 선택해 주세요');
       }
     },
-    extractCityOrCounty() {
-      this.cityName = extractCityOrCounty(this.address);
-    },
-    navigateTo(path) {
-      this.$router.push(path);
-    },
-    triggerFileInput() {
-      this.$refs.fileInput.pickFiles();
-    },
-    formattedContent(text) {
-      return text.replace(/\n/g, '<br>');
-    },
   },
-  computed: {
-    localUserKey() {
-      return localStorage.getItem('userKey');
-    },
-    localUserName() {
-      return localStorage.getItem('userName');
-    },
-    userJobStatus() {
-      const firstStaus = this.userDetailInfo.job.working === '네' ? '현업 종사' : '';
-      const secondStatus = this.userDetailInfo.job.searching === '네' ? '이직 준비중' : '전직 준비중';
-      if (firstStaus && secondStatus) {
-        return `${firstStaus} 및 ${secondStatus}`;
-      }
-      return firstStaus + secondStatus;
-    },
-    userType() {
-      return localStorage.getItem('user_mode')
-    }
-  },
+  name: 'MYP0000',
   watch: {
     file(newFile, oldFile) {
       if (newFile !== oldFile) {
@@ -221,9 +232,10 @@ export default {
       </div>
       <div class="l-column user-detail-info text-align-center">
         <h2 class="user-name-text">{{ userDetailInfo.user_info.nickname }}</h2>
-        <p class="sub-title-2">{{ userDetailInfo.job.job_title }}</p>
-        <p class="user-personal-info">
-          {{ userJobStatus }}<span v-if="cityName"> | {{ cityName }}</span></p>
+        <p v-if="userDetailInfo.job.job_title" class="sub-title-2">{{ userDetailInfo.job.job_title }}</p>
+        <p v-if="userJobStatus" class="user-personal-info">{{ userJobStatus }}
+          <span v-if="cityName"> | {{ cityName }}</span>
+        </p>
         <p class="user-personal-info">{{ userDetailInfo.user_info.email }}</p>
       </div>
     </section>

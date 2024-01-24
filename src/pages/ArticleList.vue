@@ -37,10 +37,12 @@
 import {defineComponent} from 'vue';
 import ArticleCard from 'components/card/ArticleCard.vue';
 import TitleTopBar from 'components/app-bar/TitleTopBar.vue';
+import SkeletonCard from "components/loading/SkeletonCard.vue";
 
 export default defineComponent({
   name: 'IndexPage',
   components: {
+    SkeletonCard,
     TitleTopBar,
     'article-card': ArticleCard,
   },
@@ -140,7 +142,7 @@ export default defineComponent({
         });
 
         // 작성자명 가공 함수 호출
-        this.replaceWriterNames(response);
+        await this.replaceWriterNames(response);
       } catch (e) {
         console.error('게시글이 존재하지 않습니다.', e);
       }
@@ -209,40 +211,11 @@ export default defineComponent({
   padding: 20px;
 }
 
-.tab {
-  display: flex;
-  padding-top: 20px;
-  margin-bottom: 30px;
-  gap: 8px;
-}
-
-.tab-item {
-  font-size: 1.31rem;
-  color: rgba(0, 0, 0, 0.5);
-  font-weight: bold;
-
-  padding: 6px;
-  padding-bottom: 2px;
-  border-bottom: 2px solid #fff;
-  transition: all 0.5s;
-}
-
-.tab-focus {
-  color: #FD384E;
-  border-bottom: 2px solid #FD384E;
-}
-
-.event-card {
-  background: #FD384E;
-  height: 96px;
-  border-radius: 12px;
-}
-
 .btn-learn-more {
   display: flex;
   width: 100%;
   height: 63px;
-  padding: 20px 0px;
+  padding: 20px 0;
   justify-content: center;
   align-items: center;
   color: #FD7F38;

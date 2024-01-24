@@ -1,7 +1,6 @@
 <script>
 import TitleTopBar from "components/app-bar/TitleTopBar.vue";
 import {ref} from 'vue'
-import {uploadFile} from "src/script/upload/uploadReportFiles";
 
 export default {
   name: "MYP4120",
@@ -90,7 +89,7 @@ export default {
           }
         }
 
-        const res = await this.$api.post(config.url, config.body, config.etc);
+        await this.$api.post(config.url, config.body, config.etc);
         this.isLoading = false;
 
         this.$router.push('/myp4130');

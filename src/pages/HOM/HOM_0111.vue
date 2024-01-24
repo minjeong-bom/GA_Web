@@ -39,7 +39,7 @@ export default defineComponent({
         const response = await this.$api.post(config.url, config.body, config.etc);
         const res = response.data.response.lists;
 
-        this.replaceWriterNames(res);
+        await this.replaceWriterNames(res);
       } catch (e) {
         console.error(e);
       }
@@ -152,16 +152,6 @@ export default defineComponent({
 
 .card-id-wrap {
   padding: 10px 0;
-}
-
-.profile-wrap {
-  width: 48px;
-  height: 48px;
-  flex-shrink: 0;
-  background-color: var(--grays-gray-2);
-  background-size: cover;
-  background-repeat: no-repeat;
-  border-radius: 30px;
 }
 
 .created-user-and-lable {

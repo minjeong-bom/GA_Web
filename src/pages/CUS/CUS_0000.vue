@@ -28,7 +28,7 @@ export default {
 
       <div class="center-graphic-layout">
         <!-- 이미지 -->
-        <img src="../../assets/graphic/customer-service-img.svg">
+        <img alt="심플한 민트색 상담원 아이콘" src="../../assets/graphic/customer-service-img.svg">
 
         <!-- 캡션 -->
         <p class="cus-text-2">
@@ -42,12 +42,12 @@ export default {
 
       <div class="cus-btn-group l-column">
         <!-- 문의 버튼 -->
-        <q-btn rounded flat class="full-width primary-btn input-lable-text-comment" @click="navigateTo('/myp4110')">
+        <q-btn class="full-width primary-btn input-lable-text-comment" flat rounded @click="navigateTo('/myp4110')">
           문의하기
         </q-btn>
 
         <!-- 만족도 조사 버튼 -->
-        <q-btn flat class="full-width secondary-btn" >
+        <q-btn class="full-width secondary-btn" flat>
           <div class="full-width flex-sb">
             고객센터가 도움이 되었나요?
             <q-icon name="arrow_forward_ios" size="14px"></q-icon>

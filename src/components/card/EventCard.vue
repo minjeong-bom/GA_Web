@@ -1,5 +1,5 @@
 <script>
-import {ref, watch} from 'vue'
+import {ref} from 'vue'
 
 export default {
   data() {
@@ -37,8 +37,7 @@ export default {
         }
 
         const response = await this.$api.post(config.url, config.body, config.etc);
-        let res = response.data.response.lists;
-        this.eventList = res;
+        this.eventList = response.data.response.lists;
       } catch (e) {
         console.error(e);
       }

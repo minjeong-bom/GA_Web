@@ -52,8 +52,7 @@ export default {
       }
 
       const result = await this.$api.post(config.url, config.body, config.etc);
-      const fileSource = result.data.response.view.bc_content;
-      this.thumbnailFile = fileSource;
+      this.thumbnailFile = result.data.response.view.bc_content;
       this.thumbLoading = false;
     },
     goToArticle(key) {
@@ -86,7 +85,7 @@ export default {
         <span class="tag-text">{{ tagsList }}</span>
       </div>
       <div v-if="thumbnailKey" class="article-thumbnail">
-        <img :src="'data:image/jpeg;base64,' + thumbnailFile"/>
+        <img :src="'data:image/jpeg;base64,' + thumbnailFile" alt="글의 썸네일 영역"/>
       </div>
     </div>
     <!-- 좋아요, count -->

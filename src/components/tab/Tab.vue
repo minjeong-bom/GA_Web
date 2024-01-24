@@ -2,7 +2,8 @@
   <div>
     <div class="tab">
       <!-- 탭 -->
-      <div class="tab-item" v-for="tab in tabs" :key="tab.id" @click="selectTab(tab.id)" :class="{ 'tab-focus' : tab.id == activeTab }">
+      <div v-for="tab in tabs" :key="tab.id" :class="{ 'tab-focus' : tab.id == activeTab }" class="tab-item"
+           @click="selectTab(tab.id)">
         {{ tab.title }}
       </div>
     </div>
@@ -53,8 +54,7 @@ export default {
   color: rgba(0, 0, 0, 0.5);
   font-weight: bold;
 
-  padding: 6px;
-  padding-bottom: 2px;
+  padding: 6px 6px 2px;
   border-bottom: 2px solid #fff;
   transition: all 0.5s;
 

@@ -2,7 +2,7 @@
 import TitleTopBar from "components/app-bar/TitleTopBar.vue";
 import ConfilrmDialog from "components/modal/confilrmDialog.vue";
 import IconAlart from "components/modal/iconAlart.vue";
-import {uploadFile} from "../../script/upload/uploadReportFiles";
+import {uploadFile} from "src/script/upload/uploadImage";
 
 export default {
   name: "MYP4110",

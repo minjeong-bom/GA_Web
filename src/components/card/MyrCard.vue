@@ -19,18 +19,18 @@ export default {
       <q-btn
         dense
         flat
-        round
         icon="add"
+        round
         style="color: var(--labels-secondary)"
       />
     </div>
     <div v-if="uploadPhoto" class="input-card full-width">
       <div>
-        <img class="profile-image" :src="'data:image/jpeg;base64,' + uploadPhoto"/>
+        <img :src="'data:image/jpeg;base64,' + uploadPhoto" alt="프로필 이미지 미리보기" class="profile-image"/>
       </div>
     </div>
-    <div class="input-card" v-else>
-      <img :src="`src/assets/graphic/${cardThumbNameImgaeName}.png`"/>
+    <div v-else class="input-card">
+      <img :alt="`${cardThumbNameImgaeName} 아이콘`" :src="`src/assets/graphic/${cardThumbNameImgaeName}.png`"/>
       <div>
         <p class="input-card-title sub-title-1">
           {{ cardTitle }}
@@ -63,7 +63,6 @@ export default {
   gap: 1rem;
 
   border-radius: 0.625rem;
-  border: 1px solid #CDCDCD;
 }
 
 .input-card-title {

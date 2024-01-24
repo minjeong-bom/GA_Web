@@ -123,7 +123,7 @@ export default {
     </section>
     <div v-else class="center-graphic-layout">
       <!-- 이미지 -->
-      <img src="../../assets/graphic/graphic-edit-imoji.png">
+      <img alt="편집 아이콘" src="../../assets/graphic/graphic-edit-imoji.png">
 
       <!-- 캡션 -->
       <p class="cus-text-2">

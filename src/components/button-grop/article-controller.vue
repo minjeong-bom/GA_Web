@@ -1,6 +1,4 @@
 <script>
-import {Notify} from 'quasar'
-
 export default {
   name: "article-controller",
   props: {
@@ -21,6 +19,34 @@ export default {
     this.checkBookmarkedPage();
   },
   methods: {
+    async addBookmark() {
+      try {
+        if (this.bookmarked) {
+          return
+        }
+        const config = {
+          url: '/api/crud/create',
+          body: {
+            data_prefix: 'bc',
+            data_title: this.userKey,
+            data_foreign_key2: 'SWMUCCYD', // 게시판 키
+            data_foreign_key: 'LBUSDDGP', // 카테고리 키
+            data_content: this.articleKey,
+            data_writer_name: this.userKey,
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom',
+            },
+          }
+        }
+        this.$api.post(config.url, config.body, config.etc);
+        this.$q.notify('북마크에 추가되었습니다');
+        this.isMarked = true;
+      } catch (e) {
+        this.$q.notify('네트워크 에러');
+      }
+    },
     async checkBookmarkedPage() {
       const config = {
         url: '/api/crud/lists/',
@@ -44,8 +70,7 @@ export default {
       const res = result.data.response.lists;
 
       if (res) {
-        const isMarked = res.some(item => item.bc_content === this.articleKey);
-        this.isMarked = isMarked;
+        this.isMarked = res.some(item => item.bc_content === this.articleKey);
       }
 
       if (this.isMarked) {
@@ -54,33 +79,8 @@ export default {
         console.log(this.bookmarkKey)
       }
     },
-    async addBookmark() {
-      try {
-        if (this.bookmarked) {
-          return
-        }
-        const config = {
-          url: '/api/crud/create',
-          body: {
-            data_prefix: 'bc',
-            data_title: this.userKey,
-            data_foreign_key2: 'SWMUCCYD', // 게시판 키
-            data_foreign_key: 'LBUSDDGP', // 카테고리 키
-            data_content: this.articleKey,
-            data_writer_name: this.userKey,
-          },
-          etc: {
-            headers: {
-              'SPRINT-API-KEY': 'sprintcombom',
-            },
-          }
-        }
-        const result = this.$api.post(config.url, config.body, config.etc);
-        this.$q.notify('북마크에 추가되었습니다');
-        this.isMarked = true;
-      } catch (e) {
-        this.$q.notify('네트워크 에러');
-      }
+    getLocalFontSize() {
+      this.fontSize = parseInt(localStorage.getItem('articleFontSize')) || 2;
     },
     async removeBookmark() {
       try {
@@ -97,16 +97,20 @@ export default {
             }
           },
         }
-        const res = await this.$api.post(delConfig.url, delConfig.body, delConfig.etc);
+        await this.$api.post(delConfig.url, delConfig.body, delConfig.etc);
         this.$q.notify('북마크가 삭제되었습니다');
         this.isMarked = false;
       } catch (e) {
         this.$q.notify('네트워크 에러');
       }
     },
+    setFontSize(size) {
+      localStorage.setItem('articleFontSize', size);
+      this.getLocalFontSize();
+      this.$emit('setFontSize');
+    },
     share() {
-      const currentURL = window.location.href;
-      this.sharedURL = currentURL;
+      this.sharedURL = window.location.href;
 
       const inputElement = document.createElement('input');
       inputElement.value = this.sharedURL;
@@ -116,14 +120,6 @@ export default {
       document.body.removeChild(inputElement);
 
       this.$q.notify('클립보드에 복사되었습니다');
-    },
-    setFontSize(size) {
-      localStorage.setItem('articleFontSize', size);
-      this.getLocalFontSize();
-      this.$emit('setFontSize');
-    },
-    getLocalFontSize() {
-      this.fontSize = parseInt(localStorage.getItem('articleFontSize')) || 2;
     }
   },
 }
@@ -190,14 +186,6 @@ export default {
   display: flex;
   gap: 24px;
   padding: 11px 16px;
-}
-
-.q-menu {
-  max-width: 100%;
-}
-
-.font-size-option-menu {
-  padding: 24px 22px;
 }
 
 .font-size-option-list {

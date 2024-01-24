@@ -159,8 +159,7 @@ export default {
 
 <style scoped>
 .login-view {
-  padding: 0 16px;
-  padding-top: 20%;
+  padding: 20% 16px 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;

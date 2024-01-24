@@ -62,7 +62,7 @@ export default {
           this.addComment = '';
         }
 
-        this.getCommentList();
+        await this.getCommentList();
       } catch (e) {
         console.error('댓글 생성 실패');
       }

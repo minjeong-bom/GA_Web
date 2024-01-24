@@ -37,36 +37,35 @@ export default {
       this.getBookmarkPage();
     },
     async getBookmarkPage() {
-     try {
-       const config = {
-         url: '/api/crud/lists/',
-         body: {
-           alias: 'bc',
-           prefix: 'bc',
-           scopes: 'bc_key,bc_title,bc_content',
-           columns_opts: {
-             bc_foreign_key2: 'SWMUCCYD',
-             bc_foreign_key: 'LBUSDDGP',
-             bc_title: this.userKey,
-           },
-           limit: 100
-         },
-         etc: {
-           headers: {
-             'SPRINT-API-KEY': 'sprintcombom'
-           }
-         }
-       }
-       const result = await this.$api.post(config.url, config.body, config.etc);
-       const res = result.data.response.lists;
-       this.bookmarks = res;
+      try {
+        const config = {
+          url: '/api/crud/lists/',
+          body: {
+            alias: 'bc',
+            prefix: 'bc',
+            scopes: 'bc_key,bc_title,bc_content',
+            columns_opts: {
+              bc_foreign_key2: 'SWMUCCYD',
+              bc_foreign_key: 'LBUSDDGP',
+              bc_title: this.userKey,
+            },
+            limit: 100
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom'
+            }
+          }
+        }
+        const result = await this.$api.post(config.url, config.body, config.etc);
+        this.bookmarks = result.data.response.lists;
 
-       for (let i = 0; this.bookmarks.length > i; i++) {
-         await this.getArticleContent(this.bookmarks[i].bc_key, this.bookmarks[i].bc_content);
-       }
-     } catch (e) {
-       this.articles = [];
-     }
+        for (let i = 0; this.bookmarks.length > i; i++) {
+          await this.getArticleContent(this.bookmarks[i].bc_key, this.bookmarks[i].bc_content);
+        }
+      } catch (e) {
+        this.articles = [];
+      }
     },
     async getArticleContent(bookmarkKey, articleKey) {
       this.isLoading = true;
@@ -117,14 +116,14 @@ export default {
     <section v-if="articles.length > 0" class="nomal-page-layout">
       <div v-for="article in articles">
         <my-bookmark-card
-          :bookmark-key="article.bookmark_key"
           :articke-key="article.bc_key"
-          :created-at="article.bc_regdate"
+          :bookmark-key="article.bookmark_key"
           :category-name="article.category_name"
-          :title-text="article.bc_content.title"
+          :count-number="article.bc_count"
+          :created-at="article.bc_regdate"
           :is-loading="isLoading"
           :thumbnail-key="article.bc_content.thumbnailKey"
-          :count-number="article.bc_count"
+          :title-text="article.bc_content.title"
           @resetList="resetList"
         />
       </div>
@@ -132,7 +131,7 @@ export default {
     <section v-else class="mb-64">
       <div class="center-graphic-layout">
         <!-- 이미지 -->
-        <img src="../../assets/graphic/graphic-bookmark.png">
+        <img alt="북마크 아이콘" src="../../assets/graphic/graphic-bookmark.png">
 
         <!-- 캡션 -->
         <p class="cus-text-2">
@@ -146,27 +145,27 @@ export default {
         <div class="button-group l-column">
           <p class="lable-2">회원들의 경험담을 들을 수 있는</p>
           <q-btn
-            rounded flat
+            class="primary-btn" flat
             label="스토리로 보러가기"
-            class="primary-btn"
+            rounded
             @click="navigateToHome(2)"
           />
         </div>
         <div class="button-group l-column">
           <p class="lable-2">일을 지속하는 데 도움되는</p>
           <q-btn
-            rounded flat
+            class="primary-btn" flat
             label="취업 스킬 보러가기"
-            class="primary-btn"
+            rounded
             @click="navigateToHome(3)"
           />
         </div>
         <div class="button-group l-column">
           <p class="lable-2">굿앺터눈 서비스가 추천하는</p>
           <q-btn
-            rounded flat
-            class="primary-btn"
+            class="primary-btn" flat
             label="지애픽 보러가기"
+            rounded
             @click="navigateToHome(4)"
           />
         </div>

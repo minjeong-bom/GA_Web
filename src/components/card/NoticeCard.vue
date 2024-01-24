@@ -1,5 +1,5 @@
 <script>
-import {ref, watch} from 'vue'
+import {ref} from 'vue'
 
 export default {
   data() {
@@ -139,7 +139,7 @@ export default {
   width: 6px;
   height: 6px;
   background: none;
-  border: 0.3px solid #8E8E93;
+  border: 1px solid #8E8E93;
   border-radius: 5px;
 }
 

@@ -40,7 +40,6 @@ export default {
 h2 {
   color: var(--k-85);
   text-align: center;
-  font-family: Pretendard;
   font-size: 17px;
   font-style: normal;
   font-weight: 700;
@@ -48,7 +47,6 @@ h2 {
 }
 
 .top-bar-button {
-  font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

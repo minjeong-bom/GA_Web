@@ -124,7 +124,7 @@ export default {
       });
 
       // 작성자명 가공 함수 호출
-      this.replaceWriterNames(response);
+      await this.replaceWriterNames(response);
     },
     async replaceWriterNames(array) {
       for (const item of array) {
@@ -158,7 +158,7 @@ export default {
     },
   },
   watch: {
-    searchText(newVal, oldVal) {
+    searchText() {
       this.getArticleList();
     },
   },
@@ -218,8 +218,7 @@ section {
   color: rgba(0, 0, 0, 0.5);
   font-weight: bold;
 
-  padding: 6px;
-  padding-bottom: 2px;
+  padding: 6px 6px 2px;
   border-bottom: 2px solid #fff;
   transition: all 0.5s;
 }

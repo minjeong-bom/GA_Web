@@ -38,7 +38,7 @@ export default {
         console.log(response);
         let res = response.data.response.lists;
 
-        this.replaceWriterNames(res);
+        await this.replaceWriterNames(res);
       } catch (e) {
         console.error(e);
       }

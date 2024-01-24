@@ -174,11 +174,6 @@ export default {
   gap: 0;
 }
 
-.bottom-button-fixed {
-  position: fixed;
-  bottom: 0;
-}
-
 .all-check-box-wrap {
   border-radius: 0.25rem;
   border: 1px solid #808080;
@@ -187,8 +182,7 @@ export default {
 
 .check-box-wrap {
   border-radius: 0.25rem;
-  padding: 0.6rem;
-  padding-right: 0;
+  padding: 0.6rem 0 0.6rem 0.6rem;
 }
 
 .checked * {

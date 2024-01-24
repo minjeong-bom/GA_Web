@@ -244,7 +244,7 @@ export default {
   gap: 0.625rem;
 
   border-radius: 0.25rem;
-  border: 0.33px solid var(--fills-quartternary);
+  border: 1px solid var(--fills-quartternary);
   background: var(--grays-gray-7);
 }
 

@@ -114,13 +114,13 @@ export default {
         <h2 class="headline-2">자격 사항 (선택)</h2>
         <p class="footnote">취득한 자격증을 입력해 주세요.</p>
       </div>
-      <div v-for="(item, index) in licenseGroupCount"
+      <div v-for="index in licenseGroupCount"
            class="input-group full-width">
-        <p class="sub-title-1">자격 {{ index + 1 }}</p>
+        <p class="sub-title-1">자격 {{ index }}</p>
         <div class="input-group-inner-wrap">
-          <q-input v-model="licenseName[index]" class="full-width" label="자격명"/>
-          <q-input v-model="licenseInst[index]" class="full-width" label="발급 기관"/>
-          <q-input v-model="licenseDate[index]" class="full-width" label="취득 년도" type="tel"/>
+          <q-input v-model="licenseName[index - 1]" class="full-width" label="자격명"/>
+          <q-input v-model="licenseInst[index - 1]" class="full-width" label="발급 기관"/>
+          <q-input v-model="licenseDate[index - 1]" class="full-width" label="취득 년도" type="tel"/>
         </div>
       </div>
       <q-btn flat label="자격 추가하기" @click="addLicenseGroup"></q-btn>
@@ -133,15 +133,15 @@ export default {
           기간이 너무 짧은 것은 제외하고, 1개월 이상의 교육 과정을 위주로 적는 것이 좋아요. (최대 2개)
         </p>
       </div>
-      <div v-for="(item, index) in eduGroupCount" class="input-group full-width">
-        <p class="sub-title-1">교육 {{ index + 1 }}</p>
+      <div v-for="index in eduGroupCount" class="input-group full-width">
+        <p class="sub-title-1">교육 {{ index }}</p>
         <div class="input-group-inner-wrap">
-          <q-input v-model="eduName[index]" class="full-width" label="교육명"/>
-          <q-input v-model="eduInst[index]" class="full-width" label="교육기관"/>
+          <q-input v-model="eduName[index - 1]" class="full-width" label="교육명"/>
+          <q-input v-model="eduInst[index - 1]" class="full-width" label="교육기관"/>
           <div class="flex-sb full-width" style="gap: 10px">
-            <q-input v-model="eduDateStart[index]" class="full-width" label="시작일" type="date"/>
+            <q-input v-model="eduDateStart[index - 1]" class="full-width" label="시작일" type="date"/>
             <p> - </p>
-            <q-input v-model="eduDateEnd[index]" class="full-width" label="종료일" type="date"/>
+            <q-input v-model="eduDateEnd[index - 1]" class="full-width" label="종료일" type="date"/>
           </div>
         </div>
       </div>

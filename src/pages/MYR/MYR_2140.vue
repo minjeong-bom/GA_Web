@@ -84,17 +84,17 @@ export default {
         <p class="footnote">최근 연도 순으로 기간과 관련 업무 경력을 입력하세요.</p>
       </div>
 
-      <div v-for="(item, index) in groupCount" class="input-group full-width">
-        <p class="sub-title-1">경력 {{ index + 1 }}</p>
+      <div v-for="index in groupCount" class="input-group full-width">
+        <p class="sub-title-1">경력 {{ index }}</p>
         <div class="input-group-inner-wrap">
-          <q-input v-model="companyName[index]" class="full-width" label="회사 또는 단체명"/>
-          <q-input v-model="departmentName[index]" class="full-width" label="소속 부서"/>
-          <q-input v-model="yourJob[index]" class="full-width" label="주요 담당 업무"/>
-          <q-input v-model="performance[index]" class="full-width" label="주요 성과"/>
+          <q-input v-model="companyName[index - 1]" class="full-width" label="회사 또는 단체명"/>
+          <q-input v-model="departmentName[index - 1]" class="full-width" label="소속 부서"/>
+          <q-input v-model="yourJob[index - 1]" class="full-width" label="주요 담당 업무"/>
+          <q-input v-model="performance[index - 1]" class="full-width" label="주요 성과"/>
           <div class="flex-sb full-width" style="gap: 10px">
-            <q-input v-model="start[index]" class="full-width" label="시작일" type="date"/>
+            <q-input v-model="start[index - 1]" class="full-width" label="시작일" type="date"/>
             <p> - </p>
-            <q-input v-model="end[index]" class="full-width" label="종료일" type="date"/>
+            <q-input v-model="end[index - 1]" class="full-width" label="종료일" type="date"/>
           </div>
         </div>
       </div>

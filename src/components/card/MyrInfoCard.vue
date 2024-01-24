@@ -19,8 +19,8 @@ export default {
       <q-btn dense flat icon="add" round style="color: var(--labels-secondary)"/>
     </div>
     <div class="myr-info-card-wrap">
-      <div v-for="(item, index) in results" v-if="itemLength">
-        <p v-for="(list, i) in itemLength" v-show="item.result[i]" class="tag-group-title">{{ item.result[i] }}</p>
+      <div v-for="item in results" v-if="itemLength">
+        <p v-for="index in itemLength" v-show="item.result[index - 1]" class="tag-group-title">{{ item.result[i] }}</p>
         <p class="caption-1">{{ item.name }}</p>
       </div>
       <div v-for="item in results" v-else>

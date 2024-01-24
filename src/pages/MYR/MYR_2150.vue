@@ -114,16 +114,16 @@ export default {
         <h2 class="headline-2">학력 사항</h2>
         <p class="footnote">최종 학력 기준으로 입력하세요.</p>
       </div>
-      <div v-for="(item, index) in schoolGroupCount"
+      <div v-for="index in schoolGroupCount"
            class="input-group full-width">
-        <p class="sub-title-1">학력 {{ index + 1 }}</p>
+        <p class="sub-title-1">학력 {{ index }}</p>
         <div class="input-group-inner-wrap">
-          <q-input v-model="schoolNames[index]" class="full-width" label="학교명"/>
-          <q-input v-model="schoolMajors[index]" class="full-width" label="전공"/>
+          <q-input v-model="schoolNames[index - 1]" class="full-width" label="학교명"/>
+          <q-input v-model="schoolMajors[index - 1]" class="full-width" label="전공"/>
           <div class="flex-sb full-width" style="gap: 10px">
-            <q-input v-model="schoolRangesStart[index]" class="full-width" label="재학 기간" type="date"/>
+            <q-input v-model="schoolRangesStart[index - 1]" class="full-width" label="재학 기간" type="date"/>
             <p> - </p>
-            <q-input v-model="schoolRangesEnd[index]" class="full-width" label="" type="date"/>
+            <q-input v-model="schoolRangesEnd[index - 1]" class="full-width" label="" type="date"/>
           </div>
         </div>
       </div>

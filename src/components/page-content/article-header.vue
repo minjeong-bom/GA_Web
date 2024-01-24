@@ -6,8 +6,8 @@ export default {
   components: {ArticleId},
   props: {
     articleKey: String,
-    article : Object,
-    userKey: String,
+    article: Object,
+    createrKey: String,
   }
 }
 </script>
@@ -15,17 +15,16 @@ export default {
 <template>
   <div>
     <div class="user-profile-wrap">
-      <article-id class="full-width"
-                  :article-key="articleKey"
-                  :userKey="userKey"
-                  :user-profile="''"
-                  :creater-key="article.createrKey"
+      <article-id :article-key="articleKey"
                   :article-type="article.articleType"
-                  :view-count="article.viewCount"
+                  :control-ui="true"
+                  :created-at="article.createdAt"
+                  :creater-key="userKey"
                   :creater-name="article.createrName"
                   :job-title="article.createrJob"
-                  :created-at="article.createdAt"
-                  :control-ui="true"/>
+                  :user-profile="''"
+                  :view-count="article.viewCount"
+                  class="full-width"/>
     </div>
     <div class="headline-wrap">
       <!-- 헤드라인 -->

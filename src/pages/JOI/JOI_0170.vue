@@ -6,7 +6,7 @@ export default {
   components: {TitleTopBar},
   data() {
     return {
-      userCarrer: '',
+      userCareer: '',
       userBackground: '',
       backgroundList: [
         "건설·건축",
@@ -27,47 +27,96 @@ export default {
         "운전·운송·배송",
         "의료",
         "인사·노무·HRD",
-        "IT개발·데이터",
+        "IT 개발·데이터",
         "총무·법무·사무",
         "회계·세무·재무",
         "고객상담·TM"
       ],
-      userCarrerTitle: '',
+      userCareerTitle: '',
+      originInfo: '',
+      profileKey: '',
     }
   },
   computed: {
     ready() {
-      return this.userBackground && this.userCarrerTitle && this.userCarrer;
+      return this.userBackground && this.userCareerTitle && this.userCareer;
     },
+  },
+  created() {
+    this.getDetailUserInfo();
   },
   methods: {
     navigateTo(path) {
       this.$router.push(path);
     },
+    async getDetailUserInfo() {
+      const storageUserKey = localStorage.getItem('userKey');
+
+      const config = {
+        url: '/api/crud/lists/',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key: 'AYZXHRWS',
+            bc_title: storageUserKey,
+          },
+          limit: 100
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
+        }
+      }
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      if (res) {
+        const result = res.data.response.lists[0];
+        this.profileKey = result.bc_key;
+        this.originInfo = result.bc_content;
+      }
+    },
     async setUserInfo() {
       const storageUserKey = localStorage.getItem('userKey');
+      console.log(this.profileKey)
       try {
-        const config = {
+        if (!this.profileKey) {
+          this.$q.notify('프로필 정보를 입력하는 유효 시간이 지났습니다');
+          this.navigateTo('/');
+          return
+        }
+
+        let bodyContent = this.originInfo;
+        bodyContent.job = {
+          total_career: this.userCareer,
+          career_name: this.userBackground,
+          job_title: this.userCareerTitle,
+        }
+
+        let config = {
           url: '/api/crud/create',
           body: {
-            data_key: storageUserKey,
-            data_prefix: 'mem',
-            data_career: this.userCarrer, // 총 경력
-            data_field: this.userBackground, // 업무 분야
-            data_job: this.userCarrerTitle, // 직업
+            data_key: this.profileKey,
+            data_prefix: 'bc',
+            data_foreign_key: 'AYZXHRWS',
+            data_title: storageUserKey,
+            data_content: JSON.stringify(bodyContent),
           },
           etc: {
             headers: {
-              'SPRINT-API-KEY': 'sprintcombom'
-            }
-          }
+              'SPRINT-API-KEY': 'sprintcombom',
+            },
+          },
         }
+
+        console.log('config', config)
         await this.$api.post(config.url, config.body, config.etc);
         this.navigateTo('/joi0180');
       } catch (e) {
-        console.error(e);
+        this.$q.notify('저장할 수 없습니다. 관리자에게 문의해 주세요.');
       }
-    }
+    },
   }
 }
 </script>
@@ -79,7 +128,7 @@ export default {
     <section class="inner-layout l-column">
       <!-- 경력 -->
       <q-input
-        v-model="userCarrer"
+        v-model="userCareer"
         label="총 경력이 몇 년인지 입력하세요"
         maxlength="3"
         outlined
@@ -97,7 +146,7 @@ export default {
       />
       <!-- 분야 상세 -->
       <q-input
-        v-model="userCarrerTitle"
+        v-model="userCareerTitle"
         hint="예) 교사, 기획자, 회계사, 마케터, 디자이너, 개발자 등"
         label="선택한 분야 내 구체적인 직업을 입력하세요"
         maxlength="20"
@@ -105,11 +154,18 @@ export default {
         style="font-size: 1.125rem"
       />
     </section>
-    <q-btn :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'" class="full-width bottom-button-fixed"
-           flat size="lg" square
-           @click="setUserInfo">
-      <span style="color: #fff">다음</span>
-    </q-btn>
+    <q-btn
+      :disable="!ready"
+      :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'"
+      class="full-width main-bottom-btn"
+      flat
+      label="다음"
+      rounded
+      size="lg"
+      style="background: var(--ga-red)"
+      text-color="white"
+      @click="setUserInfo()"
+    />
   </div>
 </template>
 
@@ -118,32 +174,7 @@ export default {
   padding: 1.25rem 16px;
 }
 
-.id-input-wrap {
-  position: relative;
-}
-
 .inner-layout {
   gap: 30px;
-}
-
-.btn-dd-check-wrap {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  padding: 0.6rem;
-}
-
-.bottom-button-fixed {
-  position: fixed;
-  bottom: 0;
-}
-
-.skip-button-wrap {
-  width: 100%;
-  position: fixed;
-  bottom: 72px;
-
-  opacity: 0.5;
 }
 </style>

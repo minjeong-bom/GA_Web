@@ -220,6 +220,22 @@
   width: calc(100% - 48px);
 }
 
+.main-bottom-btn {
+  position: absolute;
+  width: calc(100% - 2rem) !important;
+  left: 1rem;
+  bottom: 1rem;
+  margin: 0 1rem;
+}
+
+.skip-button-wrap {
+  width: 100%;
+  position: absolute;
+  bottom: 5.2rem;
+
+  opacity: 0.5;
+}
+
 /* editor style */
 .posting-view .q-btn .q-icon, .q-btn .q-spinner {
   font-size: 1.5rem;

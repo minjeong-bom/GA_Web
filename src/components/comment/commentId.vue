@@ -1,15 +1,14 @@
 <script>
 import UserProfileThumb from 'components/profile/userProfileTumb.vue';
 import timeAgo from 'src/script/timeData/timeAgo';
-import { itemDelete } from 'src/script/api/deleteCall';
+import {itemDelete} from 'src/script/api/deleteCall';
 
 export default {
   name: 'commentId',
-  components: { UserProfileThumb },
+  components: {UserProfileThumb},
   props: {
     commentKey: String,
     writer: String,
-    userPosition: String,
     createdAt: String,
     userKey: String,
     commentContent: String,
@@ -17,12 +16,16 @@ export default {
   data() {
     return {
       isMine: false,
+      userType: '',
+      userPosition: '',
+      nickname: '',
     };
   },
   created() {
     if (this.userKey === this.storageUserKey) {
       this.isMine = true;
     }
+    this.getDetailUserInfo();
   },
   computed: {
     createdTimeAgo() {
@@ -33,6 +36,43 @@ export default {
     },
   },
   methods: {
+    async getDetailUserInfo() {
+      const config = {
+        url: '/api/crud/lists/?order=desc_bc_regdate',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key2: 'IYETRHFC',
+            bc_title: this.userKey,
+          },
+          limit: 1
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
+        }
+      }
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      if (res) {
+        const result = res.data.response.lists[0];
+        this.userType = result.bc_content.user_info.type;
+        if (this.userType === 'nomal') {
+          this.userPosition = result.bc_content.job.job_title;
+        } else if (this.userType === 'pro') {
+          this.userPosition = result.bc_content.job.pro_title;
+        } else if (this.userType === 'enterprise') {
+          this.userPosition = result.bc_content.pro.area;
+        } else {
+          return '';
+        }
+
+        this.nickname = result.bc_content.user_info.nickname;
+      }
+    },
+
     async deleteComment() {
       await itemDelete(this.commentKey);
       this.$q.notify('댓글이 삭제되었습니다.');
@@ -51,7 +91,7 @@ export default {
 <template>
   <div class="card-id-wrap">
     <!-- User Profile Image -->
-    <user-profile-thumb :user-key="userKey" size="48px"></user-profile-thumb>
+    <user-profile-thumb v-if="userKey" :user-key="userKey" size="48px"></user-profile-thumb>
     <!-- Creater & Created Time -->
     <div class="l-column" style="width: 100%">
       <!-- 00님이 -->
@@ -62,9 +102,10 @@ export default {
       </div>
       <!-- Badge + User Role Caption | Created Time -->
       <div class="user-badge-created-time-wrap">
-        <img class="user-badge" src="../../assets/icon/person_assignment_24px.svg"/>
-        <span v-if="userPosition" class="card-caption-1">{{ userPosition }}</span>
-        <span v-if="userPosition" class="card-caption-2">|</span>
+        <img v-if="userType === 'pro'" alt="프로 뱃지" class="user-badge"
+             src="../../assets/icon/person_assignment_24px.svg"/>
+        <span class="card-caption-1">{{ userPosition }}</span>
+        <span v-if="userType !== 'pro'" class="card-caption-2">|</span>
         <span class="card-caption-1">{{ createdTimeAgo }}</span>
       </div>
     </div>

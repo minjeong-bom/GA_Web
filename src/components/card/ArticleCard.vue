@@ -3,6 +3,7 @@
     <div class="card">
       <!-- Card Id -->
       <article-id
+        v-if="createrKey"
         :article-key="articleKey"
         :article-type="articleType2"
         :article-type2="articleType2"
@@ -12,12 +13,14 @@
         :creater-name="writer"
         :job-title="badgeTitle"
         :user-key="storageUserKey"
+        :userMode="userMode"
         :view-count="viewCount"
       />
       <!-- Thumbnail & Title -->
-      <div v-if="fileObject64" class="article-card-thumbnail flex-center article-white-card">
-        <img :src="'data:image/jpeg;base64,' + fileObject64" @click="goToArticle(articleKey)"/>
-        <div class="overlay-headline" @click="goToArticle(articleKey)">
+      <div v-if="fileObject64" class="article-card-thumbnail flex-center article-white-card"
+           @click="goToArticle(articleKey)">
+        <img :alt="`${writer}의 프로필 이미지`" :src="'data:image/jpeg;base64,' + fileObject64"/>
+        <div class="overlay-headline">
           <div class="article-card-headline-wrap">
             <h4 class="article-card-headline">{{ titleText42 }}</h4>
           </div>
@@ -49,7 +52,7 @@ import ArticleId from 'components/card/ArticleId.vue';
 import article from '../../pages/Article.vue';
 
 export default {
-  components: { ArticleId },
+  components: {ArticleId},
   props: {
     articleKey: String,
     title: String,
@@ -65,6 +68,7 @@ export default {
     motivation: String,
     viewCount: String,
     thumbnailKey: String,
+    userMode: String,
   },
   data() {
     return {
@@ -77,7 +81,7 @@ export default {
   },
   methods: {
     goToArticle(articleId) {
-      this.$router.push({ path: '/article', query: { key: articleId } });
+      this.$router.push({path: '/article', query: {key: articleId}});
     },
     async getThumbnail() {
       if (this.thumbnailKey) {
@@ -95,8 +99,7 @@ export default {
           },
         };
         const res = await this.$api.post(config.url, config.body, config.etc);
-        const response = res.data.response.view.bc_content;
-        this.fileObject64 = response;
+        this.fileObject64 = res.data.response.view.bc_content;
         this.isLoading = false;
       } else {
         this.isLoading = false;
@@ -113,17 +116,6 @@ export default {
         return this.title.substring(0, 42);
       }
       return this.title;
-
-      const testing = {
-        bc_content: '/9j/4AAQSkZJRgABAQEASABIAAD/4gxYSUNDX1BST0ZJTEUAA',
-        bc_count: '0',
-        bc_foreign_key: 'FHGBWGLF',
-        bc_foreign_key2: 'UZPWQOWR',
-        bc_key: 'URQAOBBW',
-        bc_regdate: '2023-12-21 16:31:55',
-        bc_title: 'articleImage',
-        bc_writer_name: 'NKDRTZPV',
-      };
     },
     storageUserKey() {
       return localStorage.getItem('userKey');
@@ -145,10 +137,6 @@ export default {
   border-radius: 0.75rem;
   overflow: hidden;
   background-color: #fff;
-}
-
-.linear-gradient {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 50%, #000 115.35%);
 }
 
 .article-card-headline-wrap {

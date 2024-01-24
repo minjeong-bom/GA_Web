@@ -148,11 +148,17 @@ export default {
         </div>
       </div>
     </section>
-    <q-btn :disable="!ready" :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'"
-           class="full-width bottom-button-fixed" flat size="lg" square
-           @click="joinus">
-      <span style="color: #fff">다음</span>
-    </q-btn>
+    <q-btn
+      :disable="!ready"
+      :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'"
+      class="full-width main-bottom-btn"
+      flat
+      label="다음"
+      rounded
+      size="lg"
+      text-color="white"
+      @click="joinus()"
+    />
   </div>
 </template>
 

@@ -30,7 +30,7 @@ export default {
       ],
       edit: {
         user_info: {
-          user_type: '',
+          type: '',
           nickname: '',
           interesting: [],
           email: '',

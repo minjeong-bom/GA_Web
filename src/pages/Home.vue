@@ -11,19 +11,20 @@
         <tab :default-tab="defaultTab" :tabs="tabList" @changeTab="changeTab"></tab>
         <div v-for="item in articleList">
           <skeleton-card v-if="isLoading" :lines="10"/>
-          <article-card v-else
+          <article-card v-if="item.nickname && item.category_name"
                         :article-key="item.bc_key"
                         :article-type="item.category_name"
                         :article-type2="item.category_name"
                         :badge-title="item.badgeTitle"
                         :created-at="item.bc_regdate"
-                        :creater-key="item.bc_writer_key"
+                        :creater-key="item.bc_writer_name"
                         :is-loading="isLoading"
                         :motivation="item.motivation"
                         :thumbnail-key="item.bc_content.thumbnailKey"
                         :title="item.bc_content.title ? item.bc_content.title : item.bc_title"
+                        :user-mode="item.user_mode"
                         :view-count="item.bc_count"
-                        :writer="item.bc_writer_name"
+                        :writer="item.nickname"
                         :writer-thumb="item.writerThumb"
           />
         </div>
@@ -34,7 +35,7 @@
     <button class="btn-learn-more" @click="addLoadArticle">더 보기</button>
     <!-- 피드백 -->
     <section class="feed-back-section">
-      <img class="sun-animation" src="../assets/graphic/sun-animation.gif">
+      <img alt="작은 웃고있는 해 이미지" class="sun-animation" src="../assets/graphic/sun-animation.gif">
       <p>G@에 알려주고 싶은 이야기가 있나요?</p>
       <button class="btn-primary-small">네, 있어요</button>
     </section>
@@ -81,7 +82,7 @@ export default defineComponent({
         },
       ],
       tabCategoryType: '',
-      defaultTab: 0,
+      defaultTab: '0',
       articleList: [],
       articleListLength: 5,
       thumbnailList: [],
@@ -89,29 +90,19 @@ export default defineComponent({
     };
   },
   created() {
-    this.checkOnboard();
     const routeTab = this.$route.query.tab;
     this.defaultTab = routeTab ? Number(routeTab) : 1;
   },
   mounted() {
-
+    this.checkLogin();
   },
   methods: {
     addLoadArticle() {
       this.articleListLength += 10;
       this.getArticleList(this.tabCategoryType, this.articleListLength);
     },
-    checkOnboard() {
-      if (this.onboard) {
-        this.checkLogin();
-      } else {
-        this.$router.push('/onb0000');
-      }
-    },
     checkLogin() {
-      if (this.userId) {
-
-      } else {
+      if (!this.userId) {
         this.$router.push('/login');
       }
     },
@@ -121,16 +112,16 @@ export default defineComponent({
       this.articleList = [];
       this.articleListLength = 5;
 
-      if (tabId == 1) {
+      if (tabId === '1' || tabId === 1) {
         this.getArticleList('');
         this.tabCategoryType = '';
-      } else if (tabId == 2) {
+      } else if (tabId === '2' || tabId === 2) {
         this.getArticleList('story');
         this.tabCategoryType = 'story';
-      } else if (tabId == 3) {
+      } else if (tabId === '3' || tabId === 3) {
         this.getArticleList('skills');
         this.tabCategoryType = 'skills';
-      } else if (tabId == 4) {
+      } else if (tabId === '4' || tabId === 4) {
         this.getArticleList('gapick');
         this.tabCategoryType = 'gapick';
       }
@@ -209,8 +200,7 @@ export default defineComponent({
       };
 
       const res = await this.$api.post(config.url, config.body, config.etc);
-      const response = res.data.response.lists;
-      this.thumbnailList = response;
+      this.thumbnailList = res.data.response.lists;
 
       this.addThumbnailsToArticles();
     },
@@ -226,35 +216,51 @@ export default defineComponent({
       this.isLoading = false;
     },
     async replaceWriterNames(array) {
-      for (const item of array) {
+      for (let item of array) {
         try {
-          const res = await this.$api.post(
-            `/api/crud/single/${item.bc_writer_name}`,
-            {
-              prefix: 'mem',
-              alias: 'mem',
-              scopes: 'mem_title,mem_job',
-            },
-            {
-              headers: {
-                'SPRINT-API-KEY': 'sprintcombom',
+          let config = {
+            url: '/api/crud/lists/',
+            body: {
+              alias: 'bc',
+              prefix: 'bc',
+              scopes: 'bc_key,bc_content',
+              columns_opts: {
+                bc_foreign_key2: 'IYETRHFC',
+                bc_title: item.bc_writer_name,
               },
+              limit: 1
             },
-          );
-          if (res.data.status === 'success') {
-            item.bc_writer_key = item.bc_writer_name;
-            item.bc_writer_name = res.data.response.view.mem_title;
-            if (res.data.response.view.mem_job) {
-              item.badgeTitle = res.data.response.view.mem_job;
-            } else {
-              item.badgeTitle = '일반 회원'; // job 정보가 등록되지 않은 회원은 일반 회원으로 표시
+            etc: {
+              headers: {
+                'SPRINT-API-KEY': 'sprintcombom'
+              }
             }
           }
+          const res = await this.$api.post(config.url, config.body, config.etc);
+
+          const content = res.data.response.lists[0].bc_content;
+          const userType = content.user_info.type ? content.user_info.type : 'nomal';
+
+          item.user_mode = userType;
+          if (content.user_info.nickname) {
+            item.nickname = content.user_info.nickname;
+          }
+
+          if (userType === 'nomal') {
+            item.badgeTitle = content.job.job_title ? content.job.job_title : '';
+          } else if (userType === 'pro') {
+            item.badgeTitle = content.pro.area ? content.pro.area : '';
+          }
+
+          this.isLoading = false;
         } catch (e) {
-          item.badgeTitle = '비공개 회원'; // 삭제된 회원
+          // item.nickname = '비공개 회원';
+          // item.badgeTitle = ''; // 삭제된 회원
+          this.isLoading = false;
         }
       }
       this.articleList = array;
+      console.log(this.articleList)
     },
   },
   computed: {
@@ -264,13 +270,15 @@ export default defineComponent({
     onboard() {
       return localStorage.getItem('isOnboard');
     },
+    userType() {
+      return localStorage.getItem('user_mode');
+    }
   },
 });
 </script>
 
 <style scoped>
 .home {
-  //padding: 20px;
   background: linear-gradient(180deg, #FFF 14.1%, #F4F4F4 73.82%);
 }
 
@@ -278,40 +286,11 @@ export default defineComponent({
   padding: 20px;
 }
 
-.tab {
-  display: flex;
-  padding-top: 20px;
-  margin-bottom: 30px;
-  gap: 8px;
-}
-
-.tab-item {
-  font-size: 1.31rem;
-  color: rgba(0, 0, 0, 0.5);
-  font-weight: bold;
-
-  padding: 6px;
-  padding-bottom: 2px;
-  border-bottom: 2px solid #fff;
-  transition: all 0.5s;
-}
-
-.tab-focus {
-  color: #FD384E;
-  border-bottom: 2px solid #FD384E;
-}
-
-.event-card {
-  background: #FD384E;
-  height: 96px;
-  border-radius: 12px;
-}
-
 .btn-learn-more {
   display: flex;
   width: 100%;
   height: 63px;
-  padding: 20px 0px;
+  padding: 20px 0;
   justify-content: center;
   align-items: center;
   color: #FD7F38;

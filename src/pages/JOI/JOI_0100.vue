@@ -186,14 +186,14 @@ export default {
     <q-btn
       :disable="!ready"
       :style="ready? 'background: var(--ga-red);' : 'background: #C1C1C1;'"
-      class="full-width bottom-button-fixed"
+      class="full-width main-bottom-btn"
       flat
+      label="다음"
+      rounded
       size="lg"
-      square
-      @click="saveUserIdPw">
-      <span style="color: #fff">다음</span>
-    </q-btn>
-
+      text-color="white"
+      @click="saveUserIdPw"
+    />
     <!-- error dialog -->
     <icon-alart :alert-show="errorAlert"
                 :button-inner-text="'확인'"

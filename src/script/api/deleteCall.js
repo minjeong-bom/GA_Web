@@ -2,7 +2,6 @@ import axios from 'axios';
 
 export async function itemDelete(itemKey) {
   try {
-    console.log(itemKey)
     let config = {
       baseURL: 'https://combom.dev.go-sprint.co.kr/',
       method: 'post',
@@ -13,12 +12,13 @@ export async function itemDelete(itemKey) {
         }
       },
       headers: {
-        'SPRINT-API-KEY': 'sprintcombom'
+        'SPRINT-API-KEY': 'sprinttest'
       }
     }
     await axios(config);
     return true
   } catch (e) {
+    console.error('삭제 실패', e);
     return false
   }
 }

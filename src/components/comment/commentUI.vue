@@ -48,8 +48,6 @@ export default {
           },
         };
 
-        console.log(config);
-
         let res = '';
         if (this.editMode.status) {
           config.body.comment_key = this.editMode.comment_key;
@@ -62,13 +60,15 @@ export default {
         }
         if (res.status) {
           this.addComment = '';
-          this.getCommentList();
         }
+
+        this.getCommentList();
       } catch (e) {
         console.error('댓글 생성 실패');
       }
     },
     async getCommentList() {
+      this.comments = [];
       try {
         const config = {
           url: `/api/logs/commentlists?foreign_key=${this.articleKey}`,
@@ -111,13 +111,13 @@ export default {
     <!-- 댓글 추가 영역 -->
     <div class="comment-input-area">
       <!-- profile image -->
-      <user-profile-thumb :user-key="storageUserKey" size="48px"></user-profile-thumb>
+      <user-profile-thumb :user-key="storageUserKey" size="36px"></user-profile-thumb>
       <!-- comment input -->
       <q-input v-if="editMode.status" v-model="addComment" :placeholder="commentInputPlaceholder"
                autogrow class="full-width" dense outlined rounded>
         <template v-slot:append>
           <q-btn flat round style="right: -10px" @click="createComment">
-            <img src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
+            <img alt="전송 아이콘" src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
           </q-btn>
         </template>
       </q-input>
@@ -126,7 +126,7 @@ export default {
                autogrow class="full-width" dense outlined rounded>
         <template v-slot:append>
           <q-btn flat round style="right: -10px" @click="createComment">
-            <img src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
+            <img alt="전송 아이콘" src="../../assets/icon/ico_arrow-up-cycle.svg" style="width: 20px">
           </q-btn>
         </template>
       </q-input>
@@ -159,7 +159,7 @@ export default {
 
 .comment {
   display: flex;
-  padding: 10px 16px 0px 16px;
+  padding: 10px 16px 0 16px;
   flex-direction: column;
   align-items: flex-start;
 }

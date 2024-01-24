@@ -28,6 +28,9 @@ export default {
     this.getDetailUserInfo();
   },
   computed: {
+    localUserKey() {
+      return localStorage.getItem('userKey');
+    },
     ready() {
       return this.edit.pro.area && this.edit.pro.total_career && this.detailProfileKey;
     },

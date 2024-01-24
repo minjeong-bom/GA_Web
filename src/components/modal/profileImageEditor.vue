@@ -1,13 +1,15 @@
 <script>
 import {uploadFile} from "src/script/upload/uploadImage";
 import {convertToBase64} from "src/script/base64/fileToBase64";
+
 export default {
   name: "profileImageEditor",
   data() {
     return {
       profileKey: '',
       profileMode: true,
-      avatarList: ['쥐', '소', '돼지', '호랑이', '용', '뱀', '말', '양', '원숭이', '닭', '고양이', '토끼'],
+      images: {},
+      avatarList: ['rat', 'ox', 'pig', 'tiger', 'dragon', 'snake', 'horse', 'sheep', 'monkey', 'rooster', 'cat', 'rabbit'],
       fileObject: null,
       fileObject64: null,
       imageInfo: {
@@ -42,12 +44,12 @@ export default {
             alias: "bc",
             prefix: "bc",
             scopes: "bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content",
-            columns_opts : {
-              bc_foreign_key2 : 'XSKEQNCO',
-              bc_foreign_key : 'DZVBYFPW',
-              bc_title : this.userKey
+            columns_opts: {
+              bc_foreign_key2: 'XSKEQNCO',
+              bc_foreign_key: 'DZVBYFPW',
+              bc_title: this.userKey
             },
-            "limit" : 1
+            "limit": 1
           },
           etc: {
             headers: {
@@ -78,6 +80,7 @@ export default {
     setAvatar(avatar) {
       this.imageInfo.type = 'avatar';
       this.imageInfo.avatarName = avatar + '_' + this.profileBackground;
+      this.loadImage(this.imageInfo.avatarName);
       this.fileObject = null;
     },
     removeAvatar() {
@@ -88,8 +91,8 @@ export default {
 
       // 색상 이름 배열
       let randomIndex = Math.floor(Math.random() * this.randomColor.length); // 랜덤 인덱스 생성
-      let randomColor = this.randomColor[randomIndex]; // 랜덤 색상 선택
-      this.imageInfo.color = randomColor;
+       // 랜덤 색상 선택
+      this.imageInfo.color = this.randomColor[randomIndex];
     },
     async triggerFileInput() {
       this.$refs.fileInput.pickFiles();
@@ -106,7 +109,7 @@ export default {
         let profileConfig = {
           url: '/api/crud/create',
           body: {
-            data_prefix : 'bc',
+            data_prefix: 'bc',
             data_key: this.profileKey ? this.profileKey : null,
             data_title: this.userKey,
             data_foreign_key: 'DZVBYFPW',
@@ -121,12 +124,12 @@ export default {
           }
         }
         console.log(profileConfig)
-        const result = await this.$api.post(profileConfig.url, profileConfig.body, profileConfig.etc);
+        await this.$api.post(profileConfig.url, profileConfig.body, profileConfig.etc);
         this.$q.notify('프로필 사진이 변경되었습니다.');
         this.$emit('closeModal');
       } catch (e) {
         console.error(e);
-        this.$q.notify('프로필 사진 변경 실패');
+        this.$q.notify('프로필 사진을 변경할 수 없습니다. 관리자에게 문의해 주세요.');
       }
     },
     async convertObjectFile() {
@@ -157,11 +160,15 @@ export default {
           <section class="profile-image-section">
             <div class="profile-preview-wrap">
               <!-- 아바타 썸네일 -->
-              <img v-if="imageInfo.type === 'avatar'" class="avatar-preview" :src="'../../src/assets/graphic/profile/' + imageInfo.avatarName + '.png'">
+              <img v-if="imageInfo.type === 'avatar'"
+                   :alt="`내 프로필 사진 미리보기 이미지 - ${imageInfo.avatarName} 그림 동물 프로필로 설정됨`"
+                   :src="`resources/profile/${imageInfo.avatarName}.png`" class="avatar-preview">
               <!-- 업로드 이미지 썸네일 -->
-              <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64" class="profile-preview" :src="fileObject64">
+              <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64" :src="fileObject64"
+                   alt="커스텀 썸네일 이미지"
+                   class="profile-preview">
               <!-- 설정된 이미지 없을 때 -->
-              <q-avatar v-else icon="person" :color="imageInfo.color" size="6rem"/>
+              <q-avatar v-else :color="imageInfo.color" icon="person" size="6rem"/>
             </div>
           </section>
 
@@ -177,10 +184,10 @@ export default {
           <!-- 프로필 설정 버튼 그룹 -->
           <section class="gap-18">
             <!-- 이미지 등록 버튼 -->
-            <q-btn round flat
-                   size="16px"
+            <q-btn class="add-image" flat
                    icon="photo_camera"
-                   class="add-image"
+                   round
+                   size="16px"
                    @click="triggerFileInput"
             />
             <q-file
@@ -190,21 +197,23 @@ export default {
             />
 
             <!-- 아바타 설정 버튼 -->
-            <q-avatar size="48px" v-for="item in avatarList" @click="setAvatar(item)">
-              <img :src="'../../src/assets/graphic/profile/' + item + '_' + profileBackground + '.png'">
+            <q-avatar v-for="item in avatarList" size="48px" @click="setAvatar(item)">
+              <img :alt="`${item} 그림이 그려진 동물 프로필 이미지`" :src="`resources/profile/${item + '_' + profileBackground}.png`"
+                   class="avatar-preview">
             </q-avatar>
+
           </section>
 
           <div class="button-group">
-            <q-btn rounded flat
+            <q-btn class="btn-cancel" flat
                    label="지우기"
-                   class="btn-cancel"
+                   rounded
                    @click="removeAvatar"
             />
-            <q-btn rounded flat
+            <q-btn class="btn-confirm" color="red"
+                   flat
                    label="완료"
-                   color="red"
-                   class="btn-confirm"
+                   rounded
                    @click="saveProfile"
             />
           </div>
@@ -247,7 +256,7 @@ export default {
   padding: 2.5rem 1.5rem;
   box-sizing: border-box;
   background-color: #f5f5f5;
-  border-radius: 1.75rem 1.75rem 0rem 0rem;
+  border-radius: 1.75rem 1.75rem 0 0;
 }
 
 .profile-preview-wrap {
@@ -291,7 +300,7 @@ export default {
   gap: 16px;
 }
 
-.gap-18>div {
+.gap-18 > div {
   flex-shrink: 0;
 }
 
@@ -300,7 +309,7 @@ export default {
   gap: 16px;
 }
 
-.button-group>button {
+.button-group > button {
   width: 50%;
 
   font-size: 1.25rem;

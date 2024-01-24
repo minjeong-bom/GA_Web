@@ -54,7 +54,7 @@ export default {
       ],
       edit: {
         user_info: {
-          user_type: 'nomal',
+          type: 'nomal',
           nickname: '',
           interesting: [],
           email: '',
@@ -78,7 +78,7 @@ export default {
   methods: {
     async save() {
       try {
-        this.edit.user_info.user_type = 'nomal';
+        this.edit.user_info.type = 'nomal';
 
         const config = {
           url: '/api/crud/create',
@@ -106,7 +106,7 @@ export default {
     },
     async getDetailUserInfo() {
       const config = {
-        url: '/api/crud/lists/',
+        url: '/api/crud/lists/?order=desc_bc_regdate',
         body: {
           alias: 'bc',
           prefix: 'bc',
@@ -127,7 +127,15 @@ export default {
       const res = await this.$api.post(config.url, config.body, config.etc);
       if (res) {
         const result = res.data.response.lists[0];
-        this.edit = result.bc_content;
+        this.edit.user_info.nickname = result.bc_content.user_info.nickname;
+        this.edit.user_info.email = result.bc_content.user_info.email;
+        this.edit.user_info.interesting = result.bc_content.user_info.interesting;
+        this.edit.job.working = result.bc_content.job.working;
+        this.edit.job.searching = result.bc_content.job.searching;
+        this.edit.job.searching_type = result.bc_content.job.searching_type;
+        this.edit.job.total_career = result.bc_content.job.total_career;
+        this.edit.job.career_name = result.bc_content.job.career_name;
+        this.edit.job.job_title = result.bc_content.job.job_title;
         this.detailProfileKey = result.bc_key;
       }
     },

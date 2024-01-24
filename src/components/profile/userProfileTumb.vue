@@ -14,16 +14,21 @@ export default {
         type: 'none',
         imageKey: '',
         avatarName: '',
-        color: '',
+        color: 'grey',
       },
       fileObject64: null,
       isLoading: true,
     };
   },
-  mounted() {
+  created() {
     this.getProfileInfo();
   },
   methods: {
+    onImageError(event) {
+      console.log(this.userKey)
+      this.imageInfo.type = 'none'; // 대체 이미지 경로
+      this.imageInfo.color = 'grey'; // 대체 이미지 경로
+    },
     async getProfileInfo() {
       try {
         const config = {
@@ -63,7 +68,7 @@ export default {
           }
         }
       } catch (e) {
-        console.error('등록된 프로필 정보가 없었습니다.', e);
+        console.info('등록된 프로필 정보가 없었습니다.', this.userKey);
         this.imageInfo.type = 'none';
         this.imageInfo.color = 'pink-4';
         this.isLoading = false;
@@ -97,16 +102,17 @@ export default {
   <div>
     <section class="profile-image-section">
       <div v-if="isLoading" class="profile-preview-wrap">
-        <q-skeleton :style="'width:' + size + ';' + 'height:' + size + ';'" type="circle"/>
+        <q-skeleton :style="`width:${size};height:${size};`" type="circle"/>
       </div>
-      <div v-else :style="'width:' + size + ';' + 'height:' + size + ';'" class="profile-preview-wrap">
+      <div v-else :style="`width:${size};height:${size};`" class="profile-preview-wrap">
         <!-- 아바타 썸네일 -->
         <img v-if="imageInfo.type === 'avatar'"
-             :src="'../../src/assets/graphic/profile/' + imageInfo.avatarName + '.png'"
-             class="avatar-preview">
+             :src="'resources/profile/' + imageInfo.avatarName + '.png'"
+             class="avatar-preview"
+             @error="onImageError">
         <!-- 업로드 이미지 썸네일 -->
         <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64"
-             :src="'data:image/jpeg;base64,' + fileObject64"
+             :src="`data:image/jpeg;base64,${fileObject64}`"
              class="profile-preview">
         <!-- 설정된 이미지 없을 때 -->
         <q-avatar v-else :color="imageInfo.color" :size="size" icon="person"/>

@@ -2,15 +2,39 @@
   <div class="article-layout">
     <text-button-top-bar :title-text="this.categoryName"></text-button-top-bar>
     <!-- 헤더 -->
-    <article-header :article="article" :articleKey="articleKey" :user-key="storageUserKey"/>
+    <div class="user-profile-wrap">
+      <article-id
+        v-if="article.createrKey"
+        :article-key="articleKey"
+        :article-type="article.articleType"
+        :control-ui="true"
+        :created-at="article.createdAt"
+        :creater-key="article.createrKey"
+        :creater-name="article.createrName"
+        :job-title="article.createrJob"
+        :user-key="storageUserKey"
+        :userMode
+          ="article.createrType"
+        :view-count="article.viewCount"
+        article-type2=""
+        class="full-width"
+      />
+    </div>
+    <div class="headline-wrap">
+      <!-- 헤드라인 -->
+      <h1 class="article-card-headline">{{ article.title }}</h1>
+      <!-- 작성 시각 -->
+      <p class="article-created-at-text">{{ article.createdAt }}</p>
+    </div>
     <!-- 댓글수 & 공감수, 북마크 & 공유 & 폰트크기 설정 -->
     <div class="flex-sb article-overview-wrap">
       <article-overview-info :comment-length="counts.comments" :likes-length="counts.likes" class="article-overview"/>
       <article-controller :article-key="articleKey" :user-key="storageUserKey" @setFontSize="setFontSize"/>
     </div>
     <!-- 썸네일 -->
-    <skeleton-card v-if="isLoading" :lines="1"></skeleton-card>
-    <img v-if="article.thumbnail" :src="'data:image/jpeg;base64,' + article.thumbnail" class="thumbnail-image-style">
+    <skeleton-card v-if="isLoading" lines="1"/>
+    <img v-if="article.thumbnail" :alt="`아티클 썸네일 : ${article.title}`"
+         :src="'data:image/jpeg;base64,' + article.thumbnail" class="thumbnail-image-style">
     <!-- 본문 -->
     <section class="article-content">
       <skeleton-line v-if="isLoading" :lines="4"></skeleton-line>
@@ -24,8 +48,7 @@
       <like-stamp :article-key="articleKey" :user-key="storageUserKey" @likesCount="likesCount"/>
     </div>
     <!-- 댓글 입력, 댓글 목록 -->
-    <comment-u-i :article-key="articleKey" :storage-user-key="storageUserKey"
-                 @commentsCount="commentsCount"></comment-u-i>
+    <comment-u-i :article-key="articleKey" :storage-user-key="storageUserKey" @commentsCount="commentsCount"/>
   </div>
 </template>
 
@@ -38,10 +61,13 @@ import SkeletonLine from "components/loading/SkeletonLine.vue";
 import SkeletonCard from "components/loading/SkeletonCard.vue";
 import CommentUI from "components/comment/commentUI.vue";
 import LikeStamp from "components/like-stamp/like-stamp.vue";
+import {viewCountAdd} from "src/script/api/viewCountAddCall";
+import ArticleId from "components/card/ArticleId.vue";
 
 
 export default {
   components: {
+    ArticleId,
     CommentUI,
     LikeStamp,
     SkeletonCard,
@@ -64,6 +90,7 @@ export default {
         content: '',
         createdAt: '',
         createrJob: '',
+        createrType: '',
       },
       counts: {
         comments: 0,
@@ -73,7 +100,7 @@ export default {
       thumbnailImageSource: null, // 썸네일 이미지
     }
   },
-  mounted() {
+  created() {
     this.getArticleContent();
     this.setFontSize();
   },
@@ -106,7 +133,14 @@ export default {
         this.isLoading = false;
         const content = res.data.response.view
 
+        this.article.title = content.bc_content.title;
+        this.article.viewCount = content.bc_count;
+        this.article.content = content.bc_content.body.replace(/\r\n|\r|\n/g, '<br/>');
+        this.article.thumbnailKey = content.bc_content.thumbnailKey;
+        this.article.createrKey = content.bc_writer_name;
+        this.article.createdAt = content.bc_regdate;
         this.article.articleType = content.bc_foreign_key;
+
         if (content.bc_foreign_key === 'DPORHCPV') {
           this.article.articleType = '스토리'
         } else if (content.bc_foreign_key === 'KWUOXKGM') {
@@ -115,20 +149,24 @@ export default {
           this.article.articleType = '지애픽'
         }
 
-        this.article.title = content.bc_content.title;
-        this.article.viewCount = content.bc_count;
-        this.article.content = content.bc_content.body.replace(/(?:\r\n|\r|\n)/g, '<br/>');
-        this.article.thumbnailKey = content.bc_content.thumbnailKey;
-        this.article.createrKey = content.bc_writer_name;
-        this.article.createdAt = content.bc_regdate;
-        this.getCreaterInfo();
-        this.getThumbnail();
+        // 조회수 증가
+        if (this.storageUserKey !== this.article.createrKey) {
+          this.article.viewCount = content.bc_count + 1;
+          await viewCountAdd(this.articleKey);
+        }
+
+        await this.getThumbnail();
+        await this.getCreaterInfo();
       } catch (e) {
-        console.error('게시글이 유효하지 않습니다.', e);
+        this.$q.notify('유효한 게시글이 아닙니다 x_x');
+        this.$router.go(-1);
         this.isLoading = false;
       }
     },
     async getThumbnail() {
+      if (!this.article.thumbnailKey) {
+        return
+      }
       this.isLoading = true;
       try {
         const config = {
@@ -154,28 +192,38 @@ export default {
       }
     },
     async getCreaterInfo() {
-      try {
-        const config = {
-          url: '/api/crud/single/' + this.article.createrKey,
-          body: {
-            "prefix": "mem",
-            "alias": "mem",
-            "scopes": "mem_title,mem_job"
+      const config = {
+        url: '/api/crud/lists/?order=desc_bc_regdate',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key2: 'IYETRHFC',
+            bc_title: this.article.createrKey,
           },
-          etc: {
-            headers: {
-              'SPRINT-API-KEY': 'sprintcombom'
-            }
+          limit: 1
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
           }
         }
-        const res = await this.$api.post(config.url, config.body, config.etc);
-        const response = res.data.response.view
-        this.article.createrName = response.mem_title
-        this.article.createrJob = response.mem_job
+      }
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      if (res) {
+        const result = res.data.response.lists[0].bc_content;
+        this.article.createrType = result.user_info.type;
+        if (result.user_info.type === 'nomal') {
+          this.article.createrName = result.user_info.nickname;
+          this.article.createrJob = result.job.job_title ? result.job.job_title : '';
+        } else if (result.user_info.type === 'pro') {
+          this.article.createrName = result.user_info.nickname;
+          this.article.createrJob = result.pro.area ? result.pro.area + ' 전문가' : '전문가';
+        }
 
-      } catch (e) {
-        console.error('사용자 정보가 유효하지 않습니다.', e);
-        this.isLoading = false
+      } else {
+        this.nickname = '비공개 회원';
       }
     },
   },
@@ -215,7 +263,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .article-overview {
   display: flex;
   align-items: center;
@@ -234,5 +282,38 @@ export default {
 
 .thumbnail-image-style {
   width: 100%;
+}
+
+.user-profile-wrap {
+  display: flex;
+  padding: 1rem 1rem 0 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+.headline-wrap {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.375rem;
+
+  .article-card-headline {
+    margin-block-end: 0;
+    margin-block-start: 0;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .article-created-at-text {
+    color: #999;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.25rem; /* 166.667% */
+  }
 }
 </style>

@@ -202,7 +202,6 @@ export default defineComponent({
 
 <style scoped>
 .home {
-  //padding: 20px;
   background: linear-gradient(180deg, #FFF 14.1%, #F4F4F4 73.82%);
 }
 
@@ -251,17 +250,6 @@ export default defineComponent({
   border: none;
 }
 
-.feed-back-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  margin-top: 20px;
-  padding: 30px;
-  background-color: #fff;
-}
-
 .feed-back-section p {
   text-align: center;
   font-size: 1.125rem;
@@ -269,10 +257,5 @@ export default defineComponent({
 
   margin-block-start: 15px;
   margin-block-end: 15px;
-}
-
-.feed-back-section .sun-animation {
-  width: 56px;
-  height: 56px;
 }
 </style>

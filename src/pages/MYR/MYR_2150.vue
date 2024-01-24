@@ -134,24 +134,24 @@ export default {
         <h2 class="headline-2">외국어</h2>
         <p class="footnote">최종 학력 기준으로 입력하세요.</p>
       </div>
-      <div v-for="(item, index) in languageGroupCount"
+      <div v-for="index in languageGroupCount"
            class="input-group full-width">
-        <p class="sub-title-1">외국어 {{ index + 1 }}</p>
+        <p class="sub-title-1">외국어 {{ index }}</p>
         <div class="input-group-inner-wrap">
-          <q-input v-model="languageNames[index]" class="full-width" label="외국어 종류"/>
+          <q-input v-model="languageNames[index - 1]" class="full-width" label="외국어 종류"/>
           <div>
             <p class="caption-3">활용 수준 : 듣기</p>
-            <q-radio v-model="languageLeadingLevels[index]" color="teal" label="상" val="상"/>
-            <q-radio v-model="languageLeadingLevels[index]" color="teal" label="중" val="중"/>
-            <q-radio v-model="languageLeadingLevels[index]" color="teal" label="하" val="하"/>
+            <q-radio v-model="languageLeadingLevels[index - 1]" color="teal" label="상" val="상"/>
+            <q-radio v-model="languageLeadingLevels[index - 1]" color="teal" label="중" val="중"/>
+            <q-radio v-model="languageLeadingLevels[index - 1]" color="teal" label="하" val="하"/>
             <p class="caption-3">활용 수준 : 읽기</p>
-            <q-radio v-model="languageReadingLevels[index]" color="teal" label="상" val="상"/>
-            <q-radio v-model="languageReadingLevels[index]" color="teal" label="중" val="중"/>
-            <q-radio v-model="languageReadingLevels[index]" color="teal" label="하" val="하"/>
+            <q-radio v-model="languageReadingLevels[index - 1]" color="teal" label="상" val="상"/>
+            <q-radio v-model="languageReadingLevels[index - 1]" color="teal" label="중" val="중"/>
+            <q-radio v-model="languageReadingLevels[index - 1]" color="teal" label="하" val="하"/>
             <p class="caption-3">활용 수준 : 쓰기</p>
-            <q-radio v-model="languageWriteLevels[index]" color="teal" label="상" val="상"/>
-            <q-radio v-model="languageWriteLevels[index]" color="teal" label="중" val="중"/>
-            <q-radio v-model="languageWriteLevels[index]" color="teal" label="하" val="하"/>
+            <q-radio v-model="languageWriteLevels[index - 1]" color="teal" label="상" val="상"/>
+            <q-radio v-model="languageWriteLevels[index - 1]" color="teal" label="중" val="중"/>
+            <q-radio v-model="languageWriteLevels[index - 1]" color="teal" label="하" val="하"/>
           </div>
         </div>
       </div>

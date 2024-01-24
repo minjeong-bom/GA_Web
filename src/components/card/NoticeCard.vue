@@ -85,7 +85,7 @@ export default {
                   :class="{'focused': index === buttonIndex, 'page-nation-button': true}"
                   @click="slide = buttonIndex"
           >
-            <p v-if="false">{{ item }}</p>
+            <span v-if="false">{{ item }}</span>
           </button>
         </div>
       </q-carousel-slide>

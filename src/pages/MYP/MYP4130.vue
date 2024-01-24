@@ -22,15 +22,15 @@ export default {
       </h1>
 
       <div class="column center-graphic">
-        <img src="../../assets/graphic/face-smail-svg.svg">
+        <img alt="웃고 있는 사람 이모지" src="../../assets/graphic/face-smail-svg.svg">
       </div>
 
       <!-- 다음 버튼 -->
       <div class="bottom-fixed-btn">
         <q-btn
-          rounded flat
-          class="primary-btn full-width"
+          class="primary-btn full-width" flat
           label="닫기"
+          rounded
           @click="navigateToHome"
         />
       </div>

@@ -1,17 +1,17 @@
 <template>
   <div class="main-top-bar-wrap">
-    <img class="home-top-bar-logo" src="../../assets/brand/ga-logo.svg">
-    <q-btn flat round color="black" style="font-size: 1rem" icon="menu" @click="openMenu()"/>
+    <img alt="GoodAfternoon 로고" class="home-top-bar-logo" src="../../assets/brand/ga-logo.svg">
+    <q-btn color="black" flat icon="menu" round style="font-size: 1rem" @click="openMenu()"/>
   </div>
 </template>
 
 <script>
 export default {
-	methods: {
-		openMenu() {
-			this.$router.replace('/menu');
-		}
-	}
+  methods: {
+    openMenu() {
+      this.$router.replace('/menu');
+    }
+  }
 }
 </script>
 

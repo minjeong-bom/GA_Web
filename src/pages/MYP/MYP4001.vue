@@ -98,7 +98,7 @@ export default {
       <!-- 문의한게 없을 경우 -->
       <div v-else class="center-graphic-layout">
         <!-- 이미지 -->
-        <img src="../../assets/graphic/graphic-edit-imoji.png">
+        <img alt="문의 아이콘" src="../../assets/graphic/graphic-edit-imoji.png">
 
         <!-- 캡션 -->
         <p class="cus-text-2">
@@ -123,7 +123,7 @@ export default {
 }
 
 .ask-card-item {
-  padding: 1.25rem 0rem;
+  padding: 1.25rem 0;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.625rem;

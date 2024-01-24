@@ -135,7 +135,7 @@ export default {
         }
         const result = await this.$api.post(config.url, config.body, config.etc)
         const resumeKey = result.data.response.result.data_key;
-        this.createdResumeResult(resumeKey);
+        await this.createdResumeResult(resumeKey);
       } catch (e) {
         console.error('이력서 등록 실패', e)
       }
@@ -162,7 +162,7 @@ export default {
             }
           }
         }
-        const result = await this.$api.post(config.url, config.body, config.etc)
+        await this.$api.post(config.url, config.body, config.etc)
       } catch (e) {
         console.error('목록 등록 실패', e)
       }
@@ -322,7 +322,7 @@ export default {
       return value
     },
     goalResult() {
-      const arraySet = [
+      return [
         {
           name: '목표 분야',
           result: this.goalArea
@@ -332,8 +332,6 @@ export default {
           result: this.goalCompany
         }
       ]
-
-      return arraySet
     },
     myHistoryResult() {
       let arraySet = [];
@@ -407,7 +405,7 @@ export default {
       return arraySet
     },
     personalInfoResult() {
-      const arraySet = [
+      return [
         {
           name: '결혼 구분',
           result: this.married
@@ -417,8 +415,6 @@ export default {
           result: this.familys
         }
       ]
-
-      return arraySet
     },
   }
 }

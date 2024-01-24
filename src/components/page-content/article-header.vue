@@ -38,7 +38,7 @@ export default {
 <style scoped>
 .user-profile-wrap {
   display: flex;
-  padding: 1rem 1rem 0rem 1rem;
+  padding: 1rem 1rem 0 1rem;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.625rem;
@@ -63,7 +63,6 @@ export default {
 
 .article-created-at-text {
   color: #999;
-  font-family: Pretendard;
   font-size: 0.75rem;
   font-style: normal;
   font-weight: 600;

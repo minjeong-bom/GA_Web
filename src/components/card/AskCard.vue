@@ -66,7 +66,6 @@ p {
 
 .ask-status {
   text-align: right;
-  font-family: Spoqa Han Sans Neo;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;

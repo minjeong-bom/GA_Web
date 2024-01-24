@@ -171,9 +171,9 @@ export default {
 
 .editor-surface {
   display: flex;
-  padding: 0rem 1rem;
+  padding: 0 1rem;
   flex-direction: column;
-  gap: 0.3125rem;
+  gap: 0.3rem;
   background: #fff;
   margin-top: 10px;
 }

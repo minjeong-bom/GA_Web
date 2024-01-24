@@ -35,7 +35,6 @@ export default {
 
 .lable {
   color: #999;
-  font-family: Pretendard;
   font-size: 0.75rem;
   font-style: normal;
   font-weight: 500;

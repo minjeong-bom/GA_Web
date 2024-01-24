@@ -96,12 +96,10 @@ export default {
   },
   computed: {
     doneInput() {
-      const checkValue = (this.schoolGroupCount === this.schoolNames.length &&
+      return (this.schoolGroupCount === this.schoolNames.length &&
         this.schoolGroupCount === this.schoolMajors.length &&
         this.schoolGroupCount === this.schoolRangesStart.length &&
-        this.schoolGroupCount === this.schoolRangesEnd.length)
-
-      return checkValue;
+        this.schoolGroupCount === this.schoolRangesEnd.length);
     }
   }
 }
@@ -109,22 +107,23 @@ export default {
 
 <template>
   <div class="myr-page">
-    <myr-text-button-top-bar title-text="이력서 작성" back-path="myr2150" @closeModal="closeModal"/>
+    <myr-text-button-top-bar back-path="myr2150" title-text="이력서 작성" @closeModal="closeModal"/>
     <section class="sub-myr-view">
       <!-- 학력 사항 -->
       <div class="full-width">
         <h2 class="headline-2">학력 사항</h2>
         <p class="footnote">최종 학력 기준으로 입력하세요.</p>
       </div>
-      <div v-for="(item, index) in schoolGroupCount" class="input-group full-width">
-        <p class="sub-title-1">학력 {{ index + 1 }}</p>
+      <div v-for="index in schoolGroupCount"
+           class="input-group full-width">
+        <p class="sub-title-1">학력 {{ index }}</p>
         <div class="input-group-inner-wrap">
-          <q-input v-model="schoolNames[index]" label="학교명" class="full-width"/>
-          <q-input v-model="schoolMajors[index]" label="전공" class="full-width"/>
+          <q-input v-model="schoolNames[index - 1]" class="full-width" label="학교명"/>
+          <q-input v-model="schoolMajors[index - 1]" class="full-width" label="전공"/>
           <div class="flex-sb full-width" style="gap: 10px">
-            <q-input v-model="schoolRangesStart[index]" label="재학 기간" type="date" class="full-width"/>
+            <q-input v-model="schoolRangesStart[index - 1]" class="full-width" label="재학 기간" type="date"/>
             <p> - </p>
-            <q-input v-model="schoolRangesEnd[index]" label="" type="date" class="full-width"/>
+            <q-input v-model="schoolRangesEnd[index - 1]" class="full-width" label="" type="date"/>
           </div>
         </div>
       </div>
@@ -135,35 +134,36 @@ export default {
         <h2 class="headline-2">외국어</h2>
         <p class="footnote">최종 학력 기준으로 입력하세요.</p>
       </div>
-      <div v-for="(item, index) in languageGroupCount" class="input-group full-width">
-        <p class="sub-title-1">외국어 {{ index + 1 }}</p>
+      <div v-for="index in languageGroupCount"
+           class="input-group full-width">
+        <p class="sub-title-1">외국어 {{ index }}</p>
         <div class="input-group-inner-wrap">
-          <q-input v-model="languageNames[index]" label="외국어 종류" class="full-width"/>
+          <q-input v-model="languageNames[index - 1]" class="full-width" label="외국어 종류"/>
           <div>
             <p class="caption-3">활용 수준 : 듣기</p>
-            <q-radio v-model="languageLeadingLevels[index]" val="상" label="상" color="teal" />
-            <q-radio v-model="languageLeadingLevels[index]" val="중" label="중" color="teal" />
-            <q-radio v-model="languageLeadingLevels[index]" val="하" label="하" color="teal" />
+            <q-radio v-model="languageLeadingLevels[index - 1]" color="teal" label="상" val="상"/>
+            <q-radio v-model="languageLeadingLevels[index - 1]" color="teal" label="중" val="중"/>
+            <q-radio v-model="languageLeadingLevels[index - 1]" color="teal" label="하" val="하"/>
             <p class="caption-3">활용 수준 : 읽기</p>
-            <q-radio v-model="languageReadingLevels[index]" val="상" label="상" color="teal" />
-            <q-radio v-model="languageReadingLevels[index]" val="중" label="중" color="teal" />
-            <q-radio v-model="languageReadingLevels[index]" val="하" label="하" color="teal" />
+            <q-radio v-model="languageReadingLevels[index - 1]" color="teal" label="상" val="상"/>
+            <q-radio v-model="languageReadingLevels[index - 1]" color="teal" label="중" val="중"/>
+            <q-radio v-model="languageReadingLevels[index - 1]" color="teal" label="하" val="하"/>
             <p class="caption-3">활용 수준 : 쓰기</p>
-            <q-radio v-model="languageWriteLevels[index]" val="상" label="상" color="teal" />
-            <q-radio v-model="languageWriteLevels[index]" val="중" label="중" color="teal" />
-            <q-radio v-model="languageWriteLevels[index]" val="하" label="하" color="teal" />
+            <q-radio v-model="languageWriteLevels[index - 1]" color="teal" label="상" val="상"/>
+            <q-radio v-model="languageWriteLevels[index - 1]" color="teal" label="중" val="중"/>
+            <q-radio v-model="languageWriteLevels[index - 1]" color="teal" label="하" val="하"/>
           </div>
         </div>
       </div>
       <q-btn flat label="학력 추가하기" @click="addLanguageGroup"></q-btn>
 
       <q-btn
-        rounded
-        flat
-        size="lg"
-        label="저장"
         :disable="!doneInput"
         class="full-width myr-modal-save-button"
+        flat
+        label="저장"
+        rounded
+        size="lg"
         @click="saveSchoolAndLang"
       />
     </section>
@@ -182,7 +182,7 @@ export default {
   gap: 1.875rem;
 
   border-radius: 0.75rem;
-  border: 0.5px solid #C6C6C8;
+  border: 1px solid #C6C6C8;
   background: #FFF;
 }
 </style>

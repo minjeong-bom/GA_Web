@@ -67,7 +67,7 @@ export default {
               }
             },
           }
-          const res = await this.$api.post(delConfig.url, delConfig.body, delConfig.etc)
+          await this.$api.post(delConfig.url, delConfig.body, delConfig.etc)
 
           config = {
             url: '/api/crud/create',
@@ -103,8 +103,8 @@ export default {
             }
           }
         }
-        const res = await this.$api.post(config.url, config.body, config.etc);
-        this.getLikeList();
+        await this.$api.post(config.url, config.body, config.etc);
+        await this.getLikeList();
         this.$emit('getLikeList');
       } catch (e) {
         console.error(e)
@@ -155,7 +155,8 @@ export default {
         <div class="user-profile-wrap">
           <user-profile-thumb :user-key="item.bc_writer_name"/>
         </div>
-        <img v-if="item.bc_content" :src="`/src/assets/graphic/face-${item.bc_content}.png`" class="imoji">
+        <img v-if="item.bc_content" :alt="`감정 표현 - ${item.bc_content}`"
+             :src="`/src/assets/graphic/face-${item.bc_content}.png`" class="imoji">
       </q-avatar>
     </section>
     <!-- PageNation -->
@@ -173,14 +174,14 @@ export default {
 .likes-button-group {
   display: flex;
   height: 3.5rem;
-  padding: 0rem 0.625rem;
+  padding: 0 0.625rem;
   justify-content: center;
   align-items: center;
   gap: 0.625rem;
 
   border-radius: 1.875rem;
-  background: var(--bg-primary, #FFF);
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+  background: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
 .like-button {
@@ -215,7 +216,7 @@ export default {
 .likes-button-list {
   display: flex;
   gap: 0.625rem;
-  padding: 0rem 0.625rem;
+  padding: 0 0.625rem;
 }
 
 .likes-button-item {

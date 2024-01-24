@@ -24,7 +24,7 @@ export default {
     this.getProfileInfo();
   },
   methods: {
-    onImageError(event) {
+    onImageError() {
       console.log(this.userKey)
       this.imageInfo.type = 'none'; // 대체 이미지 경로
       this.imageInfo.color = 'grey'; // 대체 이미지 경로
@@ -64,7 +64,7 @@ export default {
           }
           if (this.imageInfo.type === 'custom') {
             this.imageInfo.imageKey = result.bc_content.imageKey;
-            this.getThumbnail();
+            await this.getThumbnail();
           }
         }
       } catch (e) {
@@ -90,8 +90,7 @@ export default {
       };
 
       const res = await this.$api.post(config.url, config.body, config.etc);
-      const response = res.data.response.view.bc_content;
-      this.fileObject64 = response;
+      this.fileObject64 = res.data.response.view.bc_content;
       this.isLoading = false;
     },
   },
@@ -107,12 +106,14 @@ export default {
       <div v-else :style="`width:${size};height:${size};`" class="profile-preview-wrap">
         <!-- 아바타 썸네일 -->
         <img v-if="imageInfo.type === 'avatar'"
+             :alt="`동물 아이콘 프로필, ${imageInfo.avatarName} 아이콘`"
              :src="'resources/profile/' + imageInfo.avatarName + '.png'"
              class="avatar-preview"
              @error="onImageError">
         <!-- 업로드 이미지 썸네일 -->
         <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64"
              :src="`data:image/jpeg;base64,${fileObject64}`"
+             alt="사용자 프로필 사진 영역"
              class="profile-preview">
         <!-- 설정된 이미지 없을 때 -->
         <q-avatar v-else :color="imageInfo.color" :size="size" icon="person"/>

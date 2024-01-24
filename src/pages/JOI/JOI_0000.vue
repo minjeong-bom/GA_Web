@@ -61,8 +61,7 @@ export default {
 
 <style scoped>
 .joi-0000-view {
-  padding: 0 16px;
-  padding-top: 84px;
+  padding: 84px 16px 0;
 }
 
 .headline-1 {

@@ -119,29 +119,7 @@ export default {
 </style>
 
 <style scoped>
-.bottom-fixed-btn {
-  position: fixed;
-  bottom: 0;
-}
-
 .footnote {
   color: #808080;
-}
-
-.btn-upload-profile {
-  display: flex;
-  width: 13.125rem;
-  height: 17.5rem;
-  padding: 0rem 4.28125rem 0rem 4.34375rem;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-
-  border: none;
-  border-radius: 0.75rem;
-  background: var(--BG-Secondary);
-
-  color: var(--ga-red);
 }
 </style>

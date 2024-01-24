@@ -9,27 +9,27 @@ export default {
     TextButtonTopBar
   },
   props: {
-    savedLicenseName : {
+    savedLicenseName: {
       type: Array,
       default: [],
     },
-    savedLicenseInst : {
+    savedLicenseInst: {
       type: Array,
       default: [],
     },
-    savedLicenseDate : {
+    savedLicenseDate: {
       type: Array,
       default: [],
     },
-    savedEduName : {
+    savedEduName: {
       type: Array,
       default: [],
     },
-    savedEduInst : {
+    savedEduInst: {
       type: Array,
       default: [],
     },
-    savedEduDate : {
+    savedEduDate: {
       type: Array,
       default: [],
     },
@@ -93,14 +93,13 @@ export default {
   computed: {
     doneInput() {
       // 입력한 그룹에 빈 칸만 없으면 저장되도록 처리함
-      const checkVal = (
+      return (
         this.licenseName.length === this.licenseInst.length &&
         this.licenseName.length === this.licenseDate.length &&
         this.eduName.length === this.eduInst.length &&
         this.eduName.length === this.eduDateStart.length &&
         this.eduName.length === this.eduDateEnd.length
       )
-      return checkVal
     }
   }
 }
@@ -108,19 +107,20 @@ export default {
 
 <template>
   <div class="myr-page">
-    <myr-text-button-top-bar title-text="이력서 작성" back-path="myr2160" @closeModal="closeModal"/>
+    <myr-text-button-top-bar back-path="myr2160" title-text="이력서 작성" @closeModal="closeModal"/>
     <section class="sub-myr-view">
       <!-- 자격증 *선택사항 -->
       <div class="full-width">
         <h2 class="headline-2">자격 사항 (선택)</h2>
         <p class="footnote">취득한 자격증을 입력해 주세요.</p>
       </div>
-      <div v-for="(item, index) in licenseGroupCount" class="input-group full-width">
-        <p class="sub-title-1">자격 {{ index + 1 }}</p>
+      <div v-for="index in licenseGroupCount"
+           class="input-group full-width">
+        <p class="sub-title-1">자격 {{ index }}</p>
         <div class="input-group-inner-wrap">
-          <q-input v-model="licenseName[index]" label="자격명" class="full-width"/>
-          <q-input v-model="licenseInst[index]" label="발급 기관" class="full-width"/>
-          <q-input v-model="licenseDate[index]" type="tel" label="취득 년도" class="full-width"/>
+          <q-input v-model="licenseName[index - 1]" class="full-width" label="자격명"/>
+          <q-input v-model="licenseInst[index - 1]" class="full-width" label="발급 기관"/>
+          <q-input v-model="licenseDate[index - 1]" class="full-width" label="취득 년도" type="tel"/>
         </div>
       </div>
       <q-btn flat label="자격 추가하기" @click="addLicenseGroup"></q-btn>
@@ -133,27 +133,27 @@ export default {
           기간이 너무 짧은 것은 제외하고, 1개월 이상의 교육 과정을 위주로 적는 것이 좋아요. (최대 2개)
         </p>
       </div>
-      <div v-for="(item, index) in eduGroupCount" class="input-group full-width">
-        <p class="sub-title-1">교육 {{ index + 1 }}</p>
+      <div v-for="index in eduGroupCount" class="input-group full-width">
+        <p class="sub-title-1">교육 {{ index }}</p>
         <div class="input-group-inner-wrap">
-          <q-input v-model="eduName[index]" label="교육명" class="full-width"/>
-          <q-input v-model="eduInst[index]" label="교육기관" class="full-width"/>
+          <q-input v-model="eduName[index - 1]" class="full-width" label="교육명"/>
+          <q-input v-model="eduInst[index - 1]" class="full-width" label="교육기관"/>
           <div class="flex-sb full-width" style="gap: 10px">
-            <q-input v-model="eduDateStart[index]" label="시작일" type="date" class="full-width"/>
+            <q-input v-model="eduDateStart[index - 1]" class="full-width" label="시작일" type="date"/>
             <p> - </p>
-            <q-input v-model="eduDateEnd[index]" label="종료일" type="date" class="full-width"/>
+            <q-input v-model="eduDateEnd[index - 1]" class="full-width" label="종료일" type="date"/>
           </div>
         </div>
       </div>
       <q-btn flat label="교육 추가하기" @click="addEduGroup"></q-btn>
 
       <q-btn
-        rounded
-        flat
-        size="lg"
-        label="저장"
         :disable="!doneInput"
         class="full-width myr-modal-save-button"
+        flat
+        label="저장"
+        rounded
+        size="lg"
         @click="save"
       />
     </section>
@@ -166,11 +166,6 @@ export default {
   color: #808080;
 }
 
-.bottom-fixed-btn {
-  position: fixed;
-  bottom: 0;
-}
-
 .input-group-inner-wrap {
   display: flex;
   padding: 1.25rem 1rem;
@@ -178,7 +173,7 @@ export default {
   gap: 1.875rem;
 
   border-radius: 0.75rem;
-  border: 0.5px solid #C6C6C8;
+  border: 1px solid #C6C6C8;
   background: #FFF;
 }
 </style>

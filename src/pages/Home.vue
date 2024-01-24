@@ -173,8 +173,8 @@ export default defineComponent({
         });
 
         // 작성자명 가공 함수 호출
-        this.replaceWriterNames(response);
-        this.getThumbnail();
+        await this.replaceWriterNames(response);
+        await this.getThumbnail();
       } catch (e) {
         console.error('게시글이 존재하지 않습니다.', e);
       }

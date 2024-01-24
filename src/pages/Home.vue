@@ -11,7 +11,7 @@
         <tab :default-tab="defaultTab" :tabs="tabList" @changeTab="changeTab"></tab>
         <div v-for="item in articleList">
           <skeleton-card v-if="isLoading" :lines="10"/>
-          <article-card v-else
+          <article-card v-if="item.nickname && item.category_name"
                         :article-key="item.bc_key"
                         :article-type="item.category_name"
                         :article-type2="item.category_name"
@@ -244,19 +244,18 @@ export default defineComponent({
           item.user_mode = userType;
           if (content.user_info.nickname) {
             item.nickname = content.user_info.nickname;
-          } else {
-            item.nickname = '비공개 회원';
           }
+
           if (userType === 'nomal') {
-            item.badgeTitle = content.job.job_title;
+            item.badgeTitle = content.job.job_title ? content.job.job_title : '';
           } else if (userType === 'pro') {
-            item.badgeTitle = content.pro.area;
+            item.badgeTitle = content.pro.area ? content.pro.area : '';
           }
 
           this.isLoading = false;
         } catch (e) {
-          item.nickname = '비공개 회원';
-          item.badgeTitle = ''; // 삭제된 회원
+          // item.nickname = '비공개 회원';
+          // item.badgeTitle = ''; // 삭제된 회원
           this.isLoading = false;
         }
       }

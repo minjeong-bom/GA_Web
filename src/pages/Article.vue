@@ -158,11 +158,15 @@ export default {
         this.getThumbnail();
         this.getCreaterInfo();
       } catch (e) {
-        console.error('게시글이 유효하지 않습니다.', e);
+        this.$q.notify('유효한 게시글이 아닙니다 x_x');
+        this.$router.go(-1);
         this.isLoading = false;
       }
     },
     async getThumbnail() {
+      if (!this.article.thumbnailKey) {
+        return
+      }
       this.isLoading = true;
       try {
         const config = {
@@ -212,7 +216,7 @@ export default {
         this.article.createrType = result.user_info.type;
         if (result.user_info.type === 'nomal') {
           this.article.createrName = result.user_info.nickname;
-          this.article.createrJob = result.job.job_title;
+          this.article.createrJob = result.job.job_title ? result.job.job_title : '';
         } else if (result.user_info.type === 'pro') {
           this.article.createrName = result.user_info.nickname;
           this.article.createrJob = result.pro.area ? result.pro.area + ' 전문가' : '전문가';

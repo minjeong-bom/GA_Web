@@ -167,8 +167,8 @@ export default {
              src="../../assets/icon/person_assignment_24px.svg"/>
         <img v-else-if="userMode === 'enterprise'" :alt="`${userMode} 전용 뱃지`" class="user-badge"
              src="../../assets/icon/person_assignment_24px.svg"/>
-        <span class="card-caption-1">{{ jobTitle }}</span>
-        <span v-show="createdAtTimeShow" class="card-caption-2">|</span>
+        <span v-if="jobTitle" class="card-caption-1">{{ jobTitle }}</span>
+        <span v-show="jobTitle && createdAtTimeShow" class="card-caption-2">|</span>
         <span v-show="createdAtTimeShow" class="card-caption-1">{{ createdAtTimeShow }}</span>
       </div>
     </div>

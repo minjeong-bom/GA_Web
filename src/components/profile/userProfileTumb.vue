@@ -24,6 +24,11 @@ export default {
     this.getProfileInfo();
   },
   methods: {
+    onImageError(event) {
+      console.log(this.userKey)
+      this.imageInfo.type = 'none'; // 대체 이미지 경로
+      this.imageInfo.color = 'grey'; // 대체 이미지 경로
+    },
     async getProfileInfo() {
       try {
         const config = {
@@ -102,8 +107,9 @@ export default {
       <div v-else :style="`width:${size};height:${size};`" class="profile-preview-wrap">
         <!-- 아바타 썸네일 -->
         <img v-if="imageInfo.type === 'avatar'"
-             :src="'../../src/assets/graphic/profile/' + imageInfo.avatarName + '.png'"
-             class="avatar-preview">
+             :src="'resources/profile/' + imageInfo.avatarName + '.png'"
+             class="avatar-preview"
+             @error="onImageError">
         <!-- 업로드 이미지 썸네일 -->
         <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64"
              :src="`data:image/jpeg;base64,${fileObject64}`"

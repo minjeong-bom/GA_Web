@@ -8,6 +8,7 @@ export default {
     return {
       profileKey: '',
       profileMode: true,
+      images: {},
       avatarList: ['rat', 'ox', 'pig', 'tiger', 'dragon', 'snake', 'horse', 'sheep', 'monkey', 'rooster', 'cat', 'rabbit'],
       fileObject: null,
       fileObject64: null,
@@ -79,6 +80,7 @@ export default {
     setAvatar(avatar) {
       this.imageInfo.type = 'avatar';
       this.imageInfo.avatarName = avatar + '_' + this.profileBackground;
+      this.loadImage(this.imageInfo.avatarName);
       this.fileObject = null;
     },
     removeAvatar() {
@@ -159,8 +161,7 @@ export default {
             <div class="profile-preview-wrap">
               <!-- 아바타 썸네일 -->
               <img v-if="imageInfo.type === 'avatar'"
-                   :src="'../../src/assets/graphic/profile/' + imageInfo.avatarName + '.png'"
-                   class="avatar-preview">
+                   :src="`resources/profile/${imageInfo.avatarName}.png`" class="avatar-preview">
               <!-- 업로드 이미지 썸네일 -->
               <img v-else-if="this.imageInfo.type === 'custom' && this.fileObject64" :src="fileObject64"
                    class="profile-preview">
@@ -195,8 +196,10 @@ export default {
 
             <!-- 아바타 설정 버튼 -->
             <q-avatar v-for="item in avatarList" size="48px" @click="setAvatar(item)">
-              <img :src="'../../src/assets/graphic/profile/' + item + '_' + profileBackground + '.png'">
+              <img :src="`resources/profile/${item + '_' + profileBackground}.png`"
+                   class="avatar-preview">
             </q-avatar>
+
           </section>
 
           <div class="button-group">

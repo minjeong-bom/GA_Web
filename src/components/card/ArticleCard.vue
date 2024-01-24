@@ -17,10 +17,10 @@
         :view-count="viewCount"
       />
       <!-- Thumbnail & Title -->
-      <div v-if="fileObject64" class="article-card-thumbnail flex-center article-white-card">
-        <img :alt="`${writer}의 프로필 이미지`" :src="'data:image/jpeg;base64,' + fileObject64"
-             @click="goToArticle(articleKey)"/>
-        <div class="overlay-headline" @click="goToArticle(articleKey)">
+      <div v-if="fileObject64" class="article-card-thumbnail flex-center article-white-card"
+           @click="goToArticle(articleKey)">
+        <img :alt="`${writer}의 프로필 이미지`" :src="'data:image/jpeg;base64,' + fileObject64"/>
+        <div class="overlay-headline">
           <div class="article-card-headline-wrap">
             <h4 class="article-card-headline">{{ titleText42 }}</h4>
           </div>

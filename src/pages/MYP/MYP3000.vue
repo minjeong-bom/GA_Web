@@ -33,9 +33,6 @@ export default {
         }
       });
     },
-    resetList() {
-      this.getBookmarkPage();
-    },
     async getBookmarkPage() {
       try {
         const config = {
@@ -95,15 +92,23 @@ export default {
             content.category_name = '지애픽'
           }
           content.bookmark_key = bookmarkKey;
+          content.isShow = true;
 
           this.articles.push(content);
           this.isLoading = false;
         }
 
+        console.log(this.articles);
       } catch (e) {
         // 404 등 에러일 경우
         await itemDelete(bookmarkKey);
         this.isLoading = false;
+      }
+    },
+    removeBookmark(bookmarkKey) {
+      const article = this.articles.find(article => article.bookmark_key === bookmarkKey);
+      if (article) {
+        article.isShow = false;
       }
     },
   }
@@ -116,6 +121,7 @@ export default {
     <section v-if="articles.length > 0" class="nomal-page-layout">
       <div v-for="article in articles">
         <my-bookmark-card
+          v-show="article.isShow"
           :articke-key="article.bc_key"
           :bookmark-key="article.bookmark_key"
           :category-name="article.category_name"
@@ -124,7 +130,7 @@ export default {
           :is-loading="isLoading"
           :thumbnail-key="article.bc_content.thumbnailKey"
           :title-text="article.bc_content.title"
-          @resetList="resetList"
+          @deleteDone="removeBookmark"
         />
       </div>
     </section>

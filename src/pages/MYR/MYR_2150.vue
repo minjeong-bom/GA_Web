@@ -21,15 +21,15 @@ export default {
       type: Array,
       default: [],
     },
-    savedLaugageRLevel: {
+    savedLanguageRLevel: {
       type: Array,
       default: [],
     },
-    savedLaguageWLevel: {
+    savedLanguageWLevel: {
       type: Array,
       default: [],
     },
-    savedLangeageLLevels: {
+    savedLanguageLLevels: {
       type: Array,
       default: [],
     },
@@ -65,9 +65,9 @@ export default {
       this.languageGroupCount = this.savedLanguageNames.length;
 
       this.languageNames = this.savedLanguageNames;
-      this.languageReadingLevels = this.savedLaugageRLevel;
-      this.languageLeadingLevels = this.savedLangeageLLevels;
-      this.languageWriteLevels = this.savedLaguageWLevel;
+      this.languageReadingLevels = this.savedLanguageRLevel;
+      this.languageLeadingLevels = this.savedLanguageLLevels;
+      this.languageWriteLevels = this.savedLanguageWLevel;
     }
   },
   methods: {

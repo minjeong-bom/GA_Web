@@ -3,6 +3,10 @@ export default {
   props: {
     buttonName: String,
     titleText: String,
+    backAction: {
+      type: Boolean,
+      default: false,
+    }
   },
   methods: {
     goBack() {
@@ -15,8 +19,11 @@ export default {
 <template>
   <div class="text-button-top-bar">
     <!-- 뒤로가기 버튼 -->
-    <q-btn flat round>
+    <q-btn v-if="!backAction" flat round>
       <q-icon name="navigate_before" @click="goBack"></q-icon>
+    </q-btn>
+    <q-btn v-else>
+      <q-icon name="navigate_before" @click="$emit('backButton')"></q-icon>
     </q-btn>
     <h2>{{ titleText ? titleText : "" }}</h2>
     <q-btn class="top-bar-button" flat round style="color: var(--ga-red)" @click="$emit('action')">

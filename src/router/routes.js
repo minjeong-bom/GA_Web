@@ -66,6 +66,14 @@ const routes = [
     ],
   },
   {
+    path: '/svc',
+    component: () => import('layouts/FullPageLayout.vue'),
+    children: [
+      {path: '/svc0000', component: () => import('pages/SVC/SVC0000.vue')},
+      {path: '/svc0300', component: () => import('pages/SVC/SVC0300.vue')},
+    ],
+  },
+  {
     path: '/search',
     name: 'search',
     component: Search,

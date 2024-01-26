@@ -78,7 +78,7 @@ export default {
             },
           }
         }
-        // await this.$api.post(config.url, config.body, config.etc);
+        await this.$api.post(config.url, config.body, config.etc);
         this.isLoading = false;
         this.sectionNumber = 4;
         console.log(this.sectionNumber)
@@ -178,7 +178,7 @@ export default {
           꼼꼼하게 읽어볼게요.
         </h3>
         <div class="center-graphic-layout">
-          <img src="../../assets/graphic/smill_imoji.png">
+          <img alt="웃는 이모지 이미지" src="../../assets/graphic/smill_imoji.png">
         </div>
       </div>
     </section>

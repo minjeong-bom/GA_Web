@@ -1,42 +1,67 @@
 <template>
-  <div class="footer iphone-x-ui-bottom">
-    <div class="footer-menu-wrap">
-      <div class="footer-menu">
-        <q-btn dense flat label="회사 소개" @click="linkTo('https://companybb.com/')"/>
-        <span>∙</span>
-        <q-btn dense flat label="서비스 소개" @click="navigateTo('/ser0000')"/>
-        <span>∙</span>
-        <q-btn dense flat label="아용약관"/>
-        <span>∙</span>
-        <q-btn dense flat label="개인정보처리방침"/>
-        <span>∙</span>
-        <q-btn dense flat label="고객센터" @click="navigateTo('/cus0000')"/>
+  <div class="footer">
+    <q-btn class="toggle-button" dense flat @click="toggleShowHide">
+      <div class="toggle-inner flex-sb">
+        <p class="caption-3">Copyright 2023. CompanyBOMBOM Inc. all rights reserved.</p>
+        <q-btn v-show="!toggle" dense flat icon="arrow_drop_down" round/>
+        <q-btn v-show="toggle" dense flat icon="arrow_drop_up" round/>
       </div>
+
+    </q-btn>
+    <div v-show="toggle" class="footer-info-wrap">
+      <div class="footer-menu-wrap">
+        <q-btn class="card-caption-2" dense flat label="회사 소개" @click="linkTo('https://companybb.com/')"/>
+        <span>∙</span>
+        <q-btn class="card-caption-2" dense flat label="서비스 소개" @click="navigateTo('/ser0000')"/>
+        <span>∙</span>
+        <q-btn class="card-caption-2" dense flat label="아용약관"/>
+        <span>∙</span>
+        <q-btn class="card-caption-2" dense flat label="개인정보처리방침"/>
+        <span>∙</span>
+        <q-btn class="card-caption-2" dense flat label="고객센터" @click="navigateTo('/cus0000')"/>
+      </div>
+
+      <div class="sns-list flex-center full-width">
+        <img alt="페이스북 바로가기 아이콘" src="../assets/icon/ic_baseline-facebook.svg"/>
+        <img alt="인스타스램 바로가기 아이콘" src="../assets/icon/ico_baseline-ig.svg"/>
+        <img alt="블로그 바로가기 아이콘" src="../assets/icon/ico_baseline_blogger.svg"/>
+      </div>
+
+      <p class="info card-caption-2">
+        주식회사 컴퍼니봄봄<br>
+        서울특별시 성동구 뚝섬로1길 31, 13층 1304호 (서울숲 M타워)<br>
+        대표자 장종균<br>
+        사업자 등록번호 573-87-02507<br>
+        직업정보중개업등록번호 573-87-02507<br>
+      </p>
     </div>
-
-    <div class="sns-list">
-      <img alt="페이스북 바로가기 아이콘" src="../assets/icon/ic_baseline-facebook.svg"/>
-      <img alt="인스타스램 바로가기 아이콘" src="../assets/icon/ico_baseline-ig.svg"/>
-      <img alt="블로그 바로가기 아이콘" src="../assets/icon/ico_baseline_blogger.svg"/>
-    </div>
-
-    <p class="info">
-      주식회사 컴퍼니봄봄<br>
-      서울특별시 성동구 뚝섬로1길 31, 13층 1304호 (서울숲 M타워)<br>
-      대표자 장종균<br>
-      사업자 등록번호 573-87-02507<br>
-      직업정보중개업등록번호 573-87-02507<br>
-    </p>
-
-    <p class="copyright">
-      Copyright 2023. CompanyBOMBOM Inc. all rights reserved.
-    </p>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      toggle: false,
+    }
+  },
   methods: {
+    toggleShowHide() {
+      this.toggle = !this.toggle;
+      this.$nextTick(() => {
+        if (this.toggle) {
+          const currentScrollPosition = window.pageYOffset;
+          const maxScroll = document.body.scrollHeight - window.innerHeight;
+
+          if (currentScrollPosition < maxScroll) {
+            window.scrollTo({
+              top: currentScrollPosition + 200,
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    },
     linkTo(path) {
       window.open(path);
     },
@@ -47,23 +72,54 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .footer {
-  text-align: center;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
   width: 100%;
-  padding: 30px 24px;
-  padding-bottom: 100px !important;
+  padding: 1.75rem 1.5rem;
+  padding-bottom: calc(1.5rem + 84px);
 
   color: #938F96;
   font-size: 12px;
   background: #F4F4F4;
 
   gap: 16px;
+
+  .toggle-button {
+    padding: 0;
+
+    .toggle-inner {
+      text-align: left;
+    }
+  }
+
+  .footer-info-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .footer-menu-wrap {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+
+      button {
+        display: inline-flex;
+        padding: 0;
+      }
+    }
+
+    .toggle-down {
+      color: #999;
+    }
+
+    .info {
+      text-align: center;
+    }
+  }
+
+
 }
 
 .footer-menu {
@@ -73,47 +129,7 @@ export default {
   gap: 5px;
 }
 
-.footer-menu button {
-  display: inline-block;
-  color: #938F96;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 166.667% */
-}
-
-.info {
-  width: 100%;
-
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 181.818% */
-}
-
-.copyright {
-  width: 100%;
-}
-
 .sns-list {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
   gap: 30px;
 }
-
-p {
-  display: block;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  margin-inline-start: 0;
-  margin-inline-end: 0;
-}
-
-.footer-menu-wrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 </style>

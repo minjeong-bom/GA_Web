@@ -1,6 +1,6 @@
 <template>
   <div class="posting-view">
-    <TextButtonTopBar :button-name="'등록'" :title-text="'새글 작성'" @action="save"></TextButtonTopBar>
+    <TextButtonTopBar button-name="등록" title-text="새글 작성" @action="save"/>
     <div class="editor-surface">
       <!-- 카테고리 -->
       <q-select v-model="category1" :options="options" class="category-select"/>
@@ -16,16 +16,54 @@
             list: 'no-icons',
             // options: ['p', 'h1', 'h2', 'h3']
           },
-         'unordered', 'ordered', 'outdent', 'indent'
-        ],
+         'unordered', 'ordered',
+        ], ['upload']
       ]"/>
-      <!-- 태그 입력 -->
+      <!-- 태그 목록 -->
+      <div class="tag-list">
+        <q-chip
+          v-if="content.tags[0]"
+          v-model="content.tags[0]"
+          :label="content.tags[0]"
+          :model-value="true"
+          color="primary"
+          icon="tag"
+          removable
+          text-color="white"
+        />
+        <q-chip
+          v-if="content.tags[1]"
+          v-model="content.tags[1]"
+          :label="content.tags[1]"
+          :model-value="true"
+          color="primary"
+          icon="tag"
+          removable
+          text-color="white"
+        />
+        <q-chip
+          v-if="content.tags[2]"
+          v-model="content.tags[2]"
+          :label="content.tags[2]"
+          :model-value="true"
+          color="primary"
+          icon="tag"
+          removable
+          text-color="white"
+        />
+      </div>
+      <!-- 태그 추가 -->
       <q-input
-        v-model="content.tags"
+        v-model="inputTag"
         borderless
         input-style="font-size: 0.875rem;"
         maxlength="40"
-        placeholder="태그 입력"/>
+        placeholder="태그 입력"
+        @keyup.enter="addTag">
+        <template v-slot:append>
+          <q-btn color="primary" dense flat label="추가" rounded @click="addTag"/>
+        </template>
+      </q-input>
       <!-- 파일 업로드 -->
       <q-file v-model="thumbnail" label="썸네일 업로드" outlined>
         <template v-slot:prepend>
@@ -52,7 +90,7 @@ export default {
       options: ['스토리'],
       content: {
         body: '',
-        tags: '',
+        tags: [],
         thumbnailKey: '',
       },
       title: '',
@@ -64,6 +102,7 @@ export default {
       thumbnail: '',
       dense: ref(false),
       categoryList: [],
+      inputTag: '',
     }
   },
   setup() {
@@ -89,6 +128,20 @@ export default {
     }
   },
   methods: {
+    addTag() {
+      this.content.tags = this.content.tags.filter(item => item !== false);
+
+      if (this.inputTag === '') {
+        this.$q.notify('태그를 입력해 주세요');
+
+      } else if (this.content.tags.length === 3) {
+        this.$q.notify('태그는 최대 3개까지 추가할 수 있습니다');
+
+      } else {
+        this.content.tags.push(this.inputTag);
+        this.inputTag = '';
+      }
+    },
     async save() {
       if (this.thumbnail) {
         const data_title = 'articleImage';
@@ -131,7 +184,7 @@ export default {
         await this.$api.post(config.url, config.body, config.etc);
         this.navigateTo('/');
       } catch (e) {
-        window.alart('게시글 등록에 실패했습니다');
+        this.$q.notify('게시글을 등록하지 못했습니다. 다시 시도해 주세요.');
         console.error(e);
       }
     },
@@ -141,41 +194,32 @@ export default {
   },
   computed: {
     userKey() {
-      return localStorage.getItem('userKey')
+      return localStorage.getItem('userKey');
     }
   }
 }
 </script>
 
-<style scoped>
-.category-select {
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 600 !important;
-  line-height: normal;
-  letter-spacing: -0.01875rem;
-}
-
-.title-input {
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: -0.01875rem;
-}
+<style lang="scss" scoped>
 
 .posting-view {
-  background: #F4F4F4;
   margin-bottom: 56px;
-}
 
-.editor-surface {
-  display: flex;
-  padding: 0 1rem;
-  flex-direction: column;
-  gap: 0.3rem;
-  background: #fff;
-  margin-top: 10px;
-}
+  .category-select, .title-input {
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 600 !important;
+    line-height: normal;
+    letter-spacing: -0.01875rem;
+  }
 
+  .editor-surface {
+    display: flex;
+    padding: 0 1rem;
+    flex-direction: column;
+    gap: 0.3rem;
+    background: #fff;
+    margin-top: 10px;
+  }
+}
 </style>

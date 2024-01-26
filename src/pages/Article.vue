@@ -158,8 +158,6 @@ export default {
         await this.getThumbnail();
         await this.getCreaterInfo();
       } catch (e) {
-        this.$q.notify('유효한 게시글이 아닙니다 x_x');
-        this.$router.go(-1);
         this.isLoading = false;
       }
     },

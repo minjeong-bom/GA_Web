@@ -59,6 +59,7 @@ export default {
       if (res) {
         const result = res.data.response.lists[0];
         this.userType = result.bc_content.user_info.type;
+        this.nickname = result.bc_content.user_info.nickname;
         if (this.userType === 'nomal') {
           this.userPosition = result.bc_content.job.job_title;
         } else if (this.userType === 'pro') {
@@ -72,7 +73,6 @@ export default {
         this.nickname = result.bc_content.user_info.nickname;
       }
     },
-
     async deleteComment() {
       await itemDelete(this.commentKey);
       this.$q.notify('댓글이 삭제되었습니다.');
@@ -97,15 +97,15 @@ export default {
       <!-- 00님이 -->
       <div class="created-user-and-lable">
         <div class="created-user-info-wrap card-headline-1">
-          <span>{{ writer }}님</span>
+          <span>{{ nickname }}</span>
         </div>
       </div>
       <!-- Badge + User Role Caption | Created Time -->
       <div class="user-badge-created-time-wrap">
         <img v-if="userType === 'pro'" alt="프로 뱃지" class="user-badge"
              src="../../assets/icon/person_assignment_24px.svg"/>
-        <span class="card-caption-1">{{ userPosition }}</span>
-        <span v-if="userType !== 'pro'" class="card-caption-2">|</span>
+        <span v-if="userPosition" class="card-caption-1">{{ userPosition }}</span>
+        <span v-if="userType !== 'pro' && userPosition" class="card-caption-2">|</span>
         <span class="card-caption-1">{{ createdTimeAgo }}</span>
       </div>
     </div>

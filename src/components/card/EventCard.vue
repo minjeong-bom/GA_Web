@@ -19,7 +19,7 @@ export default {
     async getEventList() {
       try {
         const config = {
-          url: '/api/crud/lists/',
+          url: '/api/crud/lists/?order=desc_bc_regdate',
           body: {
             "alias": "bc",
             "prefix": "bc",

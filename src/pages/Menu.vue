@@ -125,7 +125,6 @@ export default {
               iconClass: 'fa-arrow-right-from-bracket',
               subLable: '',
               action: 'logout',
-              path: '/set/logout',
             },
           ],
         },

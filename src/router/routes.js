@@ -70,7 +70,6 @@ const routes = [
     component: () => import('layouts/FullPageLayout.vue'),
     children: [
       {path: '/svc0000', component: () => import('pages/SVC/SVC0000.vue')},
-      {path: '/svc0300', component: () => import('pages/SVC/SVC0300.vue')},
     ],
   },
   {
@@ -92,17 +91,6 @@ const routes = [
     path: '/article',
     name: 'article',
     component: Article,
-  },
-  {
-    path: '/onb',
-    component: () => import('layouts/FullPageLayout.vue'),
-    children: [
-      {path: '/onb0000', component: () => import('pages/ONB/ONB_0000.vue')},
-      {path: '/onb0001', component: () => import('pages/ONB/ONB_0001.vue')},
-      {path: '/onb0002', component: () => import('pages/ONB/ONB_0002.vue')},
-      {path: '/onb0003', component: () => import('pages/ONB/ONB_0003.vue')},
-      {path: '/onb0004', component: () => import('pages/ONB/ONB_0004.vue')},
-    ],
   },
   {
     path: '/not',

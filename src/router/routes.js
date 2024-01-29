@@ -2,6 +2,7 @@ import Posting from 'pages/Posting.vue';
 import Article from 'pages/Article.vue';
 import Login from 'pages/JOI/Login.vue';
 import Search from 'pages/Search.vue';
+import ArticleEdit from "pages/ArticleEdit.vue";
 
 const routes = [
   {
@@ -88,6 +89,11 @@ const routes = [
     component: Posting,
   },
   {
+    path: '/edit',
+    name: 'edit',
+    component: ArticleEdit,
+  },
+  {
     path: '/article',
     name: 'article',
     component: Article,
@@ -134,8 +140,10 @@ const routes = [
   },
   {
     path: '/sep',
-    component: () => import('layouts/ContentFooterLayout.vue'),
+    component: () => import('layouts/FullPageLayout.vue'),
     children: [
+      {path: '/sep0000', component: () => import('pages/SEP/SEP0000.vue')},
+      {path: '/sep1000', component: () => import('pages/SEP/SEP1000.vue')},
       {path: '/sep2000', component: () => import('pages/SEP/SEP2000.vue')},
     ],
   },

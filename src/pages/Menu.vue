@@ -96,6 +96,7 @@ export default {
           lable: '서비스 정책',
           iconClass: 'fa-scale-balanced',
           subLable: '',
+          path: 'sep0000',
         },
         {
           color: '',

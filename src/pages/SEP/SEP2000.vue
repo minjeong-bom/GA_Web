@@ -8,10 +8,10 @@ export default {
 </script>
 
 <template>
-  <div class="nomal-page-layout">
+  <div>
     <title-top-bar title-text="개인정보 처리방침"></title-top-bar>
-    <h1 class="headline-1">개인정보 처리방침</h1>
-    <section class="content-wrap l-column">
+    <section class="nomal-page-layout content-wrap l-column">
+      <h1 class="headline-1">개인정보 처리방침</h1>
 
       <h4 class="sub-title-1">이용자 여러분 안녕하세요!</h4>
       <p>
@@ -23,7 +23,7 @@ export default {
       <div class="overview-list">
         <div class="overview-item">
           <div class="image-wrap">
-            <img alt="일반 개인정보 수집" src="public/resources/sep-icon-6.png">
+            <img alt="일반 개인정보 수집" src="/resources/sep-icon-6.png">
           </div>
           <p>
             <span class="lable-1">일반 개인정보 수집</span><br>
@@ -32,7 +32,7 @@ export default {
         </div>
         <div class="overview-item">
           <div class="image-wrap">
-            <img alt="일반 개인정보 수집" src="public/resources/sep-icon-5.png">
+            <img alt="일반 개인정보 수집" src="/resources/sep-icon-5.png">
           </div>
           <p>
             <span class="lable-1">개인정보 처리목적</span><br>
@@ -41,7 +41,7 @@ export default {
         </div>
         <div class="overview-item">
           <div class="image-wrap">
-            <img alt="일반 개인정보 수집" src="public/resources/sep-icon-4.png">
+            <img alt="일반 개인정보 수집" src="/resources/sep-icon-4.png">
           </div>
           <p>
             <span class="lable-1">개인정보 보유기간</span><br>
@@ -50,7 +50,7 @@ export default {
         </div>
         <div class="overview-item">
           <div class="image-wrap">
-            <img alt="일반 개인정보 수집" src="public/resources/sep-icon-3.png">
+            <img alt="일반 개인정보 수집" src="/resources/sep-icon-3.png">
           </div>
           <p>
             <span class="lable-1">개인정보 처리 위탁</span><br>
@@ -59,7 +59,7 @@ export default {
         </div>
         <div class="overview-item">
           <div class="image-wrap">
-            <img alt="일반 개인정보 수집" src="public/resources/sep-icon-2.png">
+            <img alt="일반 개인정보 수집" src="/resources/sep-icon-2.png">
           </div>
           <p>
             <span class="lable-1">개인정보 3자 제공</span><br>
@@ -68,7 +68,7 @@ export default {
         </div>
         <div class="overview-item">
           <div class="image-wrap">
-            <img alt="일반 개인정보 수집" src="public/resources/sep-icon-1.png">
+            <img alt="일반 개인정보 수집" src="/resources/sep-icon-1.png">
           </div>
           <p>
             <span class="lable-1">고충 처리 부서</span><br>
@@ -102,22 +102,21 @@ export default {
         <p>2) 회사는 법령에 따른 개인정보 보유·이용 기간 또는 정보주체로부터 개인정보를 수집 시에 동의 받은 개인정보 보유·이용 기간 내에서 개인정보를 처리·보유합니다.</p>
         <p>3) 각각의 개인정보 처리 및 보유 기간은 다음과 같습니다.
           ① 홈페이지/앱 회원 가입 및 관리 : 사업자/단체 홈페이지/앱 탈퇴 시까지 다만, 다음의 사유에 해당하는 경우에는 해당 사유 종료 시까지
-          <ul>
-            <li>관계 법령 위반에 따른 수사·조사 등이 진행 중인 경우에는 해당 수사·조사 종료 시까지</li>
-            <li>홈페이지 이용에 따른 채권·채무관계 잔존 시에는 해당 채권·채무관계 정산 시까지</li>
-          </ul>
-          ② 재화 또는 서비스 제공 : 재화·서비스 공급완료 및 요금결제·정산 완료 시까지. 다만, 다음의 사유에 해당하는 경우에는 해당 기간 종료 시까지
-          <ul>
-            <li>전자상거래법: 계약 또는 청약철회, 대금결제, 재화 등의 공급 기록 (5년)</li>
-            <li>전자상거래법: 소비자 불만 또는 분쟁처리에 관한 기록 (3년)</li>
-            <li>전자상거래법: 표시·광고에 관한 기록 (6개월)</li>
-            <li>정보통신망법: 본인확인에 관한 기록 (6개월)</li>
-            <li>통신비밀보호법: 컴퓨터 통신, 인터넷 로그 기록 자료, 접속지 추적 자료 (3개월)</li>
-          </ul>
         </p>
+        <ul>
+          <li>관계 법령 위반에 따른 수사·조사 등이 진행 중인 경우에는 해당 수사·조사 종료 시까지</li>
+          <li>홈페이지 이용에 따른 채권·채무관계 잔존 시에는 해당 채권·채무관계 정산 시까지</li>
+        </ul>
         <p>
-
+          ② 재화 또는 서비스 제공 : 재화·서비스 공급완료 및 요금결제·정산 완료 시까지. 다만, 다음의 사유에 해당하는 경우에는 해당 기간 종료 시까지
         </p>
+        <ul>
+          <li>전자상거래법: 계약 또는 청약철회, 대금결제, 재화 등의 공급 기록 (5년)</li>
+          <li>전자상거래법: 소비자 불만 또는 분쟁처리에 관한 기록 (3년)</li>
+          <li>전자상거래법: 표시·광고에 관한 기록 (6개월)</li>
+          <li>정보통신망법: 본인확인에 관한 기록 (6개월)</li>
+          <li>통신비밀보호법: 컴퓨터 통신, 인터넷 로그 기록 자료, 접속지 추적 자료 (3개월)</li>
+        </ul>
       </div>
 
       <h4 class="sub-title-1">만 14세 미만 아동의 개인정보 처리에 관한 사항</h4>
@@ -136,14 +135,16 @@ export default {
       </p>
 
       <h4 class="sub-title-1">개인정보 처리 업무의 위탁에 관한 사항</h4>
-      <p>
-        회사는 원활한 개인정보 업무 처리를 위하여 다음과 같이 개인정보 처리 업무를 위탁하고 있습니다.
+      <div>
+        <p>
+          회사는 원활한 개인정보 업무 처리를 위하여 다음과 같이 개인정보 처리 업무를 위탁하고 있습니다.
+        </p>
         <ul>
           <li>Amazon Web Services, Inc.: AWS를 통한 서비스 운영 환경 제공, 데이터 보관</li>
           <li>Google LLC: Google Analytics를 통한 서비스 이용/방문 트래픽 통계 분석</li>
           <li>드림시큐리티: 간편 인증 및 휴대폰 본인확인 대행</li>
         </ul>
-      </p>
+      </div>
 
       <h4 class="sub-title-1">개인정보의 국외 이전에 관한 사항</h4>
       <p>
@@ -151,15 +152,17 @@ export default {
       </p>
 
       <h4 class="sub-title-1">개인정보의 파기 절차 및 방법에 관한 사항</h4>
-      <p>
-        ① 회사는 개인정보 보유기간의 경과, 처리 목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체 없이 해당 개인정보를 파기합니다. ② 정보주체로부터 동의 받은 개인정보 보유기간이 경과하거나 처리
-        목적이 달성되었음에도 불구하고 다른 법령에 따라 개인정보를 계속 보존하여야 하는 경우에는, 해당 개인정보를 별도의 데이터베이스(DB)로 옮기거나 보관 장소를 달리하여 보존합니다. ③ 개인정보 파기의
-        절차 및 방법은 다음과 같습니다.
+      <div>
+        <p>
+          ① 회사는 개인정보 보유기간의 경과, 처리 목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체 없이 해당 개인정보를 파기합니다. ② 정보주체로부터 동의 받은 개인정보 보유기간이 경과하거나 처리
+          목적이 달성되었음에도 불구하고 다른 법령에 따라 개인정보를 계속 보존하여야 하는 경우에는, 해당 개인정보를 별도의 데이터베이스(DB)로 옮기거나 보관 장소를 달리하여 보존합니다. ③ 개인정보 파기의
+          절차 및 방법은 다음과 같습니다.
+        </p>
         <ul>
           <li>파기 절차: 파기 사유가 발생한 개인정보를 선정하고, 개인정보 보호책임자의 승인을 받아 개인정보를 파기합니다.</li>
           <li>파기 방법: 전자적 파일 형태로 기록・저장된 개인정보는 기록을 재생할 수 없도록 파기하며, 종이 문서에 기록・저장된 개인정보는 분쇄기로 분쇄하거나 소각하여 파기합니다.</li>
         </ul>
-      </p>
+      </div>
 
       <h4 class="sub-title-1">정보주체와 법정대리인의 권리/의무 및 행사방법에 관한 사항</h4>
       <p>
@@ -196,20 +199,24 @@ export default {
       <div>
         <p>
           1) 회사는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보보호책임자를 지정하고 있습니다.
-          <br><br>
-          ① 개인정보보호 책임자
-          <ul>
-            <li>성명 : 장종균</li>
-            <li>직책 : 대표 이사</li>
-            <li>연락처 : jkjang@companybb.com</li>
-          </ul>
+        </p>
+        <br>
+        <p>① 개인정보보호 책임자</p>
+        <ul>
+          <li>성명 : 장종균</li>
+          <li>직책 : 대표 이사</li>
+          <li>연락처 : jkjang@companybb.com</li>
+        </ul>
+        <p>
           ② 개인정보보호 열람 청구 접수・처리 부서
-          <ul>
-            <li>부서명 : 운영팀</li>
-            <li>담당자 : 김정율</li>
-            <li>연락처 : support@companybb.com</li>
-          </ul>
-          <br>
+        </p>
+        <ul>
+          <li>부서명 : 운영팀</li>
+          <li>담당자 : 김정율</li>
+          <li>연락처 : support@companybb.com</li>
+        </ul>
+        <br>
+        <p>
           2) 정보주체는 회사의 서비스(또는 사업)을 이용하시면서 발생한 모든 개인정보보호 관련 문의, 불만처리, 피해구제 등에 관한 사항을 개인정보 보호책임자 및 담당부서로 문의할 수 있습니다. 회사는
           정보주체의 문의에 대해 지체없이 답변 및 처리해드릴 것입니다.
         </p>
@@ -220,21 +227,24 @@ export default {
         <p>
           ① 정보주체는 개인정보침해로 인한 구제를 받기 위하여 개인정보분쟁조정위원회, 한국인터넷진흥원개인정보침해신고센터 등에 분쟁해결이나 상담 등을 신청할 수 있습니다. 이 밖에 기타 개인정보침해의신고,
           상담에 대하여는 아래의 기관에 문의하시기 바랍니다.<br>
-          <ul>
-            <li>개인정보분쟁조정위원회 : (국번없이) 1833-6972 (www.kopico.go.kr)</li>
-            <li>개인정보침해신고센터 : (국번없이) 118 (privacy.kisa.or.kr)</li>
-            <li>대검찰청 : (국번없이) 1301 (www.spo.go.kr)</li>
-            <li>경찰청 : (국번없이) 182 (ecrm.cyber.go.kr)</li>
-          </ul>
-          ② 회사는 정보주체의 개인정보자기결정권을 보장하고, 개인정보침해로 인한 상담 및 피해 구제를 위해 노력하고 있으며, 신고나 상담이 필요한 경우 담당부서(9. 참고)로 연락해 주시기 바랍니다.<br>
-          ③ 「개인정보 보호법」 제35조(개인정보의 열람), 제36조(개인정보의 정정·삭제), 제37조(개인정보의 처리정지 등)의 규정에 의한 요구에 대 하여 공공기관의 장이 행한 처분 또는 부작위로 인하여
-          권리 또는 이익의 침해를 받은 자는 행정심판법이 정하는 바에 따라 행정심판을 청구할 수 있습니다.<br>
-          <ul>
-            <li> 중앙행정심판위원회 : (국번없이) 110<br>(www.simpan.go.kr)</li>
-          </ul>
         </p>
+        <ul>
+          <li>개인정보분쟁조정위원회 : (국번없이) 1833-6972 (www.kopico.go.kr)</li>
+          <li>개인정보침해신고센터 : (국번없이) 118 (privacy.kisa.or.kr)</li>
+          <li>대검찰청 : (국번없이) 1301 (www.spo.go.kr)</li>
+          <li>경찰청 : (국번없이) 182 (ecrm.cyber.go.kr)</li>
+        </ul>
+        <p>
+          ② 회사는 정보주체의 개인정보자기결정권을 보장하고, 개인정보침해로 인한 상담 및 피해 구제를 위해 노력하고 있으며, 신고나 상담이 필요한 경우 담당부서(9. 참고)로 연락해 주시기 바랍니다.
+        </p>
+        <p>
+          ③ 「개인정보 보호법」 제35조(개인정보의 열람), 제36조(개인정보의 정정·삭제), 제37조(개인정보의 처리정지 등)의 규정에 의한 요구에 대 하여 공공기관의 장이 행한 처분 또는 부작위로 인하여
+          권리 또는 이익의 침해를 받은 자는 행정심판법이 정하는 바에 따라 행정심판을 청구할 수 있습니다.
+        </p>
+        <ul>
+          <li> 중앙행정심판위원회 : (국번없이) 110<br>(www.simpan.go.kr)</li>
+        </ul>
       </div>
-
       <h4 class="sub-title-1">개인정보 처리방침의 변경에 관한 사항</h4>
       <p>
         ① 이 개인정보 처리방침은 2023년 11월 30일부터 적용됩니다.<br>

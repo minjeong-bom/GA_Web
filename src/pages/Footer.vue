@@ -16,7 +16,7 @@
         <span>∙</span>
         <q-btn class="card-caption-2" dense flat label="아용약관"/>
         <span>∙</span>
-        <q-btn class="card-caption-2" dense flat label="개인정보처리방침"/>
+        <q-btn class="card-caption-2" dense flat label="개인정보처리방침" @click="navigateTo('/sep2000')"/>
         <span>∙</span>
         <q-btn class="card-caption-2" dense flat label="고객센터" @click="navigateTo('/cus0000')"/>
       </div>

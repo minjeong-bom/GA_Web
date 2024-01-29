@@ -132,6 +132,13 @@ const routes = [
       {path: '/cus0000', component: () => import('pages/CUS/CUS_0000.vue')},
     ],
   },
+  {
+    path: '/sep',
+    component: () => import('layouts/ContentFooterLayout.vue'),
+    children: [
+      {path: '/sep2000', component: () => import('pages/SEP/SEP2000.vue')},
+    ],
+  },
   // 본인인증 페이지
   {
     path: '/joi_5000',

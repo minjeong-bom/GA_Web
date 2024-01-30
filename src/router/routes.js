@@ -1,8 +1,8 @@
 import Posting from 'pages/Posting.vue';
-import Article from 'pages/Article.vue';
+import Article from 'src/Article/Article.vue';
 import Login from 'pages/JOI/Login.vue';
 import Search from 'pages/Search.vue';
-import ArticleEdit from "pages/ArticleEdit.vue";
+import ArticleEdit from "src/Article/ArticleEdit.vue";
 
 const routes = [
   {
@@ -18,9 +18,9 @@ const routes = [
     children: [
       {path: '/hom0111', component: () => import('pages/HOM/HOM_0111.vue')},
       {path: '/menu', component: () => import('pages/Menu.vue')},
-      {path: '/articles/story', component: () => import('pages/ArticleList.vue')},
-      {path: '/articles/pick', component: () => import('pages/ArticleList.vue')},
-      {path: '/articles/skills', component: () => import('pages/ArticleList.vue')},
+      {path: '/articles/story', component: () => import('src/Article/ArticleList.vue')},
+      {path: '/articles/pick', component: () => import('src/Article/ArticleList.vue')},
+      {path: '/articles/skills', component: () => import('src/Article/ArticleList.vue')},
     ],
   },
   {

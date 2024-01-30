@@ -49,7 +49,7 @@
 
 <script>
 import ArticleId from 'components/card/ArticleId.vue';
-import article from '../../pages/Article.vue';
+import article from '../../Article/Article.vue';
 
 export default {
   components: {ArticleId},

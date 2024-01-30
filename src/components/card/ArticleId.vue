@@ -112,7 +112,11 @@ export default {
     },
     editArticle() {
       console.log(this.articleKey, 'Edit');
-
+      this.$router.push({
+        path: 'edit', query: {
+          key: this.articleKey,
+        }
+      })
     },
     async deleteArticle() {
       this.deleteModal = false;

@@ -181,42 +181,6 @@ export default defineComponent({
         console.error('게시글이 존재하지 않습니다.', e);
       }
     },
-    async getThumbnail() {
-      const config = {
-        url: '/api/crud/lists/',
-        body: {
-          alias: 'bc',
-          prefix: 'bc',
-          scopes: 'bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content',
-          columns_opts: {
-            bc_foreign_key: 'FHGBWGLF',
-            bc_foreign_key2: 'UZPWQOWR',
-          },
-          limit: 100,
-        },
-        etc: {
-          headers: {
-            'SPRINT-API-KEY': 'sprintcombom',
-          },
-        },
-      };
-
-      const res = await this.$api.post(config.url, config.body, config.etc);
-      this.thumbnailList = res.data.response.lists;
-
-      this.addThumbnailsToArticles();
-    },
-    addThumbnailsToArticles() {
-      this.articleList.forEach((article) => {
-        const thumbnailKey = article.bc_content?.thumbnailKey;
-        const thumbnail = this.thumbnailList.find((t) => t.bc_key === thumbnailKey);
-        if (thumbnail) {
-          article.bc_thumb = thumbnail.bc_content;
-        }
-      });
-
-      this.isLoading = false;
-    },
     async replaceWriterNames(array) {
       for (let item of array) {
         try {
@@ -263,6 +227,42 @@ export default defineComponent({
       }
       this.articleList = array;
       console.log(this.articleList)
+    },
+    async getThumbnail() {
+      const config = {
+        url: '/api/crud/lists/',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key: 'FHGBWGLF',
+            bc_foreign_key2: 'UZPWQOWR',
+          },
+          limit: 100,
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom',
+          },
+        },
+      };
+
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      this.thumbnailList = res.data.response.lists;
+
+      this.addThumbnailsToArticles();
+    },
+    addThumbnailsToArticles() {
+      this.articleList.forEach((article) => {
+        const thumbnailKey = article.bc_content?.thumbnailKey;
+        const thumbnail = this.thumbnailList.find((t) => t.bc_key === thumbnailKey);
+        if (thumbnail) {
+          article.bc_thumb = thumbnail.bc_content;
+        }
+      });
+
+      this.isLoading = false;
     },
   },
   computed: {

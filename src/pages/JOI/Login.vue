@@ -125,13 +125,11 @@ export default {
           }
         }
         const res = await this.$api.post(config.url, config.body, config.etc);
-        console.log(res)
         if (res) {
           const result = res.data.response.lists[0];
           const bc_content = result.bc_content;
-          console.log(bc_content)
-          console.log('user mode set')
           localStorage.setItem('user_mode', bc_content.user_info.type);
+          localStorage.setItem('userName', bc_content.user_info.nickname);
         }
 
         this.navigateTo('/');

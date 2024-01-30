@@ -145,6 +145,7 @@ const routes = [
       {path: '/sep0000', component: () => import('pages/SEP/SEP0000.vue')},
       {path: '/sep1000', component: () => import('pages/SEP/SEP1000.vue')},
       {path: '/sep2000', component: () => import('pages/SEP/SEP2000.vue')},
+      {path: '/sep3000', component: () => import('pages/SEP/SEP3000.vue')}, // 회원 탈퇴
     ],
   },
   // 본인인증 페이지

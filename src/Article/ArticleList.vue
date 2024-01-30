@@ -80,26 +80,6 @@ export default defineComponent({
         this.$router.push('/login');
       }
     },
-    changeTab(tabId) {
-      this.isLoading = true;
-
-      this.articleList = [];
-      this.articleListLength = 5;
-
-      if (tabId == 1) {
-        this.getArticleList('');
-        this.tabCategoryType = '';
-      } else if (tabId == 2) {
-        this.getArticleList('story');
-        this.tabCategoryType = 'story';
-      } else if (tabId == 3) {
-        this.getArticleList('skills');
-        this.tabCategoryType = 'skills';
-      } else if (tabId == 4) {
-        this.getArticleList('gapick');
-        this.tabCategoryType = 'gapick';
-      }
-    },
     async getArticleList(category, limit) {
       console.log(category, limit);
       try {

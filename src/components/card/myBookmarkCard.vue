@@ -28,10 +28,14 @@ export default {
     this.getThumbnail();
   },
   methods: {
-    removeListItem() {
-      itemDelete(this.bookmarkKey);
-      this.$q.notify('북마크가 제거되었어요')
-      this.$emit('resetList');
+    async removeListItem() {
+      try {
+        await itemDelete(this.bookmarkKey);
+        this.$q.notify('북마크가 제거되었어요');
+        this.$emit('deleteDone', this.bookmarkKey);
+      } catch (e) {
+        thiss.$q.notify('북마크가 제거되지 않았습니다. 다시 시도해 주세요');
+      }
     },
     async getThumbnail() {
       if (this.thumbnailKey === '') {

@@ -37,7 +37,7 @@
     <section class="feed-back-section">
       <img alt="작은 웃고있는 해 이미지" class="sun-animation" src="../assets/graphic/sun-animation.gif">
       <p>G@에 알려주고 싶은 이야기가 있나요?</p>
-      <button class="btn-primary-small">네, 있어요</button>
+      <button class="btn-primary-small" @click="navigateToPath('/svc0000')">네, 있어요</button>
     </section>
   </q-page>
 </template>
@@ -50,6 +50,7 @@ import EventCard from 'components/card/EventCard.vue';
 import NoticeCard from 'components/card/NoticeCard.vue';
 import BottomAppBar from 'components/app-bar/BottomAppBar.vue';
 import SkeletonCard from 'components/loading/SkeletonCard.vue';
+import {navigateToPath} from "src/script/navigate/navigateToPath";
 
 export default defineComponent({
   name: 'IndexPage',
@@ -97,6 +98,7 @@ export default defineComponent({
     this.checkLogin();
   },
   methods: {
+    navigateToPath,
     addLoadArticle() {
       this.articleListLength += 10;
       this.getArticleList(this.tabCategoryType, this.articleListLength);

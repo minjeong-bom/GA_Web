@@ -96,6 +96,7 @@ export default {
           lable: '서비스 정책',
           iconClass: 'fa-scale-balanced',
           subLable: '',
+          path: 'sep0000',
         },
         {
           color: '',
@@ -125,7 +126,6 @@ export default {
               iconClass: 'fa-arrow-right-from-bracket',
               subLable: '',
               action: 'logout',
-              path: '/set/logout',
             },
           ],
         },

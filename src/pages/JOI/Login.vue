@@ -6,8 +6,8 @@
       <!-- 아이디 & 비밀번호 입력 -->
       <div class="login-form">
         <q-input v-model="userId" label="아이디" outlined/>
-        <q-input v-model="userPw" :type="isPwd? 'password' : 'text'" label="비밀번호"
-                 outlined>
+        <q-input v-model="userPw" :type="isPwd? 'password' : 'text'" label="비밀번호" outlined
+                 @keyup.enter="login">
           <template v-slot:append>
             <q-icon
               :name="isPwd ? 'visibility_off' : 'visibility'"

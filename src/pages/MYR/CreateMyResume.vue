@@ -2,7 +2,7 @@
 import TextButtonTopBar from "components/app-bar/TextButtonTopBar.vue"
 import MYR_2120 from "pages/MYR/MYR_2120.vue"
 import MyrCard from "components/card/MyrCard.vue"
-import LineGuage from "components/data-visual/line-guage.vue"
+import LineGauge from "components/data-visual/line-gauge.vue"
 import MyrInfoCard from "components/card/MyrInfoCard.vue"
 import MYR_2130 from "pages/MYR/MYR_2130.vue"
 import MYR_2140 from "pages/MYR/MYR_2140.vue"
@@ -14,7 +14,7 @@ export default {
   name: "CreateMyResume",
   components: {
     MyrInfoCard,
-    LineGuage,
+    LineGauge: LineGauge,
     TextButtonTopBar,
     MyrCard,
     MYR_2120,
@@ -445,7 +445,7 @@ export default {
 
       <section class="section-s">
         <h3 class="headline-3">이력서 작성 완성도</h3>
-        <line-guage :value="donePersent"></line-guage>
+        <line-gauge :value="donePersent"></line-gauge>
       </section>
 
       <section class="section-l">
@@ -550,13 +550,13 @@ export default {
     />
     <MYR_2150
       v-if="showModal.myr2150"
-      :saved-laguage-w-level="myLanguage.resm_fl_write"
-      :saved-langeage-l-levels="myLanguage.resm_fl_speak"
       :saved-language-names="myLanguage.resm_fl_category"
-      :saved-laugage-r-level="myLanguage.resm_fl_read"
+      :saved-language-r-level="myLanguage.resm_fl_read"
+      :saved-language-w-level="myLanguage.resm_fl_write"
       :saved-school-majors="mySchool.resm_sc_major"
       :saved-school-name="mySchool.resm_sc_title"
       :saved-school-range="mySchool.resm_sc_range"
+      :savedLanguageLLevels="myLanguage.resm_fl_speak"
       class="popup-modal"
       @closeModal="closeModal"
       @saveSchoolAndLang="saveSchoolAndLang"

@@ -2,67 +2,37 @@
 import TitleTopBar from "components/app-bar/TitleTopBar.vue";
 
 export default {
-  name: "SET0000",
+  name: "SEP0000",
   components: {TitleTopBar},
   data() {
     return {
       menuList: [
         {
           color: '',
-          lable: '알림',
-          iconClass: 'fa-bell',
+          lable: '이용 약관',
+          iconClass: 'fa-book',
           subLable: '',
           path: '/sep1000',
         },
         {
           color: '',
-          lable: '앱 정보',
-          iconClass: 'fa-info-circle',
-          subLable: '',
-        },
-        {
-          color: '',
-          lable: '로그 아웃',
-          iconClass: 'fa-arrow-right-from-bracket',
-          subLable: '',
-          action: 'logout',
-          path: '/sep2000',
-        },
-        {
-          color: '',
-          lable: '회원 탈퇴',
-          iconClass: 'fa-xmark',
+          lable: '개인정보 처리방침',
+          iconClass: 'fa-user',
           subLable: '',
           path: '/sep2000',
         },
       ]
     }
-  },
-  methods: {
-    buttonEvent(action) {
-      if (action === 'logout') {
-        this.logout();
-      }
-    },
-    logout() {
-      localStorage.setItem('userKey', '');
-      localStorage.setItem('userName', '');
-      localStorage.setItem('userId', '');
-
-      this.$router.push('/login');
-      this.$q.notify('로그아웃 되었습니다');
-    },
   }
 }
 </script>
 
 <template>
   <div>
-    <title-top-bar title-text="설정"></title-top-bar>
+    <title-top-bar title-text="서비스 정책"></title-top-bar>
     <div>
       <div v-for="item in menuList">
-
-        <q-btn class="full-width" flat @click="item.action ? buttonEvent(item.action) : this.$router.push(item.path)">
+        <q-btn class="full-width" flat @click="this.$router.push(item.path)">
           <div class="menu-item">
             <div class="icon-lable-wrap">
               <div class="icon-frame flex-center">

@@ -136,7 +136,7 @@ export default {
     <section class="l-column comment-list">
       <div v-for="item in comments" class="comment">
         <comment-id :comment-content="item.comment_content"
-                    :comment-key="item.comment_key"
+                    :comment-key="item.comment_data_key"
                     :created-at="item.comment_regdate"
                     :user-key="item.user_key"
                     :user-position="item.user_data.job"

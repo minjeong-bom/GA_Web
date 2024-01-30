@@ -86,6 +86,7 @@ export default {
   },
   data() {
     return {
+      articleKey: '',
       category1: '스토리',
       options: ['스토리'],
       content: {
@@ -103,6 +104,8 @@ export default {
       dense: ref(false),
       categoryList: [],
       inputTag: '',
+      getThumbKey: '',
+      getThumb: '',
     }
   },
   setup() {
@@ -127,12 +130,109 @@ export default {
       }
     }
   },
+  mounted() {
+    this.articleKey = this.$route.query.key;
+    this.getArticleContent();
+  },
   methods: {
+    async getArticleContent() {
+      try {
+        const config = {
+          url: '/api/crud/single/' + this.articleKey,
+          body: {
+            "prefix": "bc",
+            "alias": "bc",
+            "scopes": "bc_title,bc_count,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content"
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom'
+            }
+          }
+        }
+        const res = await this.$api.post(config.url, config.body, config.etc)
+        this.isLoading = false;
+        const content = res.data.response.view
+
+        this.title = content.bc_content.title;
+        this.content.body = content.bc_content.body;
+        this.content.tags = content.bc_content.tags;
+        this.getThumbKey = content.bc_content.thumbnailKey;
+
+        await this.getThumbnail();
+        await this.getCreaterInfo();
+      } catch (e) {
+        this.isLoading = false;
+      }
+    },
+    async getThumbnail() {
+      if (!this.getThumbKey) {
+        return
+      }
+      this.isLoading = true;
+      try {
+        const config = {
+          url: '/api/crud/single/' + this.getThumbKey,
+          body: {
+            "prefix": "bc",
+            "alias": "bc",
+            "scopes": "bc_content"
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom',
+            }
+          }
+        }
+        const result = await this.$api.post(config.url, config.body, config.etc);
+        this.isLoading = false;
+        this.getThumb = result.data.response.view.bc_content;
+        this.thumbnailImageSource = `data:image/jpeg;base64,${this.getThumb}`;
+      } catch (e) {
+        console.error('썸네일이 없는 게시글입니다.', e);
+        this.isLoading = false;
+      }
+    },
+    async getCreaterInfo() {
+      const config = {
+        url: '/api/crud/lists/?order=desc_bc_regdate',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key2: 'IYETRHFC',
+            bc_title: this.article.createrKey,
+          },
+          limit: 1
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
+        }
+      }
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      if (res) {
+        const result = res.data.response.lists[0].bc_content;
+        this.article.createrType = result.user_info.type;
+        if (result.user_info.type === 'nomal') {
+          this.article.createrName = result.user_info.nickname;
+          this.article.createrJob = result.job.job_title ? result.job.job_title : '';
+        } else if (result.user_info.type === 'pro') {
+          this.article.createrName = result.user_info.nickname;
+          this.article.createrJob = result.pro.area ? result.pro.area + ' 전문가' : '전문가';
+        }
+
+      } else {
+        this.nickname = '비공개 회원';
+      }
+    },
     addTag() {
       this.content.tags = this.content.tags.filter(item => item !== false);
 
       if (this.inputTag === '') {
-        this.$q.notify('태그를 입력해 주세요');
+        return 0
 
       } else if (this.content.tags.length === 3) {
         this.$q.notify('태그는 최대 3개까지 추가할 수 있습니다');
@@ -168,6 +268,7 @@ export default {
         const config = {
           url: '/api/crud/create',
           body: {
+            data_key: this.articleKey,
             data_prefix: 'bc',
             data_title: this.userKey,
             data_foreign_key: 'DPORHCPV', // '스토리' 카테고리 키
@@ -181,6 +282,7 @@ export default {
             },
           }
         }
+
         await this.$api.post(config.url, config.body, config.etc);
         this.navigateTo('/');
       } catch (e) {

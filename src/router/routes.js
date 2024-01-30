@@ -1,7 +1,8 @@
 import Posting from 'pages/Posting.vue';
-import Article from 'pages/Article.vue';
+import Article from 'src/Article/Article.vue';
 import Login from 'pages/JOI/Login.vue';
 import Search from 'pages/Search.vue';
+import ArticleEdit from "src/Article/ArticleEdit.vue";
 
 const routes = [
   {
@@ -17,9 +18,9 @@ const routes = [
     children: [
       {path: '/hom0111', component: () => import('pages/HOM/HOM_0111.vue')},
       {path: '/menu', component: () => import('pages/Menu.vue')},
-      {path: '/articles/story', component: () => import('pages/ArticleList.vue')},
-      {path: '/articles/pick', component: () => import('pages/ArticleList.vue')},
-      {path: '/articles/skills', component: () => import('pages/ArticleList.vue')},
+      {path: '/articles/story', component: () => import('src/Article/ArticleList.vue')},
+      {path: '/articles/pick', component: () => import('src/Article/ArticleList.vue')},
+      {path: '/articles/skills', component: () => import('src/Article/ArticleList.vue')},
     ],
   },
   {
@@ -66,6 +67,13 @@ const routes = [
     ],
   },
   {
+    path: '/svc',
+    component: () => import('layouts/FullPageLayout.vue'),
+    children: [
+      {path: '/svc0000', component: () => import('pages/SVC/SVC0000.vue')},
+    ],
+  },
+  {
     path: '/search',
     name: 'search',
     component: Search,
@@ -81,20 +89,14 @@ const routes = [
     component: Posting,
   },
   {
+    path: '/edit',
+    name: 'edit',
+    component: ArticleEdit,
+  },
+  {
     path: '/article',
     name: 'article',
     component: Article,
-  },
-  {
-    path: '/onb',
-    component: () => import('layouts/FullPageLayout.vue'),
-    children: [
-      {path: '/onb0000', component: () => import('pages/ONB/ONB_0000.vue')},
-      {path: '/onb0001', component: () => import('pages/ONB/ONB_0001.vue')},
-      {path: '/onb0002', component: () => import('pages/ONB/ONB_0002.vue')},
-      {path: '/onb0003', component: () => import('pages/ONB/ONB_0003.vue')},
-      {path: '/onb0004', component: () => import('pages/ONB/ONB_0004.vue')},
-    ],
   },
   {
     path: '/not',
@@ -134,6 +136,15 @@ const routes = [
     component: () => import('layouts/ContentFooterLayout.vue'),
     children: [
       {path: '/cus0000', component: () => import('pages/CUS/CUS_0000.vue')},
+    ],
+  },
+  {
+    path: '/sep',
+    component: () => import('layouts/FullPageLayout.vue'),
+    children: [
+      {path: '/sep0000', component: () => import('pages/SEP/SEP0000.vue')},
+      {path: '/sep1000', component: () => import('pages/SEP/SEP1000.vue')},
+      {path: '/sep2000', component: () => import('pages/SEP/SEP2000.vue')},
     ],
   },
   // 본인인증 페이지

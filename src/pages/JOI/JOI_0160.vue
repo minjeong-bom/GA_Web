@@ -113,7 +113,7 @@ export default {
           <!-- 닉네임 랜덤 생성 버튼 -->
           <q-btn class="btn-dd-check"
                  flat
-                 label="랜덤 생성"
+                 label="닉네임 추천받기"
                  style="background: var(--only-g-red-red-10)"
                  @click="generateNickname"
           >

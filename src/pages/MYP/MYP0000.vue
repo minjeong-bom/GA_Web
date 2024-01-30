@@ -280,11 +280,15 @@ export default {
     </section>
     <section class="point-section">
       <p>관심사</p>
-      <div class="sub-title-1 flex">
+      <div v-if="userDetailInfo.user_info.interesting" class="sub-title-1 flex interesting-item">
         <span v-for="item in userDetailInfo.user_info.interesting">
           {{ item }}
         </span>
       </div>
+      <p v-else class="lable-2">
+        선택된 관심사가 없습니다.<br>
+        관심사를 선택하시면 관련 콘텐츠를 추천해드려요.
+      </p>
     </section>
     <section class="my-menu-list">
       <div v-for="menu in myMenuList" class="my-menu flex-sb">
@@ -303,6 +307,14 @@ export default {
 <style lang="scss" scoped>
 html, body, div, .q-layout {
   background: #F2F2F7 !important;
+}
+
+.interesting-item {
+  gap: 0.75rem;
+
+  .lable-2 {
+    color: #999;
+  }
 }
 
 .user-info-wrap {
@@ -339,9 +351,10 @@ html, body, div, .q-layout {
 }
 
 .point-section {
-  //.sub-title-1 {
-  //  gap: 0.75rem;
-  //}
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px;
 
   .footnote {
     color: #999;

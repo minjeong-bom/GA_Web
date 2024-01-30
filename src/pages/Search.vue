@@ -22,22 +22,22 @@
           <div :class="{ 'tab-focus' : categoryTab === 'Skill' }" class="tab-item" @click="setTabUI('Skill')">취업스킬</div>
           <div :class="{ 'tab-focus' : categoryTab === 'Pick' }" class="tab-item" @click="setTabUI('Pick')">지애 픽</div>
         </div>
-        <div v-for="item in articleList">
-          <article-card
-            :article-thumb="item.articleThumb"
-            :article-type="item.articleType"
-            :badge-title="item.badgeTitle"
-            :created-at="item.createdAt"
-            :description="item.description"
-            :motivation="item.motivation"
-            :thumbnail-key="item.bc_content.thumbnailKey"
-            :title="item.title"
-            :view-count="item.viewCount"
-            :writer="item.writer"
-            :writer-thumb="item.writerThumb"
-          >
-          </article-card>
-        </div>
+        <!--        <div v-for="item in articleList">-->
+        <!--          <article-card-->
+        <!--            :article-thumb="item.articleThumb"-->
+        <!--            :article-type="item.articleType"-->
+        <!--            :badge-title="item.badgeTitle"-->
+        <!--            :created-at="item.createdAt"-->
+        <!--            :description="item.description"-->
+        <!--            :motivation="item.motivation"-->
+        <!--            :thumbnail-key="item.bc_content.thumbnailKey"-->
+        <!--            :title="item.title"-->
+        <!--            :view-count="item.viewCount"-->
+        <!--            :writer="item.writer"-->
+        <!--            :writer-thumb="item.writerThumb"-->
+        <!--          >-->
+        <!--          </article-card>-->
+        <!--        </div>-->
       </div>
     </section>
   </div>

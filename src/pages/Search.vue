@@ -52,8 +52,9 @@
     </section>
     <!-- 카테고리별 인기 콘텐츠 -->
     <section>
+      <tab :tabs="tabList" default-tab="story" @changeTab="changeTab"/>
       <h2 class="headline-2">카테고리별 인기 콘텐츠</h2>
-      <div v-for="item in fixedArticles">
+      <div v-for="item in fixedArticles" v-if="fixedArticles.length > 0">
         <article-card
           v-if="item.nickname && item.category_name"
           :article-key="item.bc_key"
@@ -72,6 +73,9 @@
           :writer-thumb="item.writerThumb"
         />
       </div>
+      <p v-else>
+        등록된 게시글이 없어요...🥲
+      </p>
     </section>
     <bottom-app-bar/>
   </div>
@@ -82,6 +86,7 @@ import TitleTopBar from 'components/app-bar/TitleTopBar.vue';
 import ArticleCard from 'components/card/ArticleCard.vue';
 import SkeletonCard from "components/loading/SkeletonCard.vue";
 import BottomAppBar from "components/app-bar/BottomAppBar.vue";
+import Tab from "components/tab/Tab.vue";
 
 export default {
   components: {
@@ -89,6 +94,7 @@ export default {
     TitleTopBar,
     'article-card': ArticleCard,
     SkeletonCard,
+    Tab,
   },
   data() {
     return {
@@ -112,12 +118,38 @@ export default {
       articleListShow: false,
       limit: 20,
       lastContentLoad: false,
+      tabList: [
+        {
+          id: 'story',
+          title: '스토리'
+        },
+        {
+          id: 'skills',
+          title: '취업스킬'
+        },
+        {
+          id: 'gapick',
+          title: '지애픽'
+        }
+      ]
     };
   },
   created() {
     this.getFixedArticleList();
   },
   methods: {
+    changeTab(tabId) {
+      this.isLoading = true;
+      this.fixedArticles = [];
+
+      if (tabId === 'story') {
+        this.getFixedArticleList('DPORHCPV');
+      } else if (tabId === 'skills') {
+        this.getFixedArticleList('KWUOXKGM');
+      } else if (tabId === 'gapick') {
+        this.getFixedArticleList('CEZTXGLJ');
+      }
+    },
     async moreCards() {
       this.limit += 20;
       const oldListLength = this.articleList.length
@@ -133,7 +165,7 @@ export default {
     setTabUI(tab) {
       this.categoryTab = tab;
     },
-    async getFixedArticleList() {
+    async getFixedArticleList(category) {
       this.articleList = [];
       try {
         this.isLoading = true;
@@ -145,6 +177,7 @@ export default {
             scopes: 'bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key,bc_content',
             columns_opts: {
               bc_foreign_key2: 'SNXKQEZS',
+              bc_foreign_key: category,
             },
             limit: 3,
           },

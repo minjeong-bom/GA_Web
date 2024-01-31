@@ -60,7 +60,7 @@ export default {
         const res = await this.$api.post(config.url, config.body, config.etc);
         localStorage.setItem('userKey', res.data.response.result.data_key);
 
-        this.login();
+        await this.login();
 
         this.navigateTo('/joi0150');
       } catch (e) {
@@ -134,10 +134,7 @@ export default {
       const result = res.data.response.lists[0];
       localStorage.setItem('userName', result.bc_content.user_info.nickname);
     },
-    computed: {
-    ready() {
-      return this.allChecked;
-    },
+
   },
   watch: {
     allChecked(newVal) {
@@ -148,6 +145,11 @@ export default {
     check1: 'updateAllChecked',
     check2: 'updateAllChecked'
   },
+  computed: {
+    ready() {
+      return this.allChecked;
+    }
+  }
 }
 </script>
 

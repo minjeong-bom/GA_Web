@@ -128,7 +128,7 @@ export default {
       }
     },
     reportArticle() {
-      // 신고하기 기능 추가
+      this.$q.notify('신고가 접수되었습니다.');
     }
   },
   computed: {

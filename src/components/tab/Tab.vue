@@ -19,7 +19,7 @@ export default {
       default: [],
     },
     defaultTab: {
-      type: Number,
+      type: String,
       default: 0,
     }
   },

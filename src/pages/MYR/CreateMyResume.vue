@@ -125,7 +125,7 @@ export default {
             data_aw_date: '', // 수상 내역 수상연도
             // ???
             data_career_summary: this.userGoal, // 경력 요약
-            data_strategy: '' // 핵심 역량
+            data_strategy: this.donePersent // 핵심 역량
           },
           etc: {
             headers: {
@@ -134,37 +134,9 @@ export default {
           }
         }
         const result = await this.$api.post(config.url, config.body, config.etc)
-        const resumeKey = result.data.response.result.data_key;
-        await this.createdResumeResult(resumeKey);
+        this.navigateTo('/myr0000');
       } catch (e) {
         console.error('이력서 등록 실패', e)
-      }
-    },
-    async createdResumeResult(resumeKey) {
-      try {
-        const config = {
-          url: '/api/crud/create',
-          body: {
-            data_prefix: "bc",
-            data_title: this.localUserKey,
-            data_foreign_key: "IUSHLIAS",
-            data_foreign_key2: "WPHNTUFK",
-            data_content: JSON.stringify({
-              resumeTitle: this.myrTitle,
-              resumeKey: resumeKey,
-              resumePersent: this.donePersent,
-            }),
-            data_writer_name: this.localUserKey
-          },
-          etc: {
-            headers: {
-              'SPRINT-API-KEY': 'sprintcombom',
-            }
-          }
-        }
-        await this.$api.post(config.url, config.body, config.etc)
-      } catch (e) {
-        console.error('목록 등록 실패', e)
       }
     },
     saveGoalSetting(goalArea, goalCompany) {
@@ -337,7 +309,7 @@ export default {
       let arraySet = [];
 
       const target = this.myHistory;
-      for (let i = 0; i < this.myHistory.resm_cp_range.length; i++) {
+      for (var i = 0; i < this.myHistory.resm_cp_range.length; ++i) {
         arraySet.push({
           name: '경력' + (i + 1),
           result: [
@@ -349,6 +321,7 @@ export default {
           ],
         })
       }
+      console.log(arraySet);
 
       return arraySet
     },
@@ -480,7 +453,10 @@ export default {
           :card-title="'목표하는 기업에 맞는 경력과 성과를 작성하세요.'"
           @click="openModal('myr2140')"
         />
-        <myr-info-card v-else :card-head-line="'경력 및 성과'" :item-length="5" :results="myHistoryResult"
+        <myr-info-card v-if="this.myHistory.resm_cp_field.length && myHistoryResult"
+                       :item-length="5"
+                       :results="myHistoryResult"
+                       card-head-line="경력 및 성과"
                        @click="openModal('myr2140')"/>
         <!-- 학력 및 외국어 -->
         <myr-card

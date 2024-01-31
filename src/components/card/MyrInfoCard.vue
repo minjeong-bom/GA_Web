@@ -20,7 +20,9 @@ export default {
     </div>
     <div class="myr-info-card-wrap">
       <div v-for="item in results" v-if="itemLength">
-        <p v-for="index in itemLength" v-show="item.result[index - 1]" class="tag-group-title">{{ item.result[i] }}</p>
+        <p v-for="index in itemLength" v-show="item.result[index - 1]" class="tag-group-title">
+          {{ item.result[index] }}
+        </p>
         <p class="caption-1">{{ item.name }}</p>
       </div>
       <div v-for="item in results" v-else>

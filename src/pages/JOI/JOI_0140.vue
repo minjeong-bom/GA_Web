@@ -90,13 +90,6 @@ export default {
         );
 
         await this.getDetailUserInfo();
-        localStorage.setItem('userKey', res.data.response.key);
-        // localStorage.setItem('userName', res.data.response.name);
-        localStorage.setItem('userId', res.data.response.id);
-
-        localStorage.removeItem('draft_id');
-        localStorage.removeItem('draft_pw');
-        localStorage.removeItem('draft_email');
       } catch (error) {
         this.loginFailMassage = '아이디/비밀번호를 다시 확인해주세요'
         console.error(error);
@@ -133,6 +126,12 @@ export default {
       const res = await this.$api.post(config.url, config.body, config.etc);
       const result = res.data.response.lists[0];
       localStorage.setItem('userName', result.bc_content.user_info.nickname);
+      localStorage.setItem('userKey', res.data.response.key);
+      localStorage.setItem('userId', res.data.response.id);
+
+      localStorage.removeItem('draft_id');
+      localStorage.removeItem('draft_pw');
+      localStorage.removeItem('draft_email');
     },
 
   },
@@ -163,13 +162,13 @@ export default {
       <div>
         <div :class="check1? 'checked' : ''" class="check-box-wrap flex-sb">
           <q-checkbox v-model="check1" label="서비스 이용 약관 동의" style="width: 100%"/>
-          <q-btn flat round>
+          <q-btn flat round @click="navigateTo('/sep1000')">
             <q-icon name="chevron_right"></q-icon>
           </q-btn>
         </div>
         <div :class="check2? 'checked' : ''" class="check-box-wrap flex-sb">
           <q-checkbox v-model="check2" label="개인정보 처리방침 동의" style="width: 100%"/>
-          <q-btn flat round>
+          <q-btn flat round @click="navigateTo('/sep2000')">
             <q-icon name="chevron_right"></q-icon>
           </q-btn>
         </div>

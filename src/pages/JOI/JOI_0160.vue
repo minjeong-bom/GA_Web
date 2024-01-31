@@ -68,7 +68,7 @@ export default {
           },
         }
 
-        console.log(config)
+        localStorage.setItem('userName', this.userName);
         await this.$api.post(config.url, config.body, config.etc);
         if (this.userType === 'pro') {
           this.navigateTo('/joi0200');

@@ -17,11 +17,11 @@ export default {
     async getNoticeList() {
       try {
         const config = {
-          url: '/api/crud/lists/',
+          url: '/api/crud/lists/?order=desc_bc_regdate',
           body: {
             alias: 'bc',
             prefix: 'bc',
-            scopes: 'bc_title,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key',
+            scopes: 'bc_title,bc_content,bc_count,bc_regdate,bc_foreign_key,bc_foreign_key2,bc_writer_name,bc_key',
             columns_opts: {
               bc_foreign_key2: 'AOGLJYFD' // 공지사항
             },
@@ -93,6 +93,7 @@ export default {
           :category-text="item.bc_foreign_key"
           :created-date="item.bc_regdate"
           :creater-name="item.bc_writer_name"
+          :thumbnail-key="item.bc_content.thumbnailKey"
           :title-text="item.bc_title"
           @click="goToDetailView(item.bc_key)"
         />

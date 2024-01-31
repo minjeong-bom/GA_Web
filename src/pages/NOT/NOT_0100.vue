@@ -14,6 +14,8 @@ export default {
         createdAt: '',
         createrName: '',
       },
+      thumbnailKey: null,
+      fileObject64: null,
     }
   },
   mounted() {
@@ -22,6 +24,7 @@ export default {
   methods: {
     async getNotice() {
       try {
+        this.isLoading = true;
         const config = {
           url: '/api/crud/single/' + this.contentKey,
           body: {
@@ -39,12 +42,38 @@ export default {
         const res = response.data.response.view;
         this.article.title = res.bc_title;
         this.article.content = res.bc_content.content;
+        this.thumbnailKey = res.bc_content.thumbnailKey;
         this.article.createrName = res.bc_writer_name;
         this.article.createdAt = res.bc_regdate;
+
+        if (this.thumbnailKey) {
+          this.getThumbnail();
+        } else {
+          this.isLoading = false;
+        }
       } catch (e) {
         console.error(e);
       }
-    }
+    },
+    async getThumbnail() {
+      const config = {
+        url: `/api/crud/single/${this.thumbnailKey}`,
+        body: {
+          prefix: 'bc',
+          alias: 'bc',
+          scopes: 'bc_content',
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom',
+          },
+        },
+      };
+
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      this.fileObject64 = res.data.response.view.bc_content;
+      this.isLoading = false;
+    },
   },
   computed: {
     contentKey() {
@@ -63,7 +92,7 @@ export default {
       <!-- created at -->
       <p class="article-created-at-text">{{ article.createdAt }}</p>
     </div>
-    <img :src="`src/assets/graphic/article-thumbnail-sample.png`" alt="공지사항 썸네일 영역" class="thumbnail-image">
+    <img :src="`data:image/jpeg;base64,${fileObject64}`" alt="공지사항 썸네일" class="thumbnail-image">
     <!--		v-html=""-->
     <section v-if="isLoading" class="article-content">
       <skeleton-line :lines="4"></skeleton-line>
@@ -91,8 +120,7 @@ export default {
 
 .thumbnail-image {
   width: 100%;
-  height: 13.875rem;
-  background-size: cover;
+  height: auto;
 }
 
 .article-content {

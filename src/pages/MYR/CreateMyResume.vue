@@ -133,10 +133,10 @@ export default {
             }
           }
         }
-        const result = await this.$api.post(config.url, config.body, config.etc)
+        await this.$api.post(config.url, config.body, config.etc)
         this.navigateTo('/myr0000');
       } catch (e) {
-        console.error('이력서 등록 실패', e)
+        console.log('이력서 등록 실패', e);
       }
     },
     saveGoalSetting(goalArea, goalCompany) {

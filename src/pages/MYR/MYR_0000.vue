@@ -61,8 +61,7 @@ export default {
 
         // API 호출
         const res = await this.$api.post(config.url, config.data, config.etc);
-        const response = res.data.response.lists
-        this.list = response;
+        this.list = res.data.response.lists;
 
         this.isLoading = false;
       } catch (e) {
@@ -88,7 +87,7 @@ export default {
     <tab :tabs="tabList" default-tab="guide" style="padding: 0 1rem;" @changeTab="changeTab"/>
     <section v-show="contentType" class="nomal-page-layout">
       <div class="center-graphic-layout">
-        <img src="../../assets/graphic/graphic-edit-imoji.png">
+        <img alt="종이와 펜 이모지" src="../../assets/graphic/graphic-edit-imoji.png">
         <p>
           <span class="high-light">
             {{ storageUserName ? storageUserName : '회원' }}

@@ -2,7 +2,7 @@
   <div>
     <div class="tab">
       <!-- 탭 -->
-      <div v-for="tab in tabs" :key="tab.id" :class="{ 'tab-focus' : tab.id == activeTab }" class="tab-item"
+      <div v-for="tab in tabs" :key="tab.id" :class="{ 'tab-focus' : tab.id === activeTab }" class="tab-item"
            @click="selectTab(tab.id)">
         {{ tab.title }}
       </div>

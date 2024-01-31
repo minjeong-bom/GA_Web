@@ -54,32 +54,18 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style lagn="scss" scoped>
 .joi-0100-view {
-}
+  .inner-layout {
+    padding: 1.25rem 16px;
+  }
 
-.joi-0100-view .inner-layout {
-  padding: 1.25rem 16px;
-}
+  .id-input-wrap {
+    position: relative;
+  }
 
-.id-input-wrap {
-  position: relative;
-}
-
-.inner-layout {
-  gap: 30px;
-}
-
-.btn-dd-check-wrap {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  padding: 0.6rem;
-}
-
-.bottom-button-fixed {
-  position: fixed;
-  bottom: 0;
+  .inner-layout {
+    gap: 30px;
+  }
 }
 </style>

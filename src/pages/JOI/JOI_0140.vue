@@ -83,7 +83,7 @@ export default {
         formData.append('id', draftId);
         formData.append('pw', draftPw);
 
-        const res = await this.$api.post(
+        await this.$api.post(
           config.url,
           formData,
           {headers: config.headers}

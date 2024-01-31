@@ -11,6 +11,9 @@ export default {
   },
   methods: {
     saveUserEmail() {
+      if (!this.emailStringCheck) {
+        return
+      }
       localStorage.setItem('draft_email', this.userEmail);
       this.navigateTo('/joi0140');
     },
@@ -33,7 +36,8 @@ export default {
     <section class="inner-layout l-column">
       <!-- 이메일 입력 -->
       <div class="id-input-wrap">
-        <q-input v-model="userEmail" label="이메일" outlined placeholder="이메일을 입력하세요" type="email"/>
+        <q-input v-model="userEmail" label="이메일" outlined placeholder="이메일을 입력하세요" type="email"
+                 @keyup.enter="saveUserEmail"/>
       </div>
     </section>
     <q-btn

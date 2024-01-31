@@ -35,6 +35,7 @@ p {
   align-self: stretch;
 
   border-bottom: 1px solid #E6E0E9;
+  cursor: pointer;
 }
 
 .ask-date {

@@ -23,9 +23,11 @@ export default {
   <div class="title-top-bar flex-sb">
     <div>
       <!-- 뒤로가기 버튼 -->
-      <q-icon v-if="backButton" name="arrow_back" size="1.5rem" @click="goBack"></q-icon>
+      <q-btn v-if="backButton" class="no-padding" dense flat @click="goBack">
+        <q-icon name="arrow_back" size="1.5rem"/>
+      </q-btn>
       <!-- 제목 -->
-      <h2>{{ titleText ? titleText : "" }}</h2>
+      <p class="headline-2">{{ titleText ? titleText : "" }}</p>
     </div>
     <div v-if="subText" class="sub-text-area">
       <span>{{ subText }}</span>
@@ -47,13 +49,10 @@ export default {
   gap: 1.25rem;
 }
 
-h2 {
+.headline-2 {
   color: var(--k-85);
-  text-align: center;
   font-size: 20px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 }
 
 .sub-text-area {

@@ -127,6 +127,7 @@ export default {
       const res = await this.$api.post(config.url, config.body, config.etc);
       if (res) {
         const result = res.data.response.lists[0];
+        this.edit.user_info.about = result.bc_content.user_info.about;
         this.edit.user_info.nickname = result.bc_content.user_info.nickname;
         this.edit.user_info.email = result.bc_content.user_info.email;
         this.edit.user_info.interesting = result.bc_content.user_info.interesting;

@@ -8,7 +8,7 @@
           <q-btn dense flat icon="search"/>
         </template>
         <template v-slot:append>
-          <q-btn dense flat icon="cancel"/>
+          <q-btn dense flat icon="cancel" @click="searchText = ''"/>
         </template>
       </q-input>
       <!-- 검색 버튼 -->
@@ -27,7 +27,7 @@
       <skeleton-card v-if="isLoading" :lines="5"/>
       <div v-for="item in articleList" v-else>
         <article-card
-          v-if="articleListShow"
+          v-if="item.nickname"
           :article-key="item.bc_key"
           :article-type="item.category_name"
           :article-type2="item.category_name"
@@ -43,7 +43,8 @@
           :writer="item.nickname"
           :writer-thumb="item.writerThumb"/>
       </div>
-      <!--      <q-btn label="검색 결과 더보기"/>-->
+      <q-btn v-if="!lastContentLoad" class="caption-1" flat label="검색 결과 더보기" @click="moreCards"/>
+      <div v-else class="caption-1 text-align-center">마지막 검색 결과 입니다.</div>
     </section>
     <section v-if="noSearch">
       <h2 class="headline-2">검색</h2>
@@ -52,22 +53,23 @@
     <!-- 카테고리별 인기 콘텐츠 -->
     <section>
       <h2 class="headline-2">카테고리별 인기 콘텐츠</h2>
-      <div>
-        <article-card v-for="item in fixedArticles"
-                      :article-key="item.bc_key"
-                      :article-type="item.category_name"
-                      :article-type2="item.category_name"
-                      :badge-title="item.badgeTitle"
-                      :created-at="item.bc_regdate"
-                      :creater-key="item.bc_writer_name"
-                      :is-loading="isLoading"
-                      :motivation="item.motivation"
-                      :thumbnail-key="item.bc_content.thumbnailKey"
-                      :title="item.bc_content.title ? item.bc_content.title : item.bc_title"
-                      :user-mode="item.user_mode"
-                      :view-count="item.bc_count"
-                      :writer="item.nickname"
-                      :writer-thumb="item.writerThumb"
+      <div v-for="item in fixedArticles">
+        <article-card
+          v-if="item.nickname && item.category_name"
+          :article-key="item.bc_key"
+          :article-type="item.category_name"
+          :article-type2="item.category_name"
+          :badge-title="item.badgeTitle"
+          :created-at="item.bc_regdate"
+          :creater-key="item.bc_writer_name"
+          :is-loading="isLoading"
+          :motivation="item.motivation"
+          :thumbnail-key="item.bc_content.thumbnailKey"
+          :title="item.bc_content.title ? item.bc_content.title : item.bc_title"
+          :user-mode="item.user_mode"
+          :view-count="item.bc_count"
+          :writer="item.nickname"
+          :writer-thumb="item.writerThumb"
         />
       </div>
     </section>
@@ -108,18 +110,27 @@ export default {
       isLoading: false,
       noSearch: false,
       articleListShow: false,
+      limit: 20,
+      lastContentLoad: false,
     };
   },
   created() {
     this.getFixedArticleList();
   },
   methods: {
+    async moreCards() {
+      this.limit += 20;
+      const oldListLength = this.articleList.length
+      await this.getArticleList();
+      if (oldListLength === this.articleList.length) {
+        this.lastContentLoad = true;
+      }
+    },
     searchKeyword(keyword) {
       this.searchText = keyword;
       this.getArticleList();
     },
     setTabUI(tab) {
-      console.log('tab');
       this.categoryTab = tab;
     },
     async getFixedArticleList() {
@@ -167,7 +178,7 @@ export default {
         this.noSearch = true;
       }
     },
-    async getArticleList() {
+    async getArticleList(limit) {
       this.articleList = [];
       this.noSearch = false;
       this.articleListShow = false;
@@ -182,7 +193,7 @@ export default {
             columns_opts: {
               bc_foreign_key2: 'SNXKQEZS',
             },
-            limit: 20,
+            limit: this.limit,
           },
           etc: {
             headers: {
@@ -194,8 +205,6 @@ export default {
         // API 호출
         const res = await this.$api.post(config.url, config.data, config.etc);
         const response = res.data.response.lists;
-
-        console.log(response);
 
         // 카테고리 이름 삽입
         const categoryInfo = {
@@ -243,7 +252,7 @@ export default {
           const userType = content.user_info.type ? content.user_info.type : 'nomal';
 
           item.user_mode = userType;
-          if (content.user_info.nickname) {
+          if (content.user_info.nickname !== undefined && content.user_info.nickname !== null) {
             item.nickname = content.user_info.nickname;
           }
 
@@ -252,20 +261,25 @@ export default {
           } else if (userType === 'pro') {
             item.badgeTitle = content.pro.area ? content.pro.area : '';
           }
-
-          if (target === 'fixedArticle') {
-            this.fixedArticles = array;
-          } else {
-            this.articleList = array;
-          }
           this.isLoading = false;
-          this.articleListShow = true;
         } catch (e) {
           this.isLoading = false;
         }
       }
+      if (target === 'fixedArticle') {
+        this.fixedArticles = array;
+        this.articleListShow = true;
+      } else {
+        this.articleList = array;
+        this.articleListShow = true;
+      }
     },
   },
+  watch: {
+    searchText() {
+      this.limit = 20;
+    }
+  }
 };
 </script>
 

@@ -54,7 +54,7 @@ export default {
   </div>
 </template>
 
-<style lagn="scss" scoped>
+<style lang="scss" scoped>
 .joi-0100-view {
   .inner-layout {
     padding: 1.25rem 16px;

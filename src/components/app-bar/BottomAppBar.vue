@@ -17,7 +17,9 @@ export default {
     checkIsPageName() {
       const thisPage = this.$route.path
       if (thisPage === '/') {
-        this.inHome = true
+        this.inHome = true;
+      } else if (thisPage === '/search') {
+        this.inSearch = true;
       }
     },
     goToMypage() {
@@ -25,7 +27,7 @@ export default {
       this.navigateTo('/mypage' + '/' + userType);
     },
     navigateTo(path) {
-      this.$router.push(path)
+      this.$router.push(path);
     }
   }
 }
@@ -33,11 +35,11 @@ export default {
 
 <template>
   <div class="bottom-app-bar">
-    <q-btn class="bottom-app-bar-item" flat>
+    <q-btn class="bottom-app-bar-item" flat @click="navigateTo('/')">
       <div :class="{ 'focused-status' : inHome }" class="icon-wrap">
         <q-icon name="home"/>
       </div>
-      <p :class="{ 'focused-status' : inHome }" class="lable" @click="navigateTo('/')">홈</p>
+      <p :class="{ 'focused-status' : inHome }" class="lable">홈</p>
     </q-btn>
     <q-btn class="bottom-app-bar-item" flat @click="navigateTo('/search')">
       <div :class="{ 'focused-status' : inSearch }" class="icon-wrap">

@@ -60,7 +60,7 @@ export default {
         const res = await this.$api.post(config.url, config.body, config.etc);
         localStorage.setItem('userKey', res.data.response.result.data_key);
 
-        this.login();
+        await this.login();
 
         this.navigateTo('/joi0150');
       } catch (e) {
@@ -89,8 +89,9 @@ export default {
           {headers: config.headers}
         );
 
+        await this.getDetailUserInfo();
         localStorage.setItem('userKey', res.data.response.key);
-        localStorage.setItem('userName', res.data.response.name);
+        // localStorage.setItem('userName', res.data.response.name);
         localStorage.setItem('userId', res.data.response.id);
 
         localStorage.removeItem('draft_id');
@@ -107,12 +108,33 @@ export default {
     },
     navigateTo(path) {
       this.$router.push(path);
-    }
-  },
-  computed: {
-    ready() {
-      return this.allChecked;
     },
+    async getDetailUserInfo() {
+      const storageUserKey = localStorage.getItem('userKey');
+
+      const config = {
+        url: '/api/crud/lists/',
+        body: {
+          alias: 'bc',
+          prefix: 'bc',
+          scopes: 'bc_key,bc_content',
+          columns_opts: {
+            bc_foreign_key: 'AYZXHRWS',
+            bc_title: storageUserKey,
+          },
+          limit: 100
+        },
+        etc: {
+          headers: {
+            'SPRINT-API-KEY': 'sprintcombom'
+          }
+        }
+      }
+      const res = await this.$api.post(config.url, config.body, config.etc);
+      const result = res.data.response.lists[0];
+      localStorage.setItem('userName', result.bc_content.user_info.nickname);
+    },
+
   },
   watch: {
     allChecked(newVal) {
@@ -123,6 +145,11 @@ export default {
     check1: 'updateAllChecked',
     check2: 'updateAllChecked'
   },
+  computed: {
+    ready() {
+      return this.allChecked;
+    }
+  }
 }
 </script>
 

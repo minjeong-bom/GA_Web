@@ -33,7 +33,7 @@ export default {
           lable: '회원 탈퇴',
           iconClass: 'fa-xmark',
           subLable: '',
-          path: '/sep2000',
+          path: '/sep3000',
         },
       ]
     }

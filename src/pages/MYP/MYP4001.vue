@@ -29,7 +29,8 @@ export default {
               bc_foreign_key: 'IOZOZWFG',
               bc_foreign_key2: 'ZRBTGTEX',
               bc_title: this.storageUserKey,
-            }
+            },
+            limit: 25,
           },
           etc: {
             headers: {
@@ -82,7 +83,7 @@ export default {
     <section class="nomal-page-layout">
 
       <!-- 나의 문의 목록 -->
-      <section v-if="askList" class="ask-card-list l-column">
+      <section v-if="askList.length > 0" class="ask-card-list l-column">
         <div v-for="item in askList" class="ask-card-item" @click="navigateToAsk(item.bc_key)">
           <div class="flex-sb">
             <div class="l-column ask-card-text">
@@ -104,8 +105,7 @@ export default {
         <p class="cus-text-2">
           <span class="high-light">
           {{ storageUserName }}
-          </span>
-          님이 문의하시는 내용<br>
+          </span>님이 문의하시는 내용<br>
           확인할 수 있어요.
         </p>
       </div>
@@ -129,5 +129,6 @@ export default {
   gap: 0.625rem;
 
   border-bottom: 1px solid #E6E6E6;
+  cursor: pointer;
 }
 </style>

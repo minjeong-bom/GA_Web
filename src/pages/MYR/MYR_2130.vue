@@ -80,12 +80,16 @@ export default {
         <span class="footnote">
           많은 채용 전문가의 말에 따르면...<br>
           사진은 첫인상을 좌우하는 결정적 요인이에요.<br>
-          목표 업종과 직무에 맞는 사진을 선택하는 것이 중요해요.
+          목표 업종과 직무에 맞는 사진을 선택하는 것이 중요해요.<br>
           보통 3X4 비율의 반명함판 사진을 많이 사용해요.
         </span>
       </p>
 
-      <q-file v-model="selectedFile" bottom-slots class="full-width" counter filled label="프로필 사진">
+      <div v-if="uploadImage" class="upload-image-frame l-column">
+        <img :src="'data:image/jpeg;base64,' + uploadImage">
+        <q-btn class="delete-image-btn" color="primary" dense flat icon="delete" round @click="imageDelete"/>
+      </div>
+      <q-file v-else v-model="selectedFile" bottom-slots class="full-width" counter filled label="프로필 사진">
         <template v-slot:prepend>
           <q-icon name="add_a_photo"/>
         </template>
@@ -99,7 +103,7 @@ export default {
 
       <q-btn
         :disable="!selectedFile"
-        class="full-width myr-modal-save-button nomal-text-3"
+        class="full-width myr-modal-save-button nomal-text-3 bottom-fixed-btn"
         flat
         label="저장"
         rounded
@@ -118,7 +122,31 @@ export default {
 
 </style>
 
-<style scoped>
+<style lang="scss" scoped>
+.upload-image-frame {
+  position: relative;
+
+  width: 200px;
+  height: 300px;
+  padding: 4px;
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  .delete-image-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    background: #fff;
+  }
+}
+
 .footnote {
   color: #808080;
 }

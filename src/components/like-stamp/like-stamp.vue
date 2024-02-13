@@ -171,19 +171,6 @@ export default {
   position: relative;
 }
 
-.likes-button-group {
-  display: flex;
-  height: 3.5rem;
-  padding: 0 0.625rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
-
-  border-radius: 1.875rem;
-  background: #fff;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
-}
-
 .like-button {
   width: 45px;
   height: 45px;

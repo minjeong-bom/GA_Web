@@ -72,15 +72,109 @@ export default {
       }
     }
   },
+  mounted() {
+    this.getMyResume();
+  },
   methods: {
+    async getMyResume() {
+      const resumeKey = this.$route.query.key;
+      console.log(resumeKey);
+      try {
+        const config = {
+          url: `/api/crud/single/${resumeKey}`,
+          data: {
+            alias: 'resm',
+            prefix: 'resm',
+            scopes: 'resm_type,resm_title,resm_category,resm_mem_key,resm_profile_image,' +
+              'resm_cp_depart,resm_cp_field,resm_cp_range,resm_cp_performance,' +
+              'resm_sc_title,resm_sc_major,resm_sc_range,' +
+              'resm_fl_category,resm_fl_write,resm_fl_read,resm_fl_speak,' +
+              'resm_ct_title,resm_ct_inst,resm_ct_date,' +
+              'resm_ed_title,resm_ed_inst,resm_ed_range,' +
+              'resm_spouse,' +
+              'resm_kids,resm_oc_title,resm_oc_country,resm_oc_inst,resm_oc_range,' +
+              'resm_aw_title,resm_aw_inst,resm_aw_date,' +
+              'resm_career_summary,' +
+              'resm_strategy'
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom',
+            },
+          },
+        };
 
+        // API 호출
+        const res = await this.$api.post(config.url, config.data, config.etc);
+        const result = res.data.response.view;
+
+        this.myrTitle = result.resm_title;
+        this.userGoal = result.resm_career_summary;
+
+        this.goalArea = result.resm_category;
+        this.goalCompany = result.resm_type;
+
+        this.resm_profile_image = result.resm_profile_image;
+
+        this.myHistory.resm_cp_depart = result.resm_cp_depart;
+        this.myHistory.resm_cp_field = result.resm_cp_field;
+        this.myHistory.resm_cp_range = result.resm_cp_range;
+        this.myHistory.resm_cp_performance = result.resm_cp_performance;
+
+        this.mySchool.resm_sc_title = result.resm_sc_title;
+        this.mySchool.resm_sc_major = result.resm_sc_major;
+        this.mySchool.resm_sc_range = result.resm_sc_range;
+
+        this.myLanguage.resm_fl_category = result.resm_fl_category;
+        this.myLanguage.resm_fl_write = result.resm_fl_write;
+        this.myLanguage.resm_fl_read = result.resm_fl_read;
+        this.myLanguage.resm_fl_speak = result.resm_fl_speak;
+
+        this.myEducation.resm_ed_title = result.resm_ed_title;
+        this.myEducation.resm_ed_inst = result.resm_ed_inst;
+        this.myEducation.resm_ed_range = result.resm_ed_range;
+
+        this.married = result.resm_spouse;
+        this.familys = result.resm_kids;
+
+        if (result.resm_profile_image) {
+          this.getProfileInfo(result.resm_profile_image);
+        }
+
+        this.isLoading = false;
+      } catch (e) {
+        this.isLoading = false;
+        this.list = [];
+      }
+    },
+    async getProfileInfo(key) {
+      try {
+        const config = {
+          url: '/api/crud/single/' + key,
+          body: {
+            alias: 'bc',
+            prefix: 'bc',
+            scopes: 'bc_content',
+          },
+          etc: {
+            headers: {
+              'SPRINT-API-KEY': 'sprintcombom'
+            }
+          }
+        }
+        const res = await this.$api.post(config.url, config.body, config.etc);
+        this.resm_profile_image = key;
+        this.mrpPhoto = res.data.response.view.bc_content;
+      } catch (e) {
+
+      }
+    },
     async saveMyResume() {
       try {
         const config = {
           url: '/api/crud/create',
           body: {
             data_prefix: 'resm',
-
             // 이력서
             data_title: this.myrTitle ? this.myrTitle : '제목없는 이력서', // 이력서 제목
             data_mem_key: this.localUserKey, // 작성자 키
@@ -133,10 +227,10 @@ export default {
             }
           }
         }
-        await this.$api.post(config.url, config.body, config.etc)
+        const result = await this.$api.post(config.url, config.body, config.etc)
         this.navigateTo('/myr0000');
       } catch (e) {
-        console.log('이력서 등록 실패', e);
+        console.error('이력서 등록 실패', e)
       }
     },
     saveGoalSetting(goalArea, goalCompany) {
@@ -286,8 +380,9 @@ export default {
 
       value += this.goalArea ? 16 : 0
       value += this.resm_profile_image ? 20 : 0
-      value += this.myHistory.resm_cp_depart.length > 0 ? 32 : 0
+      value += this.myHistory.resm_cp_depart.length > 0 ? 16 : 0
       value += this.mySchool.resm_sc_title.length > 0 ? 16 : 0
+      value += this.myLanguage.resm_fl_category.length > 0 ? 16 : 0
       value += this.married ? 16 : 0
 
       return value
@@ -395,15 +490,15 @@ export default {
 <template>
   <div class="myr-page">
     <text-button-top-bar :button-name="'저장'" :title-text="'이력서 작성'" @action="saveMyResume"></text-button-top-bar>
-
     <div :class="{ 'background-scroll-rock' : showModal.scrollLock }">
       <section class="section-md">
         <q-input
           v-model="myrTitle"
           class="full-width"
           hint="제출할 기업/기관 등으로 구분해 보세요. 예) ㅇㅇ기업용, ㅇㅇ업무용"
-          label="이력서명"/>
+          label="이력서명"></q-input>
       </section>
+
       <section class="section-s">
         <h3 class="headline-3">이직 또는 전직 여부
           <q-icon name="info"></q-icon>
@@ -470,7 +565,7 @@ export default {
           {{ mySchoolAndLangResult }}
         </p>
         <myr-info-card v-else :card-head-line="'학력 및 외국어'" :item-length="2" :results="mySchoolAndLangResult"
-                       @click="openModal('myr2150')"/>
+                       @click="openModal('myr2140')"/>
         <!-- 자격 및 기타 교육 -->
         <myr-card
           v-if="!this.myLisence.resm_ct_title.length && !this.myEducation.resm_ed_title.length"
@@ -481,7 +576,7 @@ export default {
           :card-title="'기업이 요구하는 역량과 관련된 자격 및 교육 사항은 신뢰를 더해줄 수 있어요'"
           @click="openModal('myr2160')"
         />
-        <myr-info-card v-else :item-length="2" :results="myEducationAndLicenseResult" card-head-line="자격 및 기타 교육"
+        <myr-info-card v-else :card-head-line="'자격 및 기타 교육'" :item-length="2" :results="myEducationAndLicenseResult"
                        @click="openModal('myr2160')"/>
         <!-- 인적 사항 -->
         <myr-card

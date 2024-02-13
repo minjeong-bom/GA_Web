@@ -280,7 +280,18 @@
 /* q-menu 커스텀 */
 .likes-button-group {
   display: flex;
-  width: 345px;
+  height: 3.5rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+
+  border-radius: 1.875rem;
+  background: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.likes-button-group {
+  display: flex;
   border-radius: 1.875rem !important;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25) !important;
 }

@@ -86,7 +86,7 @@ export default {
       </p>
 
       <div v-if="uploadImage" class="upload-image-frame l-column">
-        <img :src="'data:image/jpeg;base64,' + uploadImage">
+        <img :src="'data:image/jpeg;base64,' + uploadImage" alt="새로운 프로필 사진">
         <q-btn class="delete-image-btn" color="primary" dense flat icon="delete" round @click="imageDelete"/>
       </div>
       <q-file v-else v-model="selectedFile" bottom-slots class="full-width" counter filled label="프로필 사진">

@@ -16,6 +16,7 @@ const routes = [
     path: '/hom',
     component: () => import('layouts/FullPageLayout.vue'),
     children: [
+      {path: '/home', component: () => import('pages/Home2.vue')},
       {path: '/hom0111', component: () => import('pages/HOM/HOM_0111.vue')},
       {path: '/menu', component: () => import('pages/Menu.vue')},
       {path: '/articles/story', component: () => import('src/Article/ArticleList.vue')},

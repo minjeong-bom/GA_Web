@@ -180,6 +180,20 @@ h1, h2, h3, h4, h5, h6, p {
   color: #FD384E;
 }
 
+.small-black-label {
+  padding: 0.125rem 0.3125rem;
+  margin-right: 0.37rem;
+  border-radius: 0.1875rem;
+  
+  color: #fff;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  background: #4C4C4C;
+}
+
 .footnote {
   font-size: 0.875rem;
   font-style: normal;

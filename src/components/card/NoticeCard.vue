@@ -12,6 +12,12 @@ export default {
       slide: ref(0)
     }
   },
+  props: {
+    bgColor: {
+      type: String,
+      default: null,
+    },
+  },
   mounted() {
     this.getNoticeList();
   },
@@ -37,7 +43,7 @@ export default {
         }
 
         const response = await this.$api.post(config.url, config.body, config.etc);
-        let res = response.data.response.lists;
+        const res = response.data.response.lists;
 
         this.noticeCard = res;
         // 설명 텍스트 가공하는 함수 호출
@@ -73,16 +79,29 @@ export default {
       class="rounded-borders"
       height="96px"
       infinite
-      style="margin-bottom: 10px"
       swipeable
     >
-      <q-carousel-slide v-for="(item, index) in noticeCard" :name="index"
-                        class="notice-card-item column no-wrap flex-center" @click="goToDetailView(item.bc_key)">
-        <div class="notice-card-title">{{ item.bc_title }}</div>
-        <div class="notice-card-caption">{{ item.description }}</div>
+      <q-carousel-slide v-for="(item, index) in noticeCard"
+                        v-if="noticeCard"
+                        :class="{ 'white-color': bgColor, 'single-item' : noticeCard.length === 1}"
+                        :name="index"
+                        :style="`background: ${bgColor ? bgColor : '#fafafa'};`"
+                        class="notice-card-item column no-wrap flex-center"
+                        @click="goToDetailView(item.bc_key)">
+        <div>
+          <div :class="{ 'white-color': bgColor }" class="notice-card-title">{{ item.bc_title }}</div>
+          <div :class="{ 'white-color': bgColor }" class="notice-card-caption">{{
+              item.description
+            }}
+          </div>
+        </div>
         <div v-if="noticeCard.length > 1" class="page-nation">
           <button v-for="(item, buttonIndex) in noticeCard"
-                  :class="{'focused': index === buttonIndex, 'page-nation-button': true}"
+                  :class="{
+                            'focused': index === buttonIndex,
+                            'page-nation-button': true,
+                            'white-color': bgColor
+                  }"
                   @click="slide = buttonIndex"
           >
             <span v-if="false">{{ item }}</span>
@@ -120,8 +139,17 @@ export default {
   display: flex;
   width: 100%;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   background: var(--q-secondary);
+}
+
+.notice-card-item > div {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: flex-start;
 }
 
 .page-nation {
@@ -146,5 +174,13 @@ export default {
 
 .focused {
   background: #8E8E93;
+}
+
+.white-color {
+  color: #fff !important;
+}
+
+.single-item {
+  justify-content: center;
 }
 </style>

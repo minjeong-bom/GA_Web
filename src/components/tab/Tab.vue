@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="tab">
+    <div :style="`padding-top: ${paddingTop}; margin-bottom: ${marginBottom}`" class="tab">
       <!-- 탭 -->
       <div v-for="tab in tabs" :key="tab.id" :class="{ 'tab-focus' : tab.id === activeTab }" class="tab-item"
            @click="selectTab(tab.id)">
@@ -21,6 +21,14 @@ export default {
     defaultTab: {
       type: String,
       default: 0,
+    },
+    paddingTop: {
+      type: String,
+      default: '20px',
+    },
+    marginBottom: {
+      type: String,
+      default: '10px',
     }
   },
   data() {
@@ -44,7 +52,6 @@ export default {
 <style scoped>
 .tab {
   display: flex;
-  padding-top: 20px;
   margin-bottom: 30px;
   gap: 8px;
 }

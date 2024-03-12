@@ -7,8 +7,21 @@ body {
   height: 100%;
   display: flex;
   justify-content: center;
+  background: var(--k-5);
 }
 
 #q-app {
-  max-width: 740px;
+  width: 1280px;
+}
+
+@media only screen and (max-width: 740px) {
+  body {
+    background: #fff;
+  }
+
+  #q-app {
+    min-width: auto;
+    max-width: 740px;
+    background: #fff;
+  }
 }
